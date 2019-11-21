@@ -1,0 +1,55 @@
+<!-- dom0级覆盖事件-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>dom0级和dom2级覆盖事件 区别</title>
+  </head>
+  <body>
+    <!-- dom0 -->
+    <input id="btn" type="button" οnclick="console.log('You clicked the button!');" value="Click" />
+
+    <!-- dom2 -->
+    <input id="btn2" type="button" value="Click2" />
+    <script>
+      // 在ｄｏｍ０级事件处理中，后定义的事件处理会覆盖前面的。
+      
+      var btn = document.getElementById("btn");
+      btn.onclick = function() {
+        console.log("Ｉ　am ｐｒｏｃｅｓｓｅｄ by dom0!"); //输出这条
+      };
+
+
+
+      // 在ｄｏｍ２级事件处理中，按照事件定义顺序执行，不覆盖。
+      var btn2 = document.getElementById('btn2');
+      btn2.addEventListener('click', function() {
+        console.log('I am processed by dom2!');
+      });       
+      btn2.addEventListener('click', function() {
+        console.log('I am processed by dom2 again!!');
+      });
+      //dom0 和dom2同时存在执行 前提是dom结构中不能定义事件函数 与dom2按事件定义顺序执行
+      btn2.onclick = function() {
+        console.log("Ｉ　am ｐｒｏｃｅｓｓｅｄ by dom0!"); //被下面同级click事件覆盖
+      };
+      btn2.addEventListener('click', function() {
+        console.log('I am processed by dom2 again!!*！');
+      });
+      btn2.onclick = function() {
+        console.log("Ｉ　am ｐｒｏｃｅｓｓｅｄ by dom0!!!"); //与dom2级事件共存但还是会覆盖dom0级自己的的click事件
+      };
+
+// 点击click，输出：Ｉ　am ｐｒｏｃｅｓｓｅｄ by dom0!
+/* 点击click2，输出： 
+                I am processed by dom2!
+                I am processed by dom2 again!!
+                Ｉ　am ｐｒｏｃｅｓｓｅｄ by dom0!!!
+                I am processed by dom2 again!!*！
+*/
+    </script>
+  </body>
+</html>

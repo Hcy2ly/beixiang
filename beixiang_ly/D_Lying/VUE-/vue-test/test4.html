@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>v-for</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+  </head>
+  <body>
+    <!-- 循环使用 v-for 指令。
+    v-for 指令需要以 site in sites 形式的特殊语法， sites 是源数据数组并且 site 是数组元素迭代的别名。-->
+    <!-- <div id="app">
+      v-for 可以绑定数据到数组来渲染一个列表：
+      <ol>
+        <li v-for="site in sites">
+          {{ site.name }}
+        </li>
+      </ol>
+      模板中使用 v-for：
+      <ul>
+        <template v-for="site in sites">
+          <li>{{ site.name }}</li>
+          <li>--------------</li>
+        </template>
+      </ul>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          sites: [{ name: "Runoob" }, { name: "Google" }, { name: "Taobao" }]
+        }
+      });
+    </script> -->
+
+    <!-- v-for 迭代对象 -->
+    <!-- <div id="app">
+      v-for 可以通过一个对象的属性来迭代数据：
+      <ul>
+        <li v-for="value in object">
+          {{ value }}
+        </li>
+      </ul>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          object: {
+            name: "菜鸟教程",
+            url: "http://www.runoob.com",
+            slogan: "学的不仅是技术，更是梦想！"
+          }
+        }
+      });
+    </script> -->
+
+    <!-- <div id="app">
+      可以提供第二个的参数为键名：
+      <ul>
+        <li v-for="(value, key) in object">{{ key }} : {{ value }}</li>
+      </ul>
+    </div> -->
+
+    <!-- <div id="app">
+      第三个参数为索引：
+      <ul>
+        <li v-for="(value, key, index) in object">{{ index }}. {{ key }} : {{ value }}</li>
+      </ul>
+    </div> -->
+    <!-- <div id="app">
+      v-for 也可以循环整数
+      <ul>
+        <li v-for="n in 10">
+          {{ n }}
+        </li>
+      </ul>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          object: {
+            name: "菜鸟教程",
+            url: "http://www.runoob.com",
+            slogan: "学的不仅是技术，更是梦想！"
+          }
+        }
+      });
+    </script> -->
+    
+    <!-- <div id="app">
+      computed 属性默认只有 getter ，不过在需要时你也可以提供一个 setter ：
+      <p>{{name}} {{url}}</p>
+      </div>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          name: "Google",
+          url: "http://www.google.com"
+        },
+        computed: {
+          site: {
+            // getter
+            get: function() {
+              return this.name + " " + this.url;
+            },
+            // setter
+            set: function(newValue) {
+              var names = newValue.split(" ");
+              this.name = names[0];
+              this.url = names[names.length - 1];
+            }
+          }
+        }
+      });
+      // 调用 setter， vm.name 和 vm.url 也会被对应更新
+      vm.site = "菜鸟教程 http://www.runoob.com"; //
+      document.write("name: " + vm.name);
+      document.write("<br>");
+      document.write("url: " + vm.url);
+    </script> -->
+
+    <!-- <div id="app">
+      <p>原始字符串: {{ message }}</p>
+      <h1>
+        我们可以使用 methods 来替代 computed，效果上两个都是一样的，但是 computed 是基于它的依赖缓存，只有相关依赖发生改变时才会重新取值。而使用 methods
+        ，在重新渲染的时候，函数总会重新调用执行。
+      </h1>
+      <p>methods 计算后反转字符串2: {{ reversedMessage2() }}</p>
+      <h1>
+        声明了一个计算属性 reversedMessage 。提供的函数将用作属性 vm.reversedMessage 的 getter 。vm.reversedMessage 依赖于 vm.message，在 vm.message 发生改变时，vm.reversedMessage
+        也会更新。
+      </h1>
+      <p>computed计算后反转字符串: {{ reversedMessage }}</p>
+      <p>methods 计算后反转字符串2 再执行一次: {{ reversedMessage2() }}</p>
+      <p>computed计算后反转字符串 再执行一次: {{ reversedMessage }}</p>
+    </div>
+    <script>
+      var cnt = 1;
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          message: "Runoob!"
+        },
+        methods: {
+          reversedMessage2: function() {
+            cnt += 1;
+            return (
+              cnt +
+              this.message
+                .split("")
+                .reverse()
+                .join("")
+            );
+          }
+        },
+        //计算属性的依赖缓存 不管执行多少次cnt都按照第一次的值 因为它是独立于vm对象的变量。不会对属性依赖缓存computed产生影响，除非是vm内的属性值发生改变/
+        computed: {
+          // 计算属性的 getter
+          reversedMessage: function() {
+            // `this` 指向 vm 实例
+            cnt += 1;
+            return (
+              cnt +
+              this.message
+                .split("")
+                .reverse()
+                .join("")
+            );
+          }
+        }
+      });
+    </script> -->
+
+  </body>
+</html>

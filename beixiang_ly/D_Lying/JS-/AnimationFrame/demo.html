@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="author" content="http://www.softwhy.com/" />
+    <title>蚂蚁部落</title>
+    <style>
+      #antzone {
+        width: 1px;
+        height: 17px;
+        background: #0f0;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        // 方法一
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        var start = null;
+        var ele = document.getElementById("antzone"); //定义被执行对象
+        var progress = 0;
+        var timer = null;
+        function step() {
+          if (progress < 100) {
+            progress += 1;
+            ele.style.width = progress + "%";
+            ele.innerHTML = progress + "%";
+            timer = requestAnimationFrame(step);
+          }
+        }
+        requestAnimationFrame(step);
+        document.getElementById("run").addEventListener(
+          "click",
+          function() {
+            ele.style.width = "1px";
+            progress = 0;
+            requestAnimationFrame(step);
+          },
+          false
+        );
+        document.getElementById("stop").addEventListener(
+          "click",
+          function() {
+            cancelAnimationFrame(timer);
+          },
+          false
+        );
+
+        // 方法二
+        // window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        // var ele = document.getElementById("antzone"); //定义被执行对象
+        // var progress = 0;
+        // var timer = null;
+        // function step() {
+        //   progress += 1;
+        //   ele.style.width = progress + "%";
+        //   ele.innerHTML = progress + "%";
+        //   if (progress < 100) {
+        //     timer = requestAnimationFrame(step);
+        //   }
+        // }
+        // requestAnimationFrame(step);
+        // document.getElementById("run").addEventListener(
+        //   "click",
+        //   function() {
+        //     cancelAnimationFrame(timer);
+        //     ele.style.width = "1px";
+        //     progress = 0;
+        //     requestAnimationFrame(step);
+        //   },
+        //   false
+        // );
+        // document.getElementById("stop").addEventListener(
+        //   "click",
+        //   function() {
+        //     cancelAnimationFrame(timer);
+        //   },
+        //   false
+        // );
+      };
+    </script>
+  </head>
+  <body>
+    <div id="antzone">0%</div>
+    <input type="button" value="查看演示" id="run" />
+    <input type="button" value="停止动画" id="stop" />
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>时间戳</title>
+  <!-- //方法一 -->
+  <!-- <script type="text/javascript">
+    (function(){ 
+         var randomh=Math.random();
+         var e = document.getElementsByTagName("script")[0];
+         var d = document.createElement("script");
+         d.src = "//site.com/js.js?x="+randomh+"";
+         d.type = "text/javascript"; 
+         d.async = true;
+         d.defer = true;
+         e.parentNode.insertBefore(d,e);
+     })();
+    </script> -->
+<!-- //方法二 -->
+<script>document.write("<script type='text/javascript' src='//site.com/js.js?v=" + Date.now() + "'><\/script>");</script>
+</head>
+<body>
+  
+</body>
+</html>

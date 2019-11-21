@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>圣杯布局</title>
+    <style>
+      html,
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        padding-left: 50px; /*设置左右padding，防止main的字被左右两块遮挡*/
+        padding-right: 100px;
+      }
+      .main {
+        float: left;
+        width: 100%;
+        height: 200px;
+        background-color: blue;
+      }
+      .left {
+        float: left;
+        width: 50px;
+        height: 200px;
+        margin-left: -100%; /*左栏移到第一行的首部*/
+        position: relative;
+        left: -50px; /*抵消container的左padding，防止文字被压住*/
+        background-color: red;
+      }
+      .right {
+        float: left;
+        width: 100px;
+        height: 200px;
+        margin-left: -100px; /*右栏移到和左中一行*/
+        position: relative;
+        right: -100px;
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main">如果有一天我变得很有钱</div>
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+  </body>
+</html>

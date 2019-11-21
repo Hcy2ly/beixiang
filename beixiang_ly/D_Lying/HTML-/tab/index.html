@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>          
+<html>          
+<head>          
+    <meta charset="UTF-8">      
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">    
+    <title>H5 tab切换页面</title>        
+    <style type="text/css">    
+      html{margin: 0; padding: 0;}
+      body{margin: 0 auto; padding: 0;max-width: 1000px; background: #f5f6f8;font-size: 14px;}
+      .m-header{position: relative; height: 0.48rem;line-height: 0.48rem; font-size:0.16rem;border-bottom:1px solid #EBEBEB; text-align: center;color: #2C2C2C;letter-spacing: 0;background: #fff;}
+      .m-return {position: absolute;display: inline-block;top:0.13rem;left: 0.12rem;width: 0.14rem; height: 0.22rem; background-image: url(http://c2.cgyouxi.com/website/mobile/img/arrow-l.png?v=20180122);background-size: 100% 100%;}
+      .m-tab{position: relative;padding: 0.40rem 0 0; width: 100%;background: #fff;}
+      .m-tab a{position: absolute; display: inline-block;width: 50%; font-size: 0.14rem;color: #2C2C2C;letter-spacing: 0;line-height: 0.38rem;text-align: center;text-decoration: none;}
+      .m-tab a:first-child{top: 0;left: 0; }
+      .m-tab a.m-coupons{top:0; right:0;}
+      .m-tab a.active{border-bottom: 2px solid #FFAC28;}
+      .m-division{height: 1px; background:#EBEBEB;} 
+      .m-view1{background: #fff;height: 200px;}    
+      .m-view2{background: #fff;height: 200px;}       
+      @media screen and (min-width: 360px) {  
+        html {
+          font-size: 100px!important;
+        }
+      }
+ 
+    </style>   
+    <script type="text/javascript">  
+      document.documentElement.style.fontSize = document.documentElement.clientWidth / 3.6 + 'px';
+      (function (doc, win) {
+          var docEl = doc.documentElement;
+          var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+ 
+          var recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) {
+                  return;
+              }
+              docEl.style.fontSize = 100 * (clientWidth / 360) + 'px';
+          };
+ 
+          if (!doc.addEventListener) {
+              return;
+          }
+          win.addEventListener(resizeEvt, recalc, false);
+          doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);     
+    </script>        
+</head>          
+<body>  
+  <div class="m-header" id="m-header">
+  <div class="m-return" id="m-return"></div>
+  我的活动
+  </div>
+  <div class="m-tab">
+    <a href="javascript:void(0);" id="m-my-invite" class="active">我邀请的好友</a>
+    <a href="javascript:void(0);" id="m-my-coupons" class="m-coupons">我的赠送券</a>
+    <div class="m-division"></div>  
+  </div>  
+  <div id="m-view1" class="m-view1">
+    1
+  </div>
+  <div id="m-view2" class="m-view2" style="display: none;"> 
+    2
+  </div>  
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>    
+  <script type="text/javascript">    
+    $('#m-return').on('click', function() {
+      window.history.back()
+    });  
+    var myCoupons = $('#m-my-coupons');
+    var myInvite = $('#m-my-invite');
+    var view1 = $('#m-view1');
+    var view2 = $('#m-view2');  
+    $('#m-return').on('click', function() {
+      window.history.back()
+    });
+    myInvite.on('click', function() {
+      myCoupons.removeClass('active');
+      myInvite.addClass('active');
+      view2.hide();
+      view1.show(); 
+    });
+    myCoupons.on('click', function() {
+      myInvite.removeClass('active');
+      myCoupons.addClass('active');     
+      view1.hide();
+      view2.show();   
+    });   
+  </script>    
+</body>          
+</html>

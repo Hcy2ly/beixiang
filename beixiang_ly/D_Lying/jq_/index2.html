@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>点击返回指定位置</title>
+    <style>
+      #nav {
+        position: fixed;
+        left: 0;
+        top: 10px;
+      }
+      #nav li {
+        width: 50px;
+        height: 30px;
+        font: bold 20px/30px simhei;
+        text-align: center;
+        list-style-type: none;
+        background: #333;
+        color: #fff;
+        margin: 10px 0;
+        cursor: pointer;
+      }
+      #list li {
+        width: 50%;
+        height: 300px;
+        text-align: center;
+        font: bold 100px/300px simhei;
+        list-style-type: none;
+        background: yellow;
+        color: blue;
+        margin: 50px 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="nav">
+      <li data-to="go1">1</li>
+      <li data-to="go2">2</li>
+      <li data-to="go3">3</li>
+      <li data-to="go4">4</li>
+      <li data-to="go5">5</li>
+      <li data-to="go6">6</li>
+      <li data-to="go7">7</li>
+      <li data-to="go8">8</li>
+      <li data-to="go9">9</li>
+      <li data-to="go10">10</li>
+      <li data-to="go11">11</li>
+      <li data-to="go12">12</li>
+      <li data-to="go13">13</li>
+    </ul>
+    <ul id="list">
+      <li id="go1">1</li>
+      <li id="go2">2</li>
+      <li id="go3">3</li>
+      <li id="go4">4</li>
+      <li id="go5">5</li>
+      <li id="go6">6</li>
+      <li id="go7">7</li>
+      <li id="go8">8</li>
+      <li id="go9">9</li>
+      <li id="go10">10</li>
+      <li id="go11">11</li>
+      <li id="go12">12</li>
+      <li id="go13">13</li>
+    </ul>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+      $("#nav").on("click", "li", function(e) {
+        var target = e.target;
+        var id = $(target).data("to");
+        console.log(id);
+        $("html,body").animate({ scrollTop: $("#" + id).offset().top }, 800);
+      });
+    </script>
+  </body>
+</html>

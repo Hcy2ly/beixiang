@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <a href="#/setting">点击这个就切换路径了</a>   // 样式是wrap
+<a href="#/back">点击这个就又切换路径了</a>   //样式是settingWrap
+<div class="wrap"> 你好 </div>
+<div class="settingWrap"> 我是 </div>
+</body>
+<script>
+// 创建一个 newRouter 类
+class newRouter {
+    // 初始化路由信息
+    
+    constructor() {        //构造方法
+    this.routes = {};
+    this.currentUrl = '';
+    }
+
+    // 切割 hashs，渲染页面
+    refresh() {
+    this.currentUrl = location.hash.slice(1) || '/';          		 //location.hash获得#/setting  /this.currentUrl获得/setting
+    this.routes[this.currentUrl] && this.routes[this.currentUrl]();    //回调函数
+    }
+
+    // 初始化
+    init() { //加载或者路径发生变化时 刷新构造函数 中的变量
+    window.addEventListener('load', this.refresh.bind(this), false);        //加一个监听函数，绑定this    this指向这个类
+    window.addEventListener('hashchange', this.refresh.bind(this), false);
+    }
+
+    // 传入 URL 以及 根据 URL 对应的回调函数
+
+    route(path, callback = () => {}) {
+    this.routes[path] = callback;
+    }
+    }
+
+    // new 一个 Router 实例
+    window.Router = new newRouter();
+
+    // 路由实例初始化
+    window.Router.init();
+
+    Router.route('/setting', () => {
+        document.querySelector(".wrap").style.display="none";
+        document.querySelector(".settingWrap").style.display="block";
+    });
+    Router.route('/back', () => {
+        document.querySelector(".wrap").style.display="block";
+        document.querySelector(".settingWrap").style.display="none";
+    });
+</script>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>$watch vue.js监听属性</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+  </head>
+  <body>
+    <!-- <div id = "app">
+        <p style = "font-size:25px;">计数器: {{ counter }}</p>
+        <button @click = "counter++" style = "font-size:25px;">点我</button>
+    </div>
+    <script type = "text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            counter: 1
+        }
+    });
+    //nval= newValue  oval= oldValue
+    vm.$watch('counter', function(nval, oval) {
+        alert('计数器值的变化 :' + oval + ' 变为 ' + nval + '!');
+    });
+    </script> -->
+
+    <!-- <div id="computed_props">千米 : <input type="text" v-model="kilometers" /> 米 : <input type="text" v-model="meters" /></div>
+    <p id="info"></p>
+    <script type="text/javascript">
+      var vm = new Vue({
+        el: "#computed_props",
+        data: {
+          kilometers: 0,
+          meters: 0
+        },
+        methods: {},
+        computed: {},
+        watch: {
+          kilometers: function(val) {
+            this.kilometers = val;
+            this.meters = this.kilometers * 1000;
+          },
+          meters: function(val) {
+            this.kilometers = val / 1000;
+            this.meters = val;
+          }
+        }
+      });
+      // $watch 是一个实例方法
+      vm.$watch("kilometers", function(newValue, oldValue) {
+        // 这个回调将在 vm.kilometers 改变后调用
+        document.getElementById("info").innerHTML = "修改前值为: " + oldValue + "，修改后值为: " + newValue;
+      });
+      // vm.$watch("meters", function(newValue, oldValue) {
+      //   // 这个回调将在 vm.kilometers 改变后调用
+      //   document.getElementById("info").innerHTML = "修改前值为: " + oldValue + "，修改后值为: " + newValue;
+      // });
+    </script> -->
+    <div id="app">
+      <table>
+        <tr>
+          <th>序号</th>
+          <th>商品名称</th>
+          <th>商品价格</th>
+          <th>购买数量</th>
+          <th>操作</th>
+        </tr>
+        <tr v-for="iphone in Ip_Json">
+          <td>{{ iphone.id }}</td>
+          <td>{{ iphone.name }}</td>
+          <td>{{ iphone.price }}</td>
+          <td>
+            <button v-bind:disabled="iphone.count === 0" v-on:click="iphone.count-=1">-</button>
+            {{ iphone.count }}
+            <button v-on:click="iphone.count+=1">+</button>
+          </td>
+          <td>
+            <button v-on:click="iphone.count=0">移除</button>
+          </td>
+        </tr>
+      </table>
+
+      总价：${{ totalPrice() }}
+    </div>
+    <style scoped>
+      table {
+        border: 1px solid black;
+      }
+      table {
+        width: 100%;
+      }
+
+      th {
+        height: 50px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #ddd;
+      }
+    </style>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          Ip_Json: [
+            {
+              id: 1,
+              name: "iphone 8",
+              price: 5099,
+              count: 1
+            },
+            {
+              id: 2,
+              name: "iphone xs",
+              price: 8699,
+              count: 1
+            },
+            {
+              id: 3,
+              name: "iphone xr",
+              price: 6499,
+              count: 1
+            }
+          ]
+        },
+        methods: {
+          totalPrice: function() {
+            var totalP = 0;
+            for (var i = 0, len = this.Ip_Json.length; i < len; i++) {
+              totalP += this.Ip_Json[i].price * this.Ip_Json[i].count;
+            }
+            return totalP;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

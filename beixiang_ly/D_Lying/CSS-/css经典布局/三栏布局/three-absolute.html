@@ -1,0 +1,42 @@
+
+<!--绝对定位解决方案-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>三栏式布局之position:absolute实现方式</title>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .r, .l, center{
+    position: absolute; /*fixed*/
+  }
+  .r {
+    right: 0;
+    width: 300px;
+    background: #123;
+  }
+  .l {
+    left: 0;
+    width: 300px;
+    background: #456;
+  }
+  .center {
+    width: auto;
+  }
+  </style>
+</head>
+<body>
+  <div class="warpper">
+    <div class="r"></div>
+    <div class="l"></div>
+    <div class="center"></div>
+  </div>
+</body>
+</html>

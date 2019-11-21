@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=GB2312>
+    <title></title>
+    <meta name="description" content="HTML5/canvas demo, 500 particles to play around with." />
+    <meta name="keywords" content="html5,canvas,javascript,particles,interactive,velocity,programming,flash" />
+   <style>
+html, body {
+            text-align: center;
+            margin:0;
+            padding:0;
+            background: #000000; 
+            color: #666666;
+            line-height: 1.25em;
+        }       
+
+        #outer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 1px;
+            overflow: visible;
+        }       
+
+        #canvasContainer { 
+            position: absolute;
+            width: 1000px;
+            height: 560px;
+            top: -280px;
+            left: -500px;
+        }
+
+        canvas { 
+            border: 1px solid #333333; 
+        }
+
+        a {
+            color: #00CBCB;
+            text-decoration:none;
+            font-weight:bold;
+        }
+        a:hover {
+            color:#FFFFFF;
+        }
+
+        #output {
+            font-family: Arial, Helvetica, sans-serif; 
+            font-size: 0.75em;
+            margin-top:4px;
+        }
+
+        #footer{
+            font-size: 0.6em;
+            font-family: Arial, Helvetica, sans-serif;
+            position: absolute;
+            bottom:8px;
+            width:98%;
+        }
+
+</style>
+  </head>
+
+  <body>
+    <div id="outer">
+        <div id="canvasContainer">
+            <canvas id="mainCanvas" width="1000" height="560" style="border:1px solid #c3c3c3;"></canvas>
+            <div id="output"></div>
+        </div>
+    </div>
+<script type="text/javascript">
+(function(){
+
+    var PI_2        = Math.PI * 2;
+
+    var canvasW     = 1000;
+    var canvasH     = 560;
+    var numMovers   = 600;
+    var friction    = 0.96;
+    var movers      = [];
+    var i=0;
+    var canvas;
+    var ctx;
+    var canvasDiv;
+    var outerDiv;
+    var spring=0.12;
+    var mouseX;
+    var mouseY;
+    var mouseVX;
+    var mouseVY;
+    var prevMouseX;
+    var prevMouseY;
+    var isMouseDown;
+    var snake;
+    var _food;
+    var speed=3;
+    var gameOver=false;
+    var score=0;
+    var Difficulty;
+    var gameState=0;//一共四个值，0,1,2,3,4,5分别对应开始开始菜单界面，正在游戏中，暂停，结束，超时,查看排名
+    var playButton;
+    var configButton;
+    var RankingButton;
+    var buttonArray=[];
+    var buttonIndex=0;
+    var backImage;
+    var remainTime;
+    function initFarm(){
+        canvas = document.getElementById("mainCanvas"); 
+        if ( canvas.getContext ){
+            setup();
+            perform=setInterval( run , speed );
+        }
+    }
+
+    function setup(){
+        outerDiv  = document.getElementById("outer");
+        canvasDiv = document.getElementById("canvasContainer");
+        ctx = canvas.getContext("2d");
+        remainTime=59;
+        beginTime=new Date().getSeconds();
+        snake=new Asphyre(200,200,500,5);
+        _food=new food(20*Math.floor(Math.random()*50),20*Math.floor(Math.random()*28));
+        snake.init();
+        pirate=new pirateImage(150,0,256,256,0);
+        playButton=new button("Play",900,200,70,20*Math.PI/180,"blue");
+        configButton=new button("Config",900,300,70,20*Math.PI/180,"blue");
+        rankingButton=new button("Ranking",900,400,70,20*Math.PI/180,"blue");
+        buttonArray.push(playButton);
+        buttonArray.push(configButton);
+        buttonArray.push(rankingButton);
+        mouseX = prevMouseX = canvasW * 0.5;
+        mouseY = prevMouseY = canvasH * 0.5;
+
+        document.onmousedown = onDocMouseDown;
+        document.onmouseup   = onDocMouseUp;
+        document.onmousemove = onDocMouseMove;
+    }
+
+    function addNewRanking(user,score){
+
+        var info=user+": "+score
+        $.post(
+                "${pageContext.request.contextPath}/graph_toXml.action",
+                {info:info},
+                function(data){
+                }
+        );
+    }
+
+    function showRanking(context){
+        var ForReading = 1;
+        var fso=new ActiveXObject("Scripting.FileSystemObject");
+        var ts = fso.OpenTextFile("c:\\Ranking.txt", ForReading);
+        s = ts.ReadLine();
+        context.fillStyle = "rgba(102,195,226,1)";
+        context.fillRect( 0 , 0 , canvasW , canvasH );  
+        context.font="30px impact";   
+        context.fillStyle="green";   
+        context.textAlign="center";   
+        context.fillText(s,500,50); 
+        ts.Close(); 
+    }
+    function drawText(context){
+        context.font="22px impact";   
+        context.fillStyle="red";   
+        context.textAlign="center";   
+        context.fillText("Score:"+score,950,30); 
+        context.fillText("Time:"+remainTime,50,30);
+
+    }
+    function drawBackground(context){
+        backImage=new Image();
+        backImage.src="image/back.jpg";
+        context.drawImage(backImage,0,0,1000,560);  
+    }
+    var tweenLite=function(obj,endX,endY){  
+        obj.x+=(endX-obj.x)*spring
+        obj.y+=(endY-obj.y)*spring
+    }
+    var button=function(text,x,y,size,angle,color){
+        this.text=text;
+        this.x=x;
+        this.y=y;
+        this.size=size;
+        this.angle=angle;
+        this.color=color;
+    }
+    button.prototype={
+        drawButton:function(context){
+            var self=this;
+            context.font="70px impact";   
+            context.fillStyle="cfcfcf";  
+            //context.fillRect(self.x, self.y-70, 500, 80);   
+            //context.strokeRect(self.x, self.y-70, 500, 80);
+            context.fillStyle=self.color;  
+            context.strokeStyle="white";
+            context.fillText(self.text,self.x,self.y);
+            context.font="71px impact";   
+            context.strokeText(self.text,self.x,self.y);
+        },
+        shake:function(context){
+            var self=this;
+            context.save();
+            self.angle-=self.angle*spring;      
+            context.rotate(self.angle);
+            context.font="70px impact";   
+            context.fillStyle="cfcfcf";  
+            context.fillStyle="yellow";  
+            context.strokeStyle="white";
+            context.fillText(self.text,self.x,self.y);
+            context.font="71px impact";   
+            context.strokeText(self.text,self.x,self.y);
+            context.restore();      
+        },
+        springSports:function(context,y)
+        {
+            var self=this;
+            self.y-=(self.y-y)*spring;
+            context.font="70px impact";   
+            context.fillStyle="cfcfcf";  
+            context.fillStyle="yellow";  
+            context.strokeStyle="white";
+            context.fillText(self.text,self.x,self.y);
+            context.font="71px impact";   
+            context.strokeText(self.text,self.x,self.y);
+        }           
+    }
+
+    var pirateImage=function(x,y,w,h,rotate){
+        this.x=x;
+        this.y=y;
+        this.w=w;
+        this.h=h;
+        this.rotate=rotate;
+    }
+    pirateImage.prototype={
+        drawPirate:function(){
+            var self=this;
+            var image=new Image();
+            image.src="image/pirate.png";
+            ctx.drawImage(image,self.x,self.y,self.w,self.h);
+        }
+    }
+    function run(){
+        ctx.fillStyle = "rgba(8,8,12,1)";
+        ctx.fillRect( 0 , 0 , canvasW , canvasH );  
+        if(gameState==0){//开始菜单状态
+            drawBackground(ctx);
+            playButton.drawButton(ctx);
+            configButton.drawButton(ctx);
+            rankingButton.drawButton(ctx);          
+            pirate.drawPirate();
+            new tweenLite(pirate,150,150);
+            new tweenLite(playButton,650,200);
+            if(playButton.x<700){
+                new tweenLite(configButton,650,320);
+            }
+            if(configButton.x<700){
+                new tweenLite(rankingButton,650,440);
+            }
+            for(var i=0;i<buttonArray.length;i++){
+                if(i==buttonIndex){
+                    //buttonArray[i].color="yellow";    
+                    buttonArray[i].shake(ctx);
+                    //var y=buttonArray[i].y;
+                    //buttonArray[i].springSports(ctx,y);
+                }
+                else{
+                    buttonArray[i].angle=20*Math.PI/180;
+                    buttonArray[i].color="blue";
+                }           
+            }
+            currentButton=buttonArray[buttonIndex];
+            document.οnkeydοwn=function(event){
+                var code = event.keyCode 
+                switch(code) {  
+                    case 38: //向上   
+                        buttonIndex--;
+                        if(buttonIndex<0){
+                            buttonIndex=buttonArray.length-1;
+                        }
+                        break;   
+                    case 40: //向下   
+                        buttonIndex++;
+                        if(buttonIndex>buttonArray.length-1){
+                            buttonIndex=0;
+                        }
+                        break;  
+
+                    case 13: //回车
+                        if(buttonIndex==0){
+                            gameState=1;  //进入游戏
+                            clearInterval(perform);  
+                            speed=99;
+                            perform=setInterval( run , speed );
+                        }
+                        if(buttonIndex==2){
+                            //gameState=5;  //查看排名
+                        }
+                        break;
+                }
+
+            }
+            if(rankingButton.x<651){
+                //buttonArray[buttonIndex].color="yellow";
+                //buttonArray[buttonIndex].shake(ctx);
+            }
+        }
+        if(gameState==2){
+            ctx.fillStyle = "rgba(102,195,226,1)";
+            ctx.fillRect( 0 , 0 , canvasW , canvasH );  
+            drawText(ctx);
+            _food.drawFood(ctx);
+            snake.drawNodes(ctx);
+            clearInterval(perform); 
+            document.onkeydown = function(event) {      
+                var code = event.keyCode;
+                switch(code){   
+                    case 32: //暂停
+                        gameState=1;
+                        perform=setInterval( run , speed );
+                        break;
+                }  
+            }
+        }
+        if(gameState==3){
+            snake.die();
+        }
+
+        if(gameState==5){
+            showRanking(ctx);
+        }
+        if(gameState==4){
+            snake.drawTimeout(ctx);
+
+
+        }
+        if(gameState==1){
+            ctx.fillStyle = "rgba(102,195,226,1)";
+            ctx.fillRect( 0 , 0 , canvasW , canvasH );  
+            var currentSeconds=new Date().getSeconds();
+            if(currentSeconds!=beginTime){
+                remainTime--;
+                if(remainTime<0){
+                    remainTime=0;
+                    $.messager.prompt('My Title', '请输入你的姓名', function(r){
+                        if (r){
+                            $.messager.alert('My Title',r+",您的得分信息已经上传到排名","");
+                        }
+                    });
+                    //addNewRanking(str,score);
+                    //gameState=4;  
+                    clearInterval(perform); 
+                }
+                beginTime=currentSeconds;
+            }
+            document.onkeydown = function(event) {      
+                var code = event.keyCode   
+                var isException = false;   
+                switch(code){   
+                    case 37: //向左   
+                        if(snake.direction!="right"){   
+                            snake.direction ="left";
+                        } else isException = true;   
+                        break;   
+                    case 38: //向上   
+                        if(snake.direction!="down"){   
+                            snake.direction ="up";   
+                        } else isException = true;   
+                        break;   
+                    case 39: //向右   
+                        if(snake.direction!="left"){   
+                            snake.direction = "right";
+                        } else isException = true;   
+                        break;   
+                    case 40: //向下   
+                        if(snake.direction!="up"){   
+                            snake.direction = "down";   
+                        } else isException = true;   
+                        break; 
+                    case 32: //暂停
+                        gameState=2; 
+                        break;
+                }  
+            }
+            drawText(ctx);
+            _food.drawFood(ctx);
+            snake.drawNodes(ctx);
+            snake.go();
+        }
+    }
+
+
+    function onDocMouseMove( e ){
+        var ev = e ? e : window.event;
+        mouseX = ev.clientX - outerDiv.offsetLeft - canvasDiv.offsetLeft;
+        mouseY = ev.clientY - outerDiv.offsetTop  - canvasDiv.offsetTop;
+    }
+
+    function onDocMouseDown( e ){
+        isMouseDown = true;
+        return false;
+    }
+
+    function onDocMouseUp( e ){
+        isMouseDown = false;
+        return false;
+    }
+
+    var AsphyreNode=function(x,y,w,h){
+        this.x=x;
+        this.y = y;   
+        this.w = w;   
+        this.h = h;
+    }
+    AsphyreNode.prototype={
+        equals:function(node){
+            if(this.x==node.x&&this.y==node.y)
+                return true;
+            return false;
+        }
+    }
+
+    function Asphyre(x,y,speed,initNodes){
+        var self=this;
+        self.speed=speed;
+        self.initNodes=initNodes;
+        self.speedParam = speed * initNodes; 
+        self.nodeSize=20;
+        self.nodes=[];
+        self.x=x;
+        self.y=y;
+        self.direction="right";
+        document.onkeydown = function(event) {      
+            var code = event.keyCode   
+            var isException = false;   
+            switch(code) {   
+                case 37: //向左   
+                    if(self.direction!="right"){   
+                        self.direction ="left";
+                    } else isException = true;   
+                    break;   
+                case 38: //向上   
+                    if(self.direction!="down"){   
+                        self.direction ="up";   
+                    } else isException = true;   
+                    break;   
+                case 39: //向右   
+                    if(self.direction!="left"){   
+                        self.direction = "right";
+                    } else isException = true;   
+                    break;   
+                case 40: //向下   
+                    if(self.direction!="up"){   
+                        self.direction = "down";   
+                    } else isException = true;   
+                    break;   
+            }   
+            if(isException){   
+                    alert("方向异常，不能沿反方向后退!");   
+            }   
+        }
+    }
+    Asphyre.prototype={
+        init:function(){
+            var self=this,x=self.x,y=self.y;
+            this.nodes=[];
+            for(var i=0;i<this.initNodes;i++){
+                this.nodes[i]=new AsphyreNode(self.x-i*20,self.y,self.nodeSize,self.nodeSize);
+            }
+        },  
+        drawNodes:function(context){   //绘制设身体   
+            var self = this;   
+            context.fillStyle = "blue";   
+            context.strokeStyle = "#ffffff";   
+            for(var i = 0; i < this.nodes.length; i++) {   
+                context.fillRect(this.nodes[i].x, this.nodes[i].y, this.nodeSize, this.nodeSize);   
+                context.strokeRect(this.nodes[i].x, this.nodes[i].y, this.nodeSize, this.nodeSize);   
+            }   
+        },
+        go:function(){
+            var self = this;
+            if(self.direction=="left"){
+                if(self.nodes[0].equals(new AsphyreNode(_food.x,_food.y,self.nodeSize,self.nodeSize))) {//吃到食物，少走一步   
+                    self.eatFood();    
+                }  
+                self.judgeOut();
+                for(var i=self.nodes.length-2;i>=0;i--){
+                    self.nodes[i+1].x=self.nodes[i].x;
+                    self.nodes[i+1].y=self.nodes[i].y;
+                }
+                self.nodes[0].x-=self.nodeSize; 
+            }
+            if(self.direction=="right"){
+                if(self.nodes[0].equals(new AsphyreNode(_food.x,_food.y,self.nodeSize,self.nodeSize))) {//吃到食物，少走一步   
+                    self.eatFood();    
+                } 
+                self.judgeOut();
+                for(var i=self.nodes.length-2;i>=0;i--){
+                    self.nodes[i+1].x=self.nodes[i].x;
+                    self.nodes[i+1].y=self.nodes[i].y;
+                }
+                self.nodes[0].x+=self.nodeSize;
+            }
+            if(self.direction=="up"){
+                if(self.nodes[0].equals(new AsphyreNode(_food.x,_food.y,self.nodeSize,self.nodeSize))) {//吃到食物，少走一步   
+                    self.eatFood();   
+                } 
+                self.judgeOut();
+                for(var i=self.nodes.length-2;i>=0;i--){
+                    self.nodes[i+1].x=self.nodes[i].x;
+                    self.nodes[i+1].y=self.nodes[i].y;
+                }
+                self.nodes[0].y-=self.nodeSize;
+            }
+            if(self.direction=="down"){
+                if(self.nodes[0].equals(new AsphyreNode(_food.x,_food.y,self.nodeSize,self.nodeSize))) {//吃到食物，少走一步 
+                    self.eatFood();  
+                } 
+                self.judgeOut();
+                for(var i=self.nodes.length-2;i>=0;i--){
+                    self.nodes[i+1].x=self.nodes[i].x;
+                    self.nodes[i+1].y=self.nodes[i].y;
+                }
+                self.nodes[0].y+=self.nodeSize;
+            }
+        },
+        eatFood:function(){
+            var self=this;
+            self.nodes.unshift(new AsphyreNode(_food.x,_food.y,self.nodeSize,self.nodeSize));
+            score+=10;
+            _food=new food(20*Math.floor(Math.random()*50),20*Math.floor(Math.random()*28));
+            if((self.nodes.length-self.initNodes)%3==0){
+                speed-=11;
+            }   
+            clearInterval(perform);  
+            perform=setInterval( run , speed );
+        },
+        judgeOut:function(){
+            var self=this;
+            if(self.nodes[0].y>canvasH-self.nodeSize||self.nodes[0].y<0){
+                gameState=3;
+            }
+            if(self.nodes[0].x>canvasW-self.nodeSize||self.nodes[0].x<0){
+                gameState=3;
+            }
+        },
+        die:function(){
+            var self=this;  
+            self.nodes=[];
+            _food=null;     
+            self.drawOver(ctx);
+        },
+        drawOver:function(context){
+            context.font="60px impact";   
+            context.fillStyle="red";   
+            context.textAlign="center";   
+            context.fillText("GAME OVER!",500,250); 
+        },
+        drawTimeout:function(context){
+            context.font="60px impact";   
+            context.fillStyle="red";   
+            context.textAlign="center";   
+            context.fillText("TIME OUT! YOUR SCORE IS "+score,500,250);     
+        }
+    }
+
+    function food(x,y){
+        this.x=x;
+        this.y=y;
+    }
+
+    food.prototype={
+        drawFood:function(context){
+            var self = this;   
+            context.fillStyle = "yellow";   
+            context.strokeStyle = "#ffffff"; 
+            context.fillRect(self.x, self.y, 20, 20);   
+            context.strokeRect(self.x, self.y, 20, 20);
+        }
+    }
+    function rect( context , x , y , w , h ){
+        context.beginPath();
+        context.rect( x , y , w , h );
+        context.closePath();
+        context.fill();
+    }
+
+
+    window.onload = initFarm;
+
+})();
+
+</script>   
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+  </head>
+  <body>
+    <!-- <div id="app">
+        <label for="r1">修改颜色</label><input type="checkbox" v-model="use" id="r1">
+        <br><br>
+        <div v-bind:class="{'class1': use}">
+          v-bind:class 指令
+        </div>
+      </div>    
+      <script>
+      new Vue({
+          el: '#app',
+        data:{
+            use: false
+        }
+      });
+      </script> -->
+
+    <!-- Vue.js 都提供了完全的 JavaScript 表达式支持。 -->
+    <!-- <div id="app">
+      {{ 5 + 5 }}<br />
+      {{ ok ? "YES" : "NO" }}<br />
+      {{
+        message
+          .split("")
+          .reverse()
+          .join("")
+      }}
+      <div v-bind:id="'list-' + id">菜鸟教程</div>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          ok: true,
+          message: "RUNOOB",
+          id: 1
+        }
+      });
+    </script> -->
+
+    <!-- v-bind被用来响应地更新 HTML 属性 -->
+    <!-- <div id="app">
+        <pre><a v-bind:href="url">菜鸟教程</a></pre>
+    </div>  
+    <script>
+    new Vue({
+      el: '#app',
+      data: {
+        url: 'http://www.runoob.com'
+      }
+    })
+    </script> -->
+
+    <!-- 指令用于在表达式的值改变时，将某些行为应用到 DOM 上 -->
+    <!-- <div id="app">
+      <p v-if="seen">现在你看到我了</p>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          seen: true //false
+        }
+      });
+    </script> -->
+
+    <!-- v-on 它用于监听 DOM 事件：<a v-on:click="doSomething"> 在这里参数是监听的事件名。 -->
+    <!-- 以下实例在用户点击按钮后对字符串进行反转操作： -->
+    <!-- <div id="app">
+        <p>{{ message }}</p>
+        <input v-model="message">
+        <button v-on:click="reverseMessage">反转字符串</button>
+    </div>
+    <script>
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'Runoob!'
+      },
+      methods: {
+        reverseMessage: function () {
+          this.message = this.message.split('').reverse().join('')
+        }
+      }
+    })
+    </script> -->
+
+    <!-- Vue.js 允许你自定义过滤器，被用作一些常见的文本格式化。 由"管道符"指示-->
+    <!-- 过滤器函数接受表达式的值作为第一个参数。 -->
+    <!-- <div id="app">
+      {{ message | capitalize }}
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          message: "runoob"
+        },
+        filters: {
+          capitalize: function(value) {
+            if (!value) return "";
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+          }
+        }
+      }); 
+    </script> -->
+
+    <!-- 可以用 v-else 指令给 v-if 添加一个 "else" 块：
+    随机生成一个数字，判断是否大于0.5，然后输出对应信息： -->
+    <!-- <div id="app">
+      <div v-if="Math.random() > 0.5">
+        Sorry
+      </div>
+      <div v-else>
+        Not sorry
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app"
+      });
+    </script> -->
+
+    <!-- v-else-if 在 2.1.0 新增,用作 v-if 的 else-if 块.可以链式的多次使用：-->
+    <div id="app">
+      <div v-if="type === 'A'">
+        A
+      </div>
+      <div v-else-if="type === 'B'">
+        B
+      </div>
+      <div v-else-if="type === 'C'">
+        C
+      </div>
+      <div v-else>
+        Not A/B/C
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          type: "D"
+        }
+      });
+    </script>
+  </body>
+</html>

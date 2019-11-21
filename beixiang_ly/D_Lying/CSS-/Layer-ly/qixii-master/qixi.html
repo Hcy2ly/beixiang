@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+  <title>七夕领好礼</title>
+  <link rel="stylesheet" href="./qixi.css">
+</head>
+<body>
+  <div class="lan-mark">请竖屏浏览</div>
+  <!-- 移动端body -->
+  <div id="wrapper">
+    <!-- 背景图片 -->
+    <div id="page_bd">
+      <!-- 主要内容区域 -->
+      <div class="lucky_nine_main" id="lucky_nine_main">
+        <!-- 头部navigationbar -->
+        <div id="lucky_nine_hd">
+          <!-- 左边的百度链接 -->
+          <a href="https://m.baidu.com" class="back noTapColor"></a>
+          <!-- 右边的分享链接 -->
+          <span class="share noTapColor" onclick=""></span>
+        </div>
+        <!-- 内容主题 -->
+        <div id="lucky_nine_title">
+          <!-- <img src="" alt=""> 因为这里的背景图片就是有字的，所以不用加字的背景图片 -->
+        </div>
+        <!-- 活动规则 其实可以做成一个按键样式 点开有一个毛玻璃的规则介绍   然后这里是一个简单的span行内元素用一个div包裹 有一定的填充空间-->
+        <div class="rule-wrapper">
+          <span class="rule rule-btn noTapColor">活动规则</span>
+        </div>
+        <!-- 这里是抽奖转盘的一个内容区域 -->
+        <div class="prize-list-wrapper">
+          <div class="prize-content">
+          <!-- 这里是一个外边距的设置 其实和上一个div大小一样 所以不知道意义在哪里Σ 可是是比较方便设置外边距 来和一些相对位置的元素相对定位  -->
+            <div class="prize-padding"></div>
+            <div class="prize-bg">
+              <!-- 内容排列 -->
+            <ul class="prize-ul">
+              <!-- 因为背景给了一个绝对定位 这里的位置由left top transfrom来决定位置 -->
+              <li class="prize-1 prize-li">
+                <div class="prize-li-bg"  style="background-image: url(https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/super/pic/item/50da81cb39dbb6fdacdc05770124ab18962b37d8.jpg);">
+                  <div class="prize-border"></div>
+                  <span>糯米电影券</span>
+                </div>
+              </li>
+              <li class="prize-2 prize-li">
+                <div class="prize-li-bg" style="background-image: url(https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/pic/item/38dbb6fd5266d0160cc17b7e9f2bd40734fa358f.jpg);">
+                  <div class="prize-border"></div>
+                  <span>0元领套套</span>
+                </div>
+              </li>
+              <li class="prize-3 prize-li">
+                <div class="prize-li-bg" style="background-image: url(https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/pic/item/472309f79052982217d9dd95dfca7bcb0b46d4fa.jpg);">
+                  <div class="prize-border"></div>
+                  <span>携程酒店券</span>
+                </div>
+              </li>
+              <li class="prize-4 prize-li">
+                <div class="prize-li-bg" style="background-image: url(https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/super/pic/item/10dfa9ec8a13632730e02665998fa0ec08fac753.jpg);">
+                  <div class="prize-border"></div>
+                  <span>小狗吸尘器</span>
+                </div>
+              </li>
+              <li class="prize-5 prize-li">
+                <div class="prize-li-bg" style="background-image: url(https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/pic/item/8644ebf81a4c510fac28074c6859252dd52aa5fc.jpg);">
+                  <div class="prize-border"></div>
+                  <span>嗨厨房优惠券</span>
+                </div>
+              </li>
+              <li class="prize-6 prize-li no-prize">
+                <div class="prize-li-bg" style="background-image: url(https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/pic/item/a8ec8a13632762d0a4e840e9a8ec08fa503dc696.jpg);">
+                  <div class="prize-border"></div>
+                  <span>好遗憾</span>
+                </div>
+              </li>
+
+              <li class="prize-7 prize-li">
+                <div class="prize-li-bg" style="background-image: url(https://ss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/super/pic/item/7e3e6709c93d70cfdc2c4f5bf0dcd100bba12b96.jpg);">
+                  <div class="prize-border"></div>
+                  <span>糯米七夕礼包</span>
+                </div>
+              </li>
+              <li class="prize-8 prize-li">
+                <div class="prize-li-bg" style="background-image: url(https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/super/pic/item/09fa513d269759ee6779849dbafb43166d22dfbf.jpg);">
+                  <div class="prize-border"></div>
+                  <span>华为V8手机</span>
+                </div>
+              </li>
+              <li class="prize-btn noTapColor"></li>
+            </ul>
+          </div>
+          <!-- 这里就是一个有几次抽奖 -->
+          <p class="prize-count">
+            您今天还有<span class="prize-times">0</span>次抽奖机会
+          </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 分享html -->
+  <!-- <div id="bd_share_popup_1470619903735" class="bdSharePopup" style="display:none;">
+    <div class="bd-share-popup-layer" id="bd_share_popup_layer" style="height:1167px;"></div>
+    <div id="bd_share_popup_content_1470619903735" class="bd-share-pop-content native" style="height:667px;">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div class="bd-share-popup" id="bd-share-popup">
+                <div class="bd-share">
+                  <ul class="bd-c1" id="bd_share_mediaes">
+                    <li class="media">
+                      <a class="qqdenglu" id="bd_share_mediaes_qqdenglu" href="#">QQ空间</a>
+                    </li>
+                    <li class="media">
+                      <a class="sinaweibo" id="bd_share_mediaes_sinaweibo" href="#">新浪微博</a>
+                    </li>
+                    <li class="media">
+                      <a class="qqweibo" id="bd_share_mediaes_qqweibo" href="#">腾讯微博</a>
+                    </li>
+                    <li class="media">
+                      <a class="renren" id="bd_share_mediaes_renren" href="#">人人网</a>
+                    </li>
+                    <li class="media">
+                      <a class="kaixin" id="bd_share_mediaes_kaixin" href="#">开心网</a>
+                    </li>
+                    <li class="media">
+                      <a class="mail" id="bd_share_mediaes_mail" href="#">邮件</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="bd-share-popup-footer">
+                  <a class="bd-share-popup-close" id="bd_share_popup_close_1470619903735" href="javascript:;">取消</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+<script>
+  // .prize-btn 就是开始抽奖那个图片 块级元素li
+  var oStartBtn = document.querySelector(".prize-btn");
+  // var prizeArr = document.querySelectorAll(".prize-li");
+  // var oShare = document.querySelector(".share");
+  // var oClose = document.querySelector(".bd-share-popup-close");
+  // oShare.addEventListener("click",function(){
+  //   oShare.style.display = "block";
+  // },false);
+  // oClose.addEventListener("click",function(){
+  //   oShare.style.display = "none";
+  // },false);
+  oStartBtn.addEventListener("click",function(){
+    // 弹窗提醒
+    // alert("jhh")
+    // var oFirst = document.querySelector(".prize-1");
+    // oFirst.classList.add("prize_cur");
+    // for(var i = 0;i<prizeArr.length;i++){
+    //   prizeArr[i].classList.add("prize_cur");
+    // }
+    var i = 0;
+    setInterval(function(){
+      var cur = document.querySelector(".prize_cur");
+      if(cur){
+        cur.classList.remove("prize_cur");
+      }
+      // console.log(i);
+      prizeArr[i].classList.add("prize_cur");
+      i++;
+      if(i == prizeArr.length){
+        i = 0;
+      }
+    },100)
+  },false);
+</script>
+</body>
+</html>

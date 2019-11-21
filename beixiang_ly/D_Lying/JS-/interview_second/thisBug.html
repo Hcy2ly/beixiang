@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>图片懒加载 this坑</title>
+</head>
+<body>
+  <img data-src="https://m.paixinkj.com/news/ylxw/20190514/10762.html">
+  <script>
+    function SetImg(top){
+    var imgs = Array.prototype.slice.apply(document.getElementsByTagName("img"));
+    this.imgs = imgs.filter(function(item,index){
+        return item.dataset.src;
+    });
+    this.top = top || 150;
+}
+SetImg.prototype = {
+    init:function(){
+        this.event();
+    },
+    setSrc:function(){
+        if(this.imgs.length===0){
+            window.removeEventListener("scroll",this.setSrc); ////这里的this指向SetImg.setSrc这个对象上 并非window。
+        };
+        // 如果所有图片都加载完毕了，这个滚动事件，就不需要了
+        var _this = this;
+        this.imgs.forEach(function(item,index){
+            if(document.documentElement.clientHeight+document.body.scrollTop+_this.top>item.offsetTop||item.offsetTop<document.documentElement.clientHeight){
+                item.src = item.dataset.src;
+                _this.imgs.splice(index,1);
+            }
+        })
+    },
+    event:function(){
+      // this.setSrc.bind(this)这是一个新对象，因此你根本就无法remove掉这个新对象。所以最终才想出个迫不得已的方法就是让this.setSrc变成新的那个对象。
+        this.setSrc = this.setSrc.bind(this); 
+        window.addEventListener("load",this.setSrc);//这里的this指向SetImg
+        window.addEventListener("scroll",this.setSrc);
+        
+        // window.addEventListener("load",this.setSrc.bind(this)); /这样写本来是没有问题的
+        // window.addEventListener("scroll",this.setSrc.bind(this));
+    }
+};
+new SetImg().init();
+  </script>
+</body>
+</html>

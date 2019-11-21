@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>倒计时</title>
+</head>
+<body>
+  <div class="countdown"></div>
+</body>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery.countdown/2.2.0/jquery.countdown.min.js"></script>
+<script>
+ $('.countdown').countdown('2018/9/12 12:00:00', function (event) {
+  $(this).html(event.strftime('0天0时30分0秒'));
+});
+//一个插件的做法
+</script>
+</html>

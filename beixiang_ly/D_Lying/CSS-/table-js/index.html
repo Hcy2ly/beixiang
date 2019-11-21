@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>4G无线E1信道设备平台 后台管路</title>
+    <style>
+      html {
+        margin: 0;
+        padding: 0;
+        background: url("./img/bg3.jpg");
+      }
+      tbody {
+        text-align: center;
+      }
+      td button {
+        border: none;
+        margin: 5px;
+      }
+      .addBtn {
+        background-color: green;
+      }
+      .pingtai {
+        display: none;
+      }
+      .top {
+        position: relative;
+        height: 50px;
+        width: 100%;
+        background: #333;
+        margin-bottom: 20px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .user {
+        position: absolute;
+        left: 40px;
+        color: #fff;
+        font-size: 20px;
+        vertical-align: middle;
+      }
+      .exit {
+        position: absolute;
+        right: 40px;
+        vertical-align: middle;
+        color: red;
+      }
+      table {
+        display: none;
+        margin-top: 20px;
+        position: relative;
+        border: 2px solid black;
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+      }
+      tr {
+        position: relative;
+        width: 100%;
+      }
+      td {
+        position: relative;
+        width: 100px;
+        text-align: center;
+        vertical-align: middle;
+        border: 2px solid black;
+        height: 30px;
+      }
+      input {
+        width: 90%;
+        height: 100%;
+        background: none;
+        outline: none;
+        border: none;
+      }
+      .title {
+        font-size: 24px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .Btns {
+        position: relative;
+        height: 50px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .add {
+        display: inline-block;
+        width: 80px;
+        line-height: 50px;
+        background-color: burlywood;
+        border-radius: 10px;
+        vertical-align: middle;
+        text-align: center;
+      }
+      .remove {
+        display: inline-block;
+        width: 80px;
+        line-height: 50px;
+        background: rosybrown;
+        border-radius: 10px;
+        vertical-align: middle;
+        text-align: center;
+      }
+      .change {
+        display: inline-block;
+        width: 80px;
+        line-height: 50px;
+        background: greenyellow;
+        border-radius: 10px;
+        vertical-align: middle;
+        text-align: center;
+      }
+      td.tip_c {
+        width: 50px;
+        text-align: center;
+      }
+      td #tip_S {
+        position: relative;
+        margin: 0 20px;
+        height: 10px;
+        width: 10px;
+        box-shadow: 1px 1px;
+        border: 1px solid black;
+      }
+      #tip_S span {
+        position: relative;
+        display: block;
+        margin-top: -5px;
+        font-weight: bold;
+      }
+
+      table.table2 {
+        margin-top: 30px;
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 90%;
+        border: none;
+      }
+      #table2 {
+        position: relative;
+        height: 200px;
+        width: 100%;
+        border: 2px solid #000;
+        display: none;
+      }
+      .table2-btns {
+        background-color: #333;
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+      }
+      .table2-btns button {
+        margin: 10px;
+      }
+      .pingtai {
+        text-align: center;
+        background: #1234647a;
+      }
+      input.file {
+        display: inline-block;
+        text-align: center;
+        width: 200px;
+        height: 50px;
+      }
+      input.btn {
+        width: 100px;
+        height: 50px;
+        display: inline-block;
+        text-align: center;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="user">
+        <span class="nickname">管理员：科威技术</span>
+      </div>
+      <a class="exit" href="">注销</a>
+    </div>
+    <h3>&nbsp;&nbsp;板块：</h3>
+    <div class="content">
+      <ul>
+        <li>
+          <div class="part" id="part_1">
+            <a href="javascript:;" class="title">4G无线E1信道设备</a>
+            <table>
+              <thead>
+                <tr id="btns-">
+                  <td colspan="6">
+                    <button style="background:green;border:none;" class="part1Add">添加+</button>
+                    <button style="background:red;border:none;" class="part1Remove">删除-</button>
+                  </td>
+                </tr>
+                <tr id="title-">
+                  <td class="tip_c"></td>
+                  <td>设备序号</td>
+                  <td>设备名称</td>
+                  <td>设备类型</td>
+                  <td>设备描述</td>
+                  <td>操作</td>
+                </tr>
+              </thead>
+              <tbody id="part1_">
+                <tr class="part1_tr1">
+                  <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+                  <td><input class="p0" type="text" /></td>
+                  <td><input class="p1" type="text" /></td>
+                  <td><input class="p2" type="text" /></td>
+                  <td><input class="p3" type="text" /></td>
+                  <td class="control"><button class="removeBtn1">取消</button><button class="addBtn addBtn1">确认</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li>
+          <div class="part" id="part_2">
+            <a href="javascript:;" class="title">4G无线E1信道配置</a>
+            <table>
+              <thead>
+                <tr>
+                  <td colspan="7">
+                    <button style="background:green;border:none;" class="part2Add">添加+</button>
+                    <button style="background:red;border:none;" class="part2Remove">删除-</button>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td>□</td> -->
+                  <td class="tip_c"></td>
+                  <td>信道序号</td>
+                  <td>设备序号</td>
+                  <td>设备名称</td>
+                  <td>设备类型</td>
+                  <td>路线选择</td>
+                  <td>操作</td>
+                </tr>
+              </thead>
+              <tbody id="part2_">
+                <tr class="part2_tr1">
+                  <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+                  <td><input type="text" class="p2_1" /></td>
+                  <td><input type="text" class="p2_2" /></td>
+                  <td><input type="text" class="p2_3" /></td>
+                  <td><input type="text" class="p2_4" /></td>
+                  <td>
+                    <select class="p2_5">
+                      <option value="线路1">线路1</option>
+                      <option value="线路2">线路2</option>
+                      <option value="线路3">线路3</option>
+                    </select>
+                  </td>
+                  <td class="control"><button class="removeBtn">取消</button><button class="addBtn">确认</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li>
+          <div class="part" id="part_3">
+            <a href="javascript:;" class="title">4G无线E1信道链路状态</a>
+            <table>
+              <thead>
+                <tr id="btns-">
+                  <td colspan="9">
+                    <button style="background:green;border:none;" class="part3Add">添加+</button>
+                    <button style="background:red;border:none;" class="part3Remove">删除-</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tip_c"></td>
+                  <td>信道序号</td>
+                  <td>设备名称</td>
+                  <td>设备类型</td>
+                  <td style="width: 120px;">运营商/频段</td>
+                  <td>频段自适应</td>
+                  <td>使用线路</td>
+                  <td style="width: 120px;">传输方向/速度</td>
+                  <td>操作</td>
+                </tr>
+              </thead>
+              <tbody id="part3_">
+                <tr class="part3_tr1">
+                  <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+                  <td>
+                    <select name="" id="" style="width: 70px" class="p3_1">
+                      <option value="激活">激活</option>
+                      <option value="断开">断开</option>
+                    </select>
+                  </td>
+                  <td><input type="text" class="p3_2" /></td>
+                  <td><input type="text" class="p3_3" /></td>
+                  <td><input type="text" class="p3_4" /></td>
+                  <td><input type="text" class="p3_5" /></td>
+                  <td><input type="text" class="p3_6" /></td>
+                  <td><input type="text" class="p3_7" /></td>
+                  <td class="control"><button class="removeBtn">取消</button><button class="addBtn">确认</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li>
+          <div class="part" id="part_4">
+            <a href="javascript:;" class="title">4G无线E1信道设备平台升级</a>
+            <div class="pingtai">
+              <div class="bg">
+                <div class="fd">
+                  平台升级：
+                  <div id="file">
+                    <form id="form1" action="uploadFile.do" target="frame1" method="post" enctype="multipart/form-data" class="go">
+                      <input class="file" type="file" name="file" />
+                      <input class="btn" type="button" value="上传" onclick="upload()" />
+                    </form>
+                    <iframe name="frame1" frameborder="0" height="40"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  <script>
+    //头部
+    function changeTitle() {
+      $("#part_1 #title-").empty();
+      var _dom = ` 
+      <td  class="tip_c">
+        <div id="tip_S" onclick="select()"></div></td>
+        <td><input style="height:auto" class="title-1" type="text" value="设备序号"></td>
+        <td><input style="height:auto" class="title-2" type="text" value="设备名称"></td>
+        <td><input style="height:auto" class="title-3" type="text" value="设备类型"></td>
+        <td><input style="height:auto" class="title-4" type="text" value="设备描述"></td>
+        <td><button  class="addBtn" onclick="titleOk()">确认</button></td>`;
+      $("#part_1 #title-").append(_dom);
+    }
+    function titleOk() {
+      var aa = [];
+      var dom = "";
+      for (let i = 0; i < $(`#part_1 #title- td`).length - 2; i++) {
+        aa[i] = $(`#title- input.title-${i + 1}`).val();
+        dom += `<td>${aa[i]}</td>`;
+      }
+      $(`#part_1 #title-`).empty();
+      let _dom = `<td  class="tip_c"><div id="tip_S" onclick="select()"></div></td>${dom}<td class="control"><button>操作</button></td>`;
+      $(`#part_1 #title-`).append(_dom);
+    }
+    function upload() {
+      $("#form1").submit();
+      var t = setInterval(function() {
+        //获取iframe标签里body元素里的文字。即服务器响应过来的"上传成功"或"上传失败"
+        var word = $("iframe[name='frame1']")
+          .contents()
+          .find("body")
+          .text();
+        if (word != "") {
+          alert(word); //弹窗提示是否上传成功
+          clearInterval(t); //清除定时器
+        }
+      }, 1000);
+    }
+  </script>
+
+  <script>
+    $(function() {
+      $(".part>a").click(function() {
+        $(this)
+          .next()
+          .slideToggle();
+        $(this)
+          .parent()
+          .siblings()
+          .find("table")
+          .slideUp();
+      });
+      $(".top>a").click(function() {
+        if (confirm("确定退出吗？")) {
+          $(".top>a.exit").attr("href", "./login.html");
+        } else {
+          $(".top>a.exit").href = "";
+        }
+      });
+
+      var p = 1;
+      $(".part1Add").on("click", function() {
+        p++;
+        let dom = `
+        <tr class="part1_tr${p}"> 
+          <td class="tip_c"><div id="tip_S" onclick="select()"></div></td><td><input class="p0" type="text"></td><td><input class="p1" type="text"></td><td><input class="p2" type="text"></td><td><input class="p3" type="text"></td><td class="control"><button class="removeBtn">取消</button><button class="addBtn">确认</button></td>
+        </tr>`;
+        $("#part1_").append(dom);
+      });
+      $(".part1Remove").on("click", function() {
+        $(`.part1_tr${p}`).remove();
+        if (p < 1) return;
+        p--;
+      });
+      $("#part1_").on("click", ".control>button", function() {
+        let index = $(this).index(); //拿到当前点击的下标
+        if (index == 0) {
+          $(this)
+            .parents("tr")
+            .remove();
+          p--;
+        } else if (index == 1) {
+          let aa = [];
+          let dom = "";
+          let len = $(this)
+            .parents("tr")
+            .children("td").length;
+          for (let i = 0; i < len - 2; i++) {
+            aa[i] = $(`input.p${i}`).val();
+            dom += `<td class="p${i}">${aa[i]}</td>`;
+          }
+          let _dom = `<td  class="tip_c"><div id="tip_S" onclick="select()"></div></td>${dom}<td class="control_C"><button class"changeBtn">修改</button></td>`;
+          $(this)
+            .parents("tr")
+            .empty()
+            .append(_dom);
+        } else {
+          return false;
+        }
+      });
+      $("#part1_").on("click", ".control_C>button", function() {
+        let _dom = `<td class="tip_c"><div id="tip_S" onclick="select()"></div></td><td><input class="p0" type="text"></td><td><input class="p1" type="text"></td><td><input class="p2" type="text"></td><td><input class="p3" type="text"></td><td class="control"><button class="removeBtn">取消</button><button class="addBtn">确认</button></td>`;
+        $(this)
+          .parents("tr")
+          .empty()
+          .append(_dom);
+      });
+
+      var n = 1;
+      $(".part2Add").click(function() {
+        n++;
+        let dom = ` 
+              <tr class="part2_tr${n}" >
+                <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+                <td><input type="text" class="p2_1" /></td>
+                <td><input type="text" class="p2_2" /></td>
+                <td><input type="text" class="p2_3" /></td>
+                <td><input type="text" class="p2_4" /></td>
+                <td>
+                  <select  class="p2_5">
+                    <option value="线路1">线路1</option>
+                    <option value="线路2">线路2</option>
+                    <option value="线路3">线路3</option>
+                  </select>
+                </td>
+                <td class="control"><button class="removeBtn">取消</button><button class="addBtn">确认</button></td>
+              </tr>`;
+        $("#part2_").append(dom);
+      });
+      $(".part2Remove").click(function() {
+        if (n && n > 0) {
+          $(`.part2_tr${n}`).remove();
+          n--;
+        } else {
+          return;
+        }
+      });
+      $("#part2_").on("click", ".control>button", function() {
+        let index = $(this).index(); //拿到当前点击的下标
+        if (index == 0) {
+          $(this)
+            .parents("tr")
+            .remove();
+          p--;
+        } else if (index == 1) {
+          let aa = [];
+          let dom = "";
+          let len = $(this)
+            .parents("tr")
+            .children("td").length;
+          for (let i = 0; i < len - 2; i++) {
+            aa[i] = $(`td .p2_${i + 1}`).val();
+            dom += `<td>${aa[i]}</td>`;
+          }
+          let _dom = `<td  class="tip_c"><div id="tip_S" onclick="select()"></div></td>${dom}<td class="control_C"><button class"changeBtn">修改</button></td>`;
+          $(this)
+            .parents("tr")
+            .empty()
+            .append(_dom);
+        } else {
+          return false;
+        }
+      });
+      $("#part2_").on("click", ".control_C>button", function() {
+        let _dom = `
+          <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+          <td><input type="text" class="p2_1" /></td>
+          <td><input type="text" class="p2_2" /></td>
+          <td><input type="text" class="p2_3" /></td>
+          <td><input type="text" class="p2_4" /></td>
+          <td>
+            <select class="p2_5">
+              <option value="线路1">线路1</option>
+              <option value="线路2">线路2</option>
+              <option value="线路3">线路3</option>
+            </select>
+          </td>
+          <td class="control"><button class="removeBtn">取消</button><button class="addBtn">确认</button></td>`;
+        $(this)
+          .parents("tr")
+          .empty()
+          .append(_dom);
+      });
+
+      var m = 1;
+      $(".part3Add").click(function() {
+        m++;
+        let dom = ` 
+          <tr class="part3_tr${m}">
+            <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+            <td>
+              <select name="" id="" style="width: 70px" class="p3_1">
+                <option value="激活">激活</option>
+                <option value="断开">断开</option>
+              </select>
+            </td>
+            <td><input type="text" class="p3_2" /></td>
+            <td><input type="text" class="p3_3" /></td>
+            <td><input type="text" class="p3_4" /></td>
+            <td><input type="text" class="p3_5" /></td>
+            <td><input type="text" class="p3_6" /></td>
+            <td><input type="text" class="p3_7" /></td>
+            <td class="control"><button class="removeBtn">取消</button><button class="addBtn" >确认</button></td>
+          </tr>`;
+        $("#part3_").append(dom);
+      });
+      $(".part3Remove").click(function() {
+        if (m && m > 0) {
+          $(`.part3_tr${m}`).remove();
+          m--;
+        } else {
+          return;
+        }
+      });
+      $("#part3_").on("click", ".control>button", function() {
+        let index = $(this).index(); //拿到当前点击的下标
+        if (index == 0) {
+          $(this)
+            .parents("tr")
+            .remove();
+          p--;
+        } else if (index == 1) {
+          let aa = [];
+          let dom = "";
+          let len = $(this)
+            .parents("tr")
+            .children("td").length;
+          for (let i = 0; i < len - 2; i++) {
+            aa[i] = $(`td .p3_${i + 1}`).val();
+            dom += `<td>${aa[i]}</td>`;
+          }
+          let _dom = `<td  class="tip_c"><div id="tip_S" onclick="select()"></div></td>${dom}<td class="control_C"><button class"changeBtn">修改</button></td>`;
+          $(this)
+            .parents("tr")
+            .empty()
+            .append(_dom);
+        } else {
+          return false;
+        }
+      });
+      $("#part3_").on("click", ".control_C>button", function() {
+        let _dom = `
+            <td class="tip_c"><div id="tip_S" onclick="select()"></div></td>
+            <td>
+              <select name="" id="" style="width: 70px" class="p3_1">
+                <option value="激活">激活</option>
+                <option value="断开">断开</option>
+              </select>
+            </td>
+            <td><input type="text" class="p3_2" /></td>
+            <td><input type="text" class="p3_3" /></td>
+            <td><input type="text" class="p3_4" /></td>
+            <td><input type="text" class="p3_5" /></td>
+            <td><input type="text" class="p3_6" /></td>
+            <td><input type="text" class="p3_7" /></td>
+            <td class="control"><button class="removeBtn">取消</button><button class="addBtn" >确认</button></td>`;
+        $(this)
+          .parents("tr")
+          .empty()
+          .append(_dom);
+      });
+
+      //选择
+      
+    });
+  </script>
+</html>

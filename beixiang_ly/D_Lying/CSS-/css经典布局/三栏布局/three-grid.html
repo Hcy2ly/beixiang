@@ -1,0 +1,33 @@
+<!--网格布局解决方案-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html, * {
+      margin: 0;
+      padding: 0;
+    }
+  .grid-box {
+    display: grid;
+    width: 100%;
+    grid-template-rows:100px; /*所有网格内的盒子的高度*/
+    grid-template-columns:300px auto 300px; /*从第一个到第三个网格盒子的宽度 第一和第三个盒子300  第二个自适应*/
+  }
+  .l, .r {
+    background: #246;
+  }
+  
+  </style>
+</head>
+<body>
+  <div class="grid-box">
+    <div class="l"></div>
+    <div class="center"></div>
+    <div class="r"></div>
+  </div>
+</body>
+</html>

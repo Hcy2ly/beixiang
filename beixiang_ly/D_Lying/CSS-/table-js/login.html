@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>登陆界面</title>
+    <style>
+      html{
+        margin: 0;
+        padding: 0;
+        background: url("./img/bg.jpg");
+      }
+      form {
+        width: 400px;
+        height: 250px;
+        margin: 200px auto 0;
+        background: #f1f2f9;
+        /* text-align: center; */
+        border-radius: 8px;
+      }
+    .login {
+      width: 400px;
+    }
+      form span {
+
+        display: block;
+        padding-left: 10px;
+        margin: 0 auto 25px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 22px;
+        font-weight: bold;
+        background: #dfe0e7;
+        border-bottom: 1px solid #26272b;
+        border-radius: 8px 8px 0 0;
+      }
+      .user1, .password1 {
+        padding-left: 10px;
+        position: relative;
+        height: 38px;
+        margin: 5px;
+      }
+      
+      .input1 {
+        position: relative;
+        height: 30px;
+        font-size: 18px;
+        width: 240px;
+      }
+      .chao {
+        position: relative;
+        display: block;
+        margin: 20px auto;
+        text-decoration: none;
+        width: 100%;
+        border: 0;
+        padding: 10px 0;
+        background: #9739a0ad;
+        font-size: 18px;
+        text-align: center;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <form  class="login">
+      <span>管理员登录</span>
+      <div class="user1"><img style="width: 20px;height: 20px;" src="./img/user.png" alt="">用户名：<input type="text" name="username" class="input1" /></div>
+      <div class="password1"><img style="width: 20px;height: 20px;" src="./img/password.png" alt="">密 码：<input type="password" name="password" class="input1" /></div>
+      <a href="./index.html" class="chao">立即登录 </a>
+    </form>
+  </body>
+</html>

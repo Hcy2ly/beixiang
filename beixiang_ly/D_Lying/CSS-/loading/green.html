@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  body{
+  background-color: green;
+}
+/*和加载动画不一样的是，这次是他自己本身的颜色就是透明的，并且带有渐变色，*/
+#loader{
+  animation: load-effect 3s infinite linear;
+  text-indent: -9999px;
+  position: relative;
+  width:200px;
+  height:200px;
+  box-shadow: inset 0 0 0 15px  rgba(255,255,255,0.2); /*设置内部阴影，为白色，宽度为15px*/
+  border-radius: 50%;
+  /*用渐变来做出尾巴的效果*/
+  background: linear-gradient(to right,#ffffff 10%,rgba(255,255,255,0) 50%);
+}
+/*挡住四分之一圆环*/
+/*因为渐变是整个右边上下是一样的，可是有尾巴的，他只有一边是透明的，所以用遮罩来写*/
+/*#loader:before{*/
+  /*position: absolute;*/
+  /*content:'';*/
+  /*width:50%;*/
+  /*height:50%;*/
+  /*background-color: #ffffff;*/
+  /*left:0;*/
+  /*top:0;*/
+  /*!*让遮罩也变成圆弧形状*!*/
+  /*border-radius: 100% 0 0 0 ;*/
+/*}*/
+/*用伪元素遮住中间的渐变色*/
+#loader:after{
+  position: absolute;
+  content: '';
+  width:170px;
+  height:170px;
+  border-radius: 50%;
+  left:15px;
+  top:15px;
+  background: green;
+}
+@keyframes load-effect {
+  0%{
+      transform: rotate(0deg);
+  }
+  100%{
+      transform: rotate(360deg);
+  }
+}
+/*所以这个的原理就是他整个自身本来就是一个有尾巴的图，，类似于静态图，然后自身旋转，
+伪元素跟着一起旋转。所以做成有尾巴的loading*/
+  </style>
+</head>
+<body>
+  <div id="loader">
+    Loading...
+</div>
+</body>
+</html>
+

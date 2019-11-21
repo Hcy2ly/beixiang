@@ -1,0 +1,33 @@
+@import "../../less/common.less";
+@rem: 200 * 750 / 640rem;
+
+#prizeNotice {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: 11;
+  height: 120 / @rem;
+  .desc {
+    .person {
+      position: relative;
+      width: 502 / @rem;
+      height: 56 / @rem;
+      background: rgba(208, 2, 27, 1);
+      border-radius: 28 / @rem;
+      display: inline-flex;
+      align-items: center;
+      text-align: center;
+      // animation: goY 50s infinite linear;
+      .p-avator {
+        width: 40 / @rem;
+        height: 40 / @rem;
+        border-radius: 50%;
+        margin: 0 10 / @rem;
+      }
+      .p-name {
+        color: #fff;
+        font-size: 0.1rem;
+      }
+    }
+  }
+}

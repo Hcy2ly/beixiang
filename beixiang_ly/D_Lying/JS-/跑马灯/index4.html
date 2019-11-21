@@ -1,0 +1,142 @@
+//css实现 //css无缝滚动
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      .wrap {
+        margin: 10% auto;
+        background: #ddd;
+        font-size: 0;
+        /* 固宽，溢出隐藏 */
+        width: 300px;
+        height: 40px;
+        overflow: hidden;
+        white-space: nowrap;
+        /* 相对定位 */
+        position: relative;
+      }
+
+      .wrap .cont {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        /* 关键 */
+        width: 200%;
+        transition: left 10s linear;
+      }
+
+      .wrap .txt {
+        display: inline-block;
+        font-size: 18px;
+        line-height: 30px;
+        margin-top: 5px;
+        color: #fff;
+        background: #000;
+      }
+    </style> -->
+
+    <!-- 无缝滚动  -->
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      .wrap {
+        position: relative;
+        width: 40%;
+        height: 40px;
+        margin: 10% auto;
+        background: #ddd;
+        font-size: 0;
+        overflow: hidden;
+      }
+
+      .wrap .cont {
+        position: absolute;
+        top: 0;
+        left: 0;
+        /* 宽度 大于容器的两倍即可 */
+        width: 200%;
+        -webkit-animation: 5s move infinite linear;
+      }
+
+      .wrap .txt {
+        font-size: 18px;
+        color: #fff;
+        display: inline-block;
+        /* 宽度 等于容器的宽度 */
+        width: 50%;
+        height: 30px;
+        border-left: 1px solid #fff;
+        line-height: 30px;
+        text-align: center;
+        margin-top: 5px;
+        background: #000;
+      }
+
+      .wrap:hover .cont {
+        -webkit-animation-play-state: paused;
+      }
+
+      @-webkit-keyframes move {
+        /* 原理 left值的变化 移动一个容器的宽度 */
+        0% {
+          left: 0;
+        }
+        100% {
+          left: -100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="cont">
+        <p class="txt">1.文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动。</p>
+        <p class="txt">1.文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动。</p>
+      </div>
+    </div>
+  </body>
+  <!-- <script>
+    var cont = document.querySelector(".cont");
+
+    var wrap = document.querySelector(".wrap");
+
+    var text = document.querySelector(".txt");
+
+    var wrapWidth = wrap.offsetWidth;
+
+    var textWidth = text.offsetWidth;
+
+    window.onload = function checkScrollLeft() {
+      // 判断文字长度是否大于盒子长度  开始滚动
+      if (textWidth > wrapWidth) {
+        // 开始滚动  触发事件
+        text.style.paddingRight = "300px";
+        cont.style.left = "-870px";
+      }
+      // 滚动结束
+      document.addEventListener(
+        "transitionend",
+        function() {
+          console.log("end");
+        },
+        false
+      );
+    };
+  </script> -->
+</html>

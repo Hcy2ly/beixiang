@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" onclick="add('html<br>')">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script lang="javascript">
+  function add(text) {
+    var text = document.getElementById("display");
+    text.innerHTML += text; 
+  }
+  </script>
+</head>
+<body>
+  <div onclick="add('body<br>')">
+    <p onclick="add('p<br>')">click me!</p>
+  </div>
+  <div id="display">向上冒泡触发三次</div>
+</body>
+</html>

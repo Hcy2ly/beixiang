@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <title>横向滑动</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+ 
+        .slide-box {
+            display: -webkit-box;
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+ 
+        /* 隐藏下方的滚动条 */
+        .slide-box::-webkit-scrollbar {
+            background-color: transparent;
+        }
+ 
+        .slide-box {
+            -ms-overflow-style: none;
+        }
+ 
+        .slide-box {
+            overflow: -moz-scrollbars-none;
+        }
+ 
+ 
+        .slide-item {
+            width: 20%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+ 
+<body>
+    <div class="slide-box">
+        <div class="slide-item">slide1</div>
+        <div class="slide-item">slide2</div>
+        <div class="slide-item">slide3</div>
+        <div class="slide-item">slide4</div>
+        <div class="slide-item">slide5</div>
+        <div class="slide-item">slide6</div>
+    </div>
+</body>
+ 
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="email=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>邀请一位好友最高赚88元</title>
+    <script>
+      !(function(e, i) {
+        var t = e.documentElement,
+          n = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+          a = n ? Math.min(i.devicePixelRatio, 3) : 1,
+          m = "orientationchange" in window ? "orientationchange" : "resize";
+        t.dataset.dpr = a;
+        for (var d, l, c = !1, o = e.getElementsByTagName("meta"), r = 0; r < o.length; r++) (l = o[r]), "viewport" == l.name && ((c = !0), (d = l));
+        if (c) d.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no";
+        else {
+          var o = e.createElement("meta");
+          (o.name = "viewport"), (o.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no"), t.firstElementChild.appendChild(o);
+        }
+        var reset = function() {
+          var t = e.documentElement;
+          var html = document.getElementsByTagName("html")[0];
+          var settedFs = (settingFs = parseInt(html.style.fontSize));
+          var whileCount = 0;
+          while (true) {
+            var realFs = parseInt(window.getComputedStyle(html).fontSize);
+            var delta = realFs - settedFs;
+            if (Math.abs(delta) >= 1) {
+              //不相等
+              if (delta > 0) settingFs--;
+              else settingFs++;
+              // html.setAttribute('style', 'font-size:' + settingFs + 'px!important');
+              t.style.fontSize = settingFs + "px";
+            } else break;
+            if (whileCount++ > 100)
+              //之所以弄个100的循环跳出的原因，在于实在无法预判设备是否能计算得到36px，比如设备只能计算35px，37px，这样会死循环只能跳出了
+              break;
+          }
+          return;
+        };
+        var s = function() {
+          var e = t.clientWidth;
+          e / a > 640 && (e = 640 * a), (window.remScale = e / 640), (t.style.fontSize = 200 * (e / 640) + "px");
+          // alert(t.style.fontSize)
+          reset();
+        };
+        s(), e.addEventListener && i.addEventListener(m, s, !1);
+      })(document, window);
+    </script>
+  </head>
+  <body>
+      <marquee class="marquee marquee0" direction="left" scrollamount="10"></marquee>
+      <marquee class="marquee marquee1" direction="left" scrollamount="10"></marquee>
+</body>
+</html>

@@ -1,0 +1,90 @@
+
+<!-- 弹幕类型跑马灯 -->
+<html> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head><title>跑马灯大全</title> 
+<script LANGUAGE="JavaScript"> 
+var Mes=new Array(); 
+Mes[0]="脚本之家欢迎你！ "; 
+Mes[1]="感谢你关注脚本之家教程 "; 
+Mes[2]="网页特效　之　跑马灯效果大全 "; 
+var place=1; 
+var i=0; 
+function scroll() 
+{ 
+window.status=Mes[i].substring(0, place); 
+if (place >= Mes[i].length) 
+{ 
+if(i<2) 
+{ 
+i++; 
+place=1; 
+window.setTimeout("scroll()",50); 
+} 
+else 
+{ 
+i=0; 
+place=1; 
+window.setTimeout("scroll()",50); 
+} 
+} 
+else { 
+place++; 
+window.setTimeout("scroll()",50); 
+} 
+} 
+</script> 
+</head> 
+<form name="shooterform" method="get"> 
+<body onload="scroll();"> 
+<marquee>滚动的文字</marquee> 
+<marquee behavior=alternate>表示双向移动</marquee> 
+<marquee direction=left>表示运动方向向左</marquee> 
+<marquee width=400 behavior=alternate direction=left align=middle border=1>弹来弹去跑马灯!</marquee> 
+<marquee scrollamount="30">表示运动方向向左</marquee> 
+<marquee width=90%> 
+<a href="http://www.jb51.net"　target=_blank>带有超链接的跑马灯!点我试试？</a>
+ 
+<a href="http://www.baidu.com" target=_blank>还有一条呢!点我试试？</a> 
+</marquee> 
+<table width="93%" border="1" cellspacing="0" cellpadding="1" align="center" class="p1"> 
+<tr> 
+<td width="42%">参数</td> 
+<td width="58%">用法介绍</td> 
+</tr> 
+<tr> 
+<td width="42%">behavior=scroll, slide, alternate</td> 
+<td width="58%">跑马方式：循环绕行，只跑一次就停住，来回往复运动</td> 
+</tr> 
+<tr> 
+<td width="42%">direction=left,right</td> 
+<td width="58%">跑马方向：从左向右，从右向左</td> 
+</tr> 
+<tr> 
+<td width="42%">loop=100</td> 
+<td width="58%">跑马次数：循环100次，如不写默认为一直循环</td> 
+</tr> 
+<tr> 
+<td width="42%">width=100%,height=200</td> 
+<td width="58%">跑马范围：宽为100%，高为200像素</td> 
+</tr> 
+<tr> 
+<td width="42%">scrollamount=20</td> 
+<td width="58%">跑马速度：数越大越快</td> 
+</tr> 
+<tr> 
+<td width="42%">scrolldelay=500</td> 
+<td width="58%">跑马延时：毫秒数，利用它可实现跃进式滚动</td> 
+</tr> 
+<tr> 
+<td width="42%">hspace=20，vspace=20</td> 
+<td width="58%">跑马区域与其它区域间的空白大小</td> 
+</tr> 
+<tr> 
+<td width="42%">bgcolor=#00FFCC</td> 
+<td width="58%">跑马区域的背景颜色</td> 
+</tr> 
+</table> 　　 
+</body> 
+</form> 
+</html> 

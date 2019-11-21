@@ -1,0 +1,197 @@
+<!-- <!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+  $("#b1").click(function () {
+    $.ajax({
+      url: "http://127.0.0.1:8002/abc/",
+      type: "get",
+      success:function (res) {
+        console.log(res);
+      }
+    })
+  });
+</script>
+</body>
+</html> -->
+<!-- //返回  
+Failed to load resource: net::ERR_CONNECTION_REFUSED
+14jquery.js:9600 GET http://127.0.0.1:8002/abc/ net::ERR_CONNECTION_REFUSED -->
+<!-- 为什么报错呢？因为同源策略限制跨域发送ajax请求。
+1. 细心点的同学应该会发现我们的demo1项目其实已经接收到了请求并返回了响应，是浏览器对非同源请求返回的结果做了拦截。
+2. 再细心点的同学会发现，我们使用cdn方式引用的jQuery文件也是跨域的，它就可以使用。
+3. 同样是从其他的站点拿东西，script标签就可以。那我们能不能利用这一点搞点事情呢？ -->
+
+<!-- 把xyz.html中的代码改一下： -->
+<!-- <!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="http://127.0.0.1:8002/abc/"></script>
+</body>
+</html> -->
+
+<!-- //返回 icon未定义 -->
+<!-- 看来后端返回的响应已经被拿到了，只不过把rion当成了一个变量来使用，但是该页面上却没有定义一个名为rion的变量。所以出错了。 -->
+
+<!-- 那我定义一个rion变量还不行吗？ -->
+<!-- <!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+  var rion = 100;
+</script>
+<script src="http://127.0.0.1:8002/abc/"></script>
+</body>
+</html> -->
+
+
+<!-- 我定义一个变量可以，那可不可以定义一个函数呢？ -->
+<!-- <!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+  function rion() {
+    console.log("选我不后悔！");
+  }
+</script>
+<script src="http://127.0.0.1:8002/abc/"></script>
+</body>
+</html> -->
+<!-- 同时修改一下返回的响应 views.py -->
+<!-- def abc(request):
+    return HttpResponse("rion()") -->
+
+    <!-- 我返回的 rion()，页面上拿到这个响应之后直接执行了rion函数！ 那函数中可不可以传递参数呢？我们试一下！ -->
+    <!-- <!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+  function rion(res) {
+    console.log(res);
+  }
+</script>
+<script src="http://127.0.0.1:8002/abc/"></script>
+</body>
+</html> -->
+
+<!-- demo1中的视图函数： -->
+<!-- def abc(request):
+    res = {"code": 0, "data": ["SNIS-561", "SNIS-517", "SNIS-539"]}
+    return HttpResponse("rion({})".format(json.dumps(res))) -->
+<!-- 果然传递参数也是可以的！我们通过script标签的跨域特性来绕过同源策略拿到想要的数据了！！！ -->
+
+<!-- 这其实就是JSONP的简单实现模式，或者说是JSONP的原型：创建一个回调函数，然后在远程服务上调用这个函数并且将JSON 数据形式作为参数传递，完成回调。
+
+将JSON数据填充进回调函数，这就是JSONP的JSON+Padding的含义。
+
+但是我们更多时候是希望通过事件触发数据的获取，而不是像上面一样页面一刷新就执行了，这样很不灵活。
+
+其实这很好解决，我们可以通过javascript动态的创建script标签来实现。 -->
+
+<!-- demo2中的xyz.html
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+  function rion(res) {
+    console.log(res);
+  }
+  function addScriptTag(src){
+    var scriptEle = document.createElement("script");
+    $(scriptEle).attr("src", src);
+    $("body").append(scriptEle);
+    $(scriptEle).remove();
+  }
+  $("#b1").click(function () {
+    addScriptTag("http://127.0.0.1:8002/abc/")
+  })
+</script>
+</body> -->
+
+<!-- 这样当我们点击b1按钮的时候，会在页面上插入一个script标签，然后从后端获取数据。
+为了实现更加灵活的调用，我们可以把客户端定义的回调函数的函数名传给服务端，服务端则会返回以该回调函数名，将获取的json数据传入这个函数完成回调。 -->
+
+<!-- demo2中的xyz.html
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xyz</title>
+</head>
+<body>
+<button id="b1">点我</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+  function rion(res) {
+    console.log(res);
+  }
+
+  function addScriptTag(src) {
+    var scriptEle = document.createElement("script");
+    $(scriptEle).attr("src", src);
+    $("body").append(scriptEle);
+    $(scriptEle).remove();
+  }
+  $("#b1").click(function () {
+    addScriptTag("http://127.0.0.1:8002/abc/?callback=rion")
+  });
+</script>
+</body>
+</html> -->
+
+<!-- demo1中的views.py
+def abc(request):
+    res = {"code": 0, "data": ["SNIS-561", "SNIS-517", "SNIS-539"]}
+    func = request.GET.get("callback")
+    return HttpResponse("{}({})".format(func, json.dumps(res))) -->
+<!-- 这样就能实现动态的调用了。 -->

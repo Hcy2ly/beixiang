@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style type="text/css">
+      div  {
+        height: 100px;
+        position: absolute;
+        left: 0;
+      }
+      .div_static  {
+        width: 600px;
+        background-color: #000000;
+        top: 10%;
+      }
+      .div_move  {
+        width: 100px;
+        animation: melon 2s infinite ease; /*animation: melon 2s infinite step-end;*/ /*animation: melon 2s infinite step-start;*/ /*animation: melon 2s infinite steps(3);*/
+        top: 30%;
+        background-color: #87ceeb;
+      }
+      @keyframes melon {
+        0%  {
+          left: 0;
+        }
+        20%  {
+          left: 100px;
+        }
+        40%  {
+          left: 200px;
+        }
+        60%  {
+          left: 300px;
+        }
+        80%  {
+          left: 400px;
+        }
+        100%  {
+          left: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body></body>
+</html>

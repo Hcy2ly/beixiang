@@ -1,0 +1,38 @@
+ <!--flexbox解决方案-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>三栏式布局之display: flex实现方式</title>
+    <style>
+      *,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .warpper {
+        display: flex;
+      }
+      .r,
+      .l {
+        background: #789;
+        width: 300px;
+      }
+      .center {
+        background: pink;
+        flex: 1; /*中间自适应*/
+      }
+    </style>
+  </head>
+  <body>
+    <div class="warpper">
+      <div class="l"></div>
+      <div class="center"></div>
+      <div class="r"></div>
+    </div>
+  </body>
+</html>

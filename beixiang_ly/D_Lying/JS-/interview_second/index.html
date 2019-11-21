@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>节流和防抖示例</title>
+    <style type="text/css">
+      body {
+        height: 3000px;
+      }
+  
+      .box {
+        height: 300px;
+        overflow: scroll;
+      }
+  
+      .box div {
+        height: 3000px;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
+  </head>
+  <body>
+    <div class="box" id="box1">
+      <div>测试节流（首次不执行）</div>
+    </div>
+    <div class="box" id="box2">
+      <div>测试节流（首次执行）</div>
+    </div>
+    <input id="ipt" placeholder="测试防抖(首次不执行)">
+    <button id="btn">测试防抖首次执行（自己写的简化版）</button>
+    <button id="btn2">测试防抖首次执行（用lodash库）</button>
+    <script type="text/javascript">
+      function throttle(fn, delay = 100) {
+        //首先设定一个变量，在没有执行我们的定时器时为null
+        let timer = null;
+        return function () {
+          //当我们发现这个定时器存在时，则表示定时器已经在运行中，需要返回
+          if (timer) return;
+          timer = setTimeout(() => {
+            fn.apply(this, arguments);
+            timer = null;
+          }, delay);
+        }
+      }
+      function throttle2(fn, delay = 100) {
+        let last = 0;
+        return function () {
+          let curr = +new Date();
+          if (curr - last > delay) {
+            fn.apply(this, arguments);
+            last = curr;
+          }
+        }
+      }
+      document.getElementById('box1').onscroll = throttle(function () {
+        console.log(1);
+      }, 1000);
+      document.getElementById('box2').onscroll = throttle2(function () {
+        console.log(2);
+      }, 1000);
+    </script>
+    <script type="text/javascript">
+      function debounce(fn, delay = 200) {
+        let timer = null;
+        return function () {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            fn.apply(this, arguments);
+            timer = null;
+          }, delay);
+        }
+      }
+      function debounce2(fn, delay = 200, atBegin = true) {
+        let timer = null, last = 0, during;
+        return function () {
+  
+          let self = this, args = arguments;
+  
+          var exec = function () {
+            fn.apply(self, args);
+          }
+          if (atBegin && !timer) {
+            exec();
+            atBegin = false;
+          } else {
+            during = Date.now() - last;
+            if (during > delay) {
+              console.log(Date.now(), last, during, delay);
+              exec();
+            } else {
+              if (timer) clearTimeout(timer);
+  
+              timer = setTimeout(function () {
+                exec();
+              }, delay);
+            }
+          }
+          last = Date.now();
+        }
+      }
+      
+      document.getElementById('ipt').onkeydown = debounce(function () {
+        console.log(3);
+      }, 500);
+      document.getElementById('btn').onclick = debounce2(function () {
+        console.log(4);
+      }, 1000, 1);
+      // document.getElementById('btn').onclick = debounce3(1000,1,function(){
+      // 	console.log(4);
+      // });
+      document.getElementById('btn2').onclick = _.debounce(function () {
+        console.log(4);
+      }, 1000, { 'leading': true });
+  
+  
+    </script>
+  <div id="cli_dialog_div"></div>
+</body>
+</html>

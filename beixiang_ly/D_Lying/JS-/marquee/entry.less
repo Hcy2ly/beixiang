@@ -1,0 +1,36 @@
+  @import "../../less/common.less";
+@rem: 200 * 750 / 640rem;
+
+  
+  .marquee {
+    position: absolute;
+    display: flex;
+    z-index: 11;
+    height: 120 / @rem;
+    &.marquee1 {
+      padding-top: 50 / @rem;
+      padding-left: 650 / @rem;
+    }
+    .person {
+      position: relative;
+      margin: 10 / @rem 450 / @rem;
+      width: 502 / @rem;
+      height: 56 / @rem;
+      background: rgba(208, 2, 27, 1);
+      border-radius: 28 / @rem;
+      display: inline-flex;
+      align-items: center;
+      text-align: center;
+      // animation: goY 50s infinite linear;
+      .p-avator {
+        width: 40 / @rem;
+        height: 40 / @rem;
+        border-radius: 50%;
+        margin: 0 10 / @rem;
+      }
+      .p-name {
+        color: #fff;
+        font-size: 0.1rem;
+      }
+    }
+  }
