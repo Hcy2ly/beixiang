@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="email=no" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no" />
+  <title>幸运大转盘</title>
+  <script>
+    ! function (e, i) {
+      var t = e.documentElement,
+        n = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+        a = n ? Math.min(i.devicePixelRatio, 3) : 1,
+        m = "orientationchange" in window ? "orientationchange" : "resize";
+      t.dataset.dpr = a;
+      for (var d, l, c = !1, o = e.getElementsByTagName("meta"), r = 0; r < o.length; r++) l = o[r], "viewport" == l
+        .name &&
+        (c = !0, d = l);
+      if (c) d.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no";
+      else {
+        var o = e.createElement("meta");
+        o.name = "viewport", o.content =
+          "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no", t
+          .firstElementChild
+          .appendChild(o)
+      }
+      var reset = function () {
+        var t = e.documentElement
+        var html = document.getElementsByTagName('html')[0];
+        var settedFs = settingFs = parseInt(html.style.fontSize);
+        var whileCount = 0;
+        while (true) {
+          var realFs = parseInt(window.getComputedStyle(html).fontSize);
+          var delta = realFs - settedFs;
+          if (Math.abs(delta) >= 1) //不相等
+          {
+            if (delta > 0) settingFs--;
+            else settingFs++;
+            // html.setAttribute('style', 'font-size:' + settingFs + 'px!important');
+            t.style.fontSize = settingFs + "px";
+          } else
+            break;
+          if (whileCount++ > 100) //之所以弄个100的循环跳出的原因，在于实在无法预判设备是否能计算得到36px，比如设备只能计算35px，37px，这样会死循环只能跳出了
+            break
+        }
+        return;
+      }
+      var s = function () {
+        var e = t.clientWidth;
+        e / a > 640 && (e = 640 * a), window.remScale = e / 640, t.style.fontSize = 200 * (e / 640) + "px";
+        // alert(t.style.fontSize)
+        reset();
+      };
+      s(), e.addEventListener && i.addEventListener(m, s, !1);
+
+    }(document, window);
+  </script>
+
+</head>
+
+<body>
+  <div class="contain">
+    <div class="wrap"> 
+      <div class="rule"></div>
+      <!-- <div class="coin"></div> -->
+      <div class="dayNum"></div>
+      <div class="brandsCell">
+        <div class="brand brand1 ">
+          <div class="layer"></div>
+        </div>
+        <div class="brand brand2">
+          <div class="layer"></div>
+        </div>
+        <div class="brand brand3">
+          <div class="layer"></div>
+        </div>
+        <div class="brand brand0">
+          <div class="layer"></div>
+        </div>
+        <div class="brand ableClick"></div>
+        <div class="brand brand4">
+          <div class="layer"></div>
+        </div>
+        <div class="brand brand7">
+          <div class="layer"></div>
+        </div>
+        <div class="brand brand6">
+          <div class="layer"></div>
+        </div>
+        <div class="brand brand5">
+          <div class="layer"></div>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <div class="get-more">
+    <div class="content-body">
+      <div class="content-head"></div>
+      <div class="content-middle">
+        <p class="content-desc">累计获得零钱豆</p>
+        <p class="total-get"></p>
+        <div class="coin"></div>
+        <p class="overswing">太厉害了!获得零钱豆超过98%的用户</p>
+      </div>
+      <button class="btn">去赚更多零钱豆</button>
+    </div>
+    <div class="close"></div>
+  </div>
+  </div>
+  <div class="ruleBoard ruleBoardMore">
+    <div class="bg-rule">
+      <div class="ruleDetail">
+        <header><span>活动说明</span></header>
+        <section class="scroll-box">
+          <div style="transform: translate(0px, 0px) translateZ(0px);">
+            <div class="ruleDetail_text special">
+              <div class="ruleDetail_scroll">
+                <p>幸运大转盘规则</p>
+                <p>1、活动100%中奖，奖品类型有：iPhone X、16.88元红包、8.88元红包、5.88元红包、50元话费券、零钱豆、随机优惠券、幸运福袋等；<br></p>
+                <p>2、中奖奖品需要在规定时间内领取；<br></p>
+                <p>3、实物奖品中奖后请填写正确的收货地址，奖品将在7个工作日内寄出；<br></p>
+                <p>4、超值优惠券奖品的使用规则详见每个优惠券的详情页；<br></p>
+                <p>5、本活动最终解释权归兜满满官网所有。<br></p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>  
+      <div class="close"></div>
+    </div>
+  </div>
+  <div class="coin-toast">
+    <p class="toast-title">恭喜获得零钱豆</p>
+    <div class="coin-bg"></div>
+    <p class="get-coin"></p>
+  </div>
+</body>
+</html>

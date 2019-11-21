@@ -1,0 +1,649 @@
+@import "../../less/common.less";
+@rem: 200 * 750 / 640rem;
+
+body {
+  background-color: #fe7c36;
+  width: 100%;
+  height: 100%;
+  &.forbidden {
+    position: fixed;
+    overflow: hidden;
+  }
+}
+#awardText {
+  position: fixed;
+  width: 100%;
+  height: 10 / @rem;
+  top: 1100 / @rem;
+  left: 0;
+}
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fe7c36;
+  //跑马灯
+  #prizeNotice {
+    position: absolute;
+    overflow: hidden;
+    top: 0.1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2.1rem;
+    height: 0.2rem;
+    line-height: 0.2rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0.05rem;
+    z-index: 1;
+    .desc {
+      color: #fff;
+      font-size: 0.1rem;
+      animation: text 2.5s;
+      .person {
+        position: relative;
+        width: 502 / @rem;
+        border-radius: 28 / @rem;
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        .p-avator {
+          width: 40 / @rem;
+          height: 40 / @rem;
+          border-radius: 50%;
+          margin: 0 10 / @rem;
+        }
+        .p-name {
+          color: #fff;
+          font-size: 0.1rem;
+        }
+      }
+    }
+  }
+}
+.rule {
+  position: absolute;
+  right: 0 / @rem;
+  top: 140 / @rem;
+  width: 54 / @rem;
+  height: 168 / @rem;
+  background: url(http://static.iwangzha.com/wz/image/common/ruleBtn.png) no-repeat;
+  background-size: 100%;
+  font-size: 30 / @rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.getMoney_rule {
+  position: absolute;
+  right: 0 / @rem;
+  top: 564 / @rem;
+  width: 54 / @rem;
+  height: 168 / @rem;
+  background: url(http://static.iwangzha.com/wz/image/common/getMoneyBtn.png) no-repeat;
+  background-size: 100%;
+  font-size: 30 / @rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.top-area {
+  position: relative;
+  width: 100%;
+  height: 550 / @rem;
+  background: url("./img/banner.png") no-repeat;
+  background-size: 100%;
+  .top-inviteBtn {
+    position: absolute;
+    top: 384 / @rem;
+    left: 198 / @rem;
+    width: 358 / @rem;
+    height: 104 / @rem;
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    background-image: url(http://static.iwangzha.com/wz/image/common/inviteBtn.png);
+    background-size: 100%;
+    animation: breathing 0.5s infinite linear;
+  }
+}
+.get-redpacket {
+  position: relative;
+  width: 710 / @rem;
+  height: 420 / @rem;
+  background-color: #fff;
+  border-radius: 12 / @rem;
+  margin: 0 / @rem auto;
+  overflow: hidden;
+  .redpacket {
+    position: relative;
+    margin-top: 62 / @rem;
+    text-align: center;
+    .get-way {
+      position: relative;
+      display: inline-block;
+      width: 150 / @rem;
+      height: 171 / @rem;
+      background: url(http://static.iwangzha.com/wz/image/common/1.png) no-repeat;
+      background-size: 100%;
+      margin: 0 65/@rem 36 / @rem;
+      span {
+        display: block;
+        width: 100%;
+        &:nth-child(1) {
+          position: absolute;
+          top: 102 / @rem;
+          font-size: 38 / @rem;
+          font-family: PingFangSC;
+          font-weight: 400;
+          line-height: 32 / @rem;
+          color: #fff;
+        }
+        &:nth-child(2) {
+          position: relative;
+          margin-top: 214 / @rem;
+          font-size: 28 / @rem;
+          font-family: PingFangSC;
+          font-weight: 400;
+          color: rgba(51, 51, 51, 1);
+          &.people {
+            width: 230 / @rem;
+            margin-left: -40 / @rem;
+          }
+        }
+      }
+    }
+  }
+}
+.had-invite {
+  position: relative;
+  // margin: 20 / @rem auto 190 / @rem;
+  margin: 20 / @rem auto;
+  padding: 0 20 / @rem;
+  width: 710 / @rem;
+  background-color: #fff;
+  border-radius: 12 / @rem;
+  &:before {
+    position: absolute;
+    content: "";
+    width: 6 / @rem;
+    height: 40 / @rem;
+    left: 0;
+    top: 29 / @rem;
+    background-color: #ff3f35;
+  }
+  .invite-num {
+    position: relative;
+    width: 100%;
+    height: 98 / @rem;
+    line-height: 98 / @rem;
+    font-size: 30 / @rem;
+    font-family: PingFangSC;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    .sp {
+      color: #333;
+    }
+    .spp {
+      color: #ff3f35;
+    }
+    &.border {
+      border-bottom: 2 / @rem solid #e5e5e5;
+    }
+  }
+  .carousel-area {
+    width: 100%;
+    overflow: hidden;
+    // height: 208/@rem;
+    .carousel-items:nth-child(2) {
+      display: none;
+    }
+
+    .fixed-hight {
+      height: 312 / @rem;
+      overflow: hidden;
+    }
+    .skip-btn {
+      color: #ff3f35;
+      text-align: center;
+      height: 104 / @rem;
+      line-height: 104 / @rem;
+    }
+    &.mock {
+      height: 312 / @rem;
+    }
+    .items {
+      animation: goY 80s infinite linear;
+    }
+    .nick-name {
+      width: 150 / @rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .item-left {
+      display: inline-flex;
+      align-items: center;
+    }
+    .item-right {
+      span {
+        display: inline-block;
+        width: 220 / @rem;
+        height: 58 / @rem;
+        border-radius: 29 / @rem;
+        border: 2 / @rem solid #ff3f35;
+        color: #ff3f35;
+        line-height: 58 / @rem;
+        text-align: center;
+      }
+    }
+    .carousel-item {
+      display: flex;
+      justify-content: space-between;
+      height: 104 / @rem;
+      border-bottom: 2 / @rem solid #e5e5e5;
+      line-height: 104 / @rem;
+      font-size: 26 / @rem;
+      &:last-child(1) {
+        border-bottom: none;
+      }
+      .avator {
+        width: 68 / @rem;
+        height: 68 / @rem;
+        border-radius: 50%;
+        margin-right: 10 / @rem;
+        &.mock0 {
+          background: url("./img/a.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock1 {
+          background: url("./img/b.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock2 {
+          background: url("./img/c.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock3 {
+          background: url("./img/d.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock4 {
+          background: url("./img/e.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock5 {
+          background: url("./img/f.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock6 {
+          background: url("./img/g.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock7 {
+          background: url("./img/h.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock8 {
+          background: url("./img/i.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock8 {
+          background: url("./img/j.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock9 {
+          background: url("./img/k.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock10 {
+          background: url("./img/m.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock11 {
+          background: url("./img/d.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock12 {
+          background: url("./img/n.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock13 {
+          background: url("./img/o.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock14 {
+          background: url("./img/p.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock15 {
+          background: url("./img/q.jpg") no-repeat;
+          background-size: 100%;
+        }
+
+        &.mock16 {
+          background: url("./img/r.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock17 {
+          background: url("./img/s.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock18 {
+          background: url("./img/t.jpg") no-repeat;
+          background-size: 100%;
+        }
+        &.mock19 {
+          background: url("./img/u.jpg") no-repeat;
+          background-size: 100%;
+        }
+      }
+    }
+  }
+  .nothing {
+    margin: 80 / @rem auto 0;
+    padding-bottom: 53 / @rem;
+    text-align: center;
+    font-size: 28 / @rem;
+    font-family: PingFangSC;
+    font-weight: 400;
+    color: rgba(153, 153, 153, 1);
+    line-height: 38px;
+    .cry {
+      margin: 0 auto 20 / @rem;
+      width: 158 / @rem;
+      height: 143 / @rem;
+      background: url(./img/cry.png) left top/100% 100% no-repeat;
+    }
+    p {
+      display: block;
+      line-height: 38 / @rem;
+    }
+  }
+}
+
+.award-invited {
+  position: relative;
+  width: 710 / @rem;
+  height: 420 / @rem;
+  background-color: #fff;
+  border-radius: 12 / @rem;
+  margin: 0 auto;
+  overflow: hidden;
+  .awardLists {
+    position: relative;
+    margin-top: 60 / @rem;
+    display: flex;
+    justify-content: center;
+    .awards {
+      position: relative;
+      width: 150 / @rem;
+      height: 171 / @rem;
+      background-image: url("http://static.iwangzha.com/wz/image/common/1.png");
+      background-size: 100%;
+      .money {
+        position: relative;
+        color: #fff;
+        padding: 0 20 / @rem;
+        font-family: PingFangSC;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 32 / @rem;
+      }
+      &.award1 {
+        margin-right: 161 / @rem;
+        .money {
+          margin: 89 / @rem auto 0;
+          font-size: 24 / @rem;
+          span {
+            font-size: 32 / @rem;
+          }
+        }
+      }
+      &.award2 {
+        .money {
+          margin: 108 / @rem auto 0;
+          font-size: 28 / @rem;
+        }
+      }
+      .getMoney {
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 209 / @rem;
+        font-size: 28 / @rem;
+        font-family: PingFangSC;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+      }
+    }
+  }
+}
+.awardText {
+  position: relative;
+  width: 710 / @rem;
+  height: 500 / @rem;
+  background-color: #fff;
+  border-radius: 12 / @rem;
+  margin: 20 / @rem auto 148 / @rem;
+  overflow: hidden;
+  .title1 {
+    padding-top: 20 / @rem;
+    font-size: 36 / @rem;
+    font-family: PingFangSC;
+    font-weight: 400;
+    color: rgba(251, 89, 76, 1);
+    line-height: 36 / @rem;
+    text-align: center;
+  }
+  .content {
+    padding: 15 / @rem 40 / @rem 35 / @rem;
+    p {
+      font-size: 28 / @rem;
+      font-family: PingFangSC;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 40 / @rem;
+      margin: 15 / @rem auto;
+    }
+  }
+  .footer {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 28 / @rem;
+    font-family: PingFangSC;
+    font-weight: 400;
+    color: rgba(70, 142, 229, 1);
+    line-height: 28 / @rem;
+  }
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 118 / @rem;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: 24 / @rem;
+  .share-word {
+    margin-left: 99 / @rem;
+    margin-right: 38 / @rem;
+  }
+  .share-wechatQ {
+    position: relative;
+    width: 200 / @rem;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    .show-img {
+      background: url(http://static.iwangzha.com/wz/image/common/weixin_qun.png) no-repeat;
+      background-size: 100%;
+    }
+    // //成功率98%
+    // .share-wechatQ-tip {
+    //   position: absolute;
+    //   text-align: center;
+    //   padding-top: 4 / @rem;
+    //   font-size: 18 / @rem;
+    //   font-family: PingFangSC;
+    //   font-weight: 500;
+    //   color: rgba(255, 255, 255, 1);
+    //   width: 107 / @rem;
+    //   height: 39 / @rem;
+    //   left: 34 / @rem;
+    //   top: -14 / @rem;
+    //   background-image: url(http://static.iwangzha.com/wz/image/common/tip.png);
+    //   background-size: 100%;
+    // }
+  }
+  // .share-wechat {
+  //   width: 180 / @rem;
+  //   margin-left: 16 / @rem;
+  //   display: inline-flex;
+  //   align-items: center;
+  //   text-align: center;
+  //   .show-img {
+  //     background: url(http://static.iwangzha.com/wz/image/common/weixin.png) no-repeat;
+  //     background-size: 100%;
+  //   }
+  // }
+  .share-Picture {
+    width: 180 / @rem;
+    margin-left: 16 / @rem;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    .show-img {
+      background: url(./img/sharePicture.png) no-repeat;
+      background-size: 100%;
+    }
+  }
+  .show-img {
+    display: inline-block;
+    width: 68 / @rem;
+    height: 68 / @rem;
+  }
+  span {
+    margin-left: 12 / @rem;
+  }
+}
+.rule-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 11;
+  .close {
+    position: absolute;
+    bottom: -100 / @rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46 / @rem;
+    height: 46 / @rem;
+    background: url("http://static.iwangzha.com/wz/image/common/close.png") no-repeat;
+    background-size: 100%;
+  }
+  .rule-content {
+    position: relative;
+    margin: 391 / @rem auto 0;
+    padding: 47 / @rem 40 / @rem;
+    width: 620 / @rem;
+    height: 527 / @rem;
+    border-radius: 12 / @rem;
+    background-color: #fff;
+
+    .title {
+      margin-top: 0;
+      // .title-name {
+      //   font-size: 36/@rem;
+      // }
+    }
+    .desc {
+      padding-top: 32 / @rem;
+      p {
+        color: #666;
+        font-size: 28 / @rem;
+        line-height: 42 / @rem;
+        margin-bottom: 20 / @rem;
+        text-align: justify;
+      }
+    }
+    .btn {
+      margin: 19 / @rem 70 / @rem 55 / @rem !important;
+    }
+  }
+}
+.title {
+  margin-top: 38 / @rem;
+  height: 42 / @rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .title-name {
+    font-size: 42 / @rem;
+    font-family: PingFangSC;
+    color: #fb594c;
+    font-weight: bold;
+    line-height: 42 / @rem;
+    margin: 0 20 / @rem;
+  }
+  .title-left,
+  .title-right {
+    width: 60 / @rem;
+    height: 17 / @rem;
+    background: url("http://static.iwangzha.com/wz/image/common/line.png") no-repeat;
+    background-size: 100%;
+  }
+  .title-left {
+    transform-origin: center center;
+    transform: rotate(180deg);
+  }
+  .title-right {
+    background: url("http://static.iwangzha.com/wz/image/common/line.png") no-repeat;
+    background-size: 100%;
+  }
+}
+@keyframes goY {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-7.9866rem);
+  }
+}
+
+@keyframes text {
+  0% {
+    transform: scale(0.9) translateY(0.15rem);
+  }
+  20% {
+    transform: scale(1) translateY(0rem);
+  }
+  90% {
+    transform: scale(1) translateY(0rem);
+  }
+  100% {
+    transform: scale(0.9) translateY(-0.15rem);
+  }
+}
+
+@keyframes breathing {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}

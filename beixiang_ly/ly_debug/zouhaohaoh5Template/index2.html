@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body style="height: 1500px">
+  <p id="p">30</p>
+  <script>
+    /**
+     * 全局变量
+     */
+    let time = 30,   // 展示时间
+      show = false,  // 开关
+      timeId = null  // 定时器id
+
+    // 监听滚动
+    window.onscroll = function () {
+      show = true // 滚动就打开开关
+
+      // 当定时器不存在才执行
+      if (!timeId) {
+        countdown()
+      }
+    }
+
+    // 点击暂停计时
+    window.onmousedown = function () {
+      // 开关关闭
+      show = false
+
+      // 清除定时器
+      clearInterval(timeId)
+      timeId = null
+    }
+
+    // 倒计时方法
+    function countdown() {
+      // 开关为true才执行
+      if (show) {
+        timeId = setInterval(() => {
+          time--
+          console.log(time)
+          document.getElementById('p').innerText = time
+        }, 1000)
+
+        // 30秒后清除循环定时器，结束倒计时
+        if (time <= 0) {
+          clearInterval(timeId)
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

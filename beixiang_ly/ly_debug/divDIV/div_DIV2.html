@@ -1,0 +1,20 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>DIVCSS5实例 DIV与DIV覆盖</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<style> 
+.aa{ float:left; border:1px solid #333; background:#FFF;height:50px; width: 100px} 
+.bb{ border:1px solid #F00;background:#CCC; height:80px;margin-left: 102px;} 
+
+/* 原因: 由于相邻两个DIV一个使用浮动一个没有使用浮动，导致DIV不是在同个“平面”上，这样照成两个DIV覆盖重叠现象。*/
+
+/* 解决办法: 要么都不使用浮动；要么都使用float浮动；要么对没有使用float浮动的DIV设置margin样式 */
+/* 具体操作:比如这里“.aa”对应盒子会固定宽度为300px;对“.bb”对应盒子设置margin-left:302px（大于300即可，自己测试设置需要的值）实现不重叠覆盖现象。 */
+</style> 
+</head> 
+<body> 
+<div class="aa">我是aa里内容</div> 
+<div class="bb">我是BB里内容</div> 
+</body> 
+</html> 

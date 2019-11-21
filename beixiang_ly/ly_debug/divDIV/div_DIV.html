@@ -1,0 +1,28 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>DIVCSS5实例 DIV与DIV覆盖</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<style> 
+.boxa,.boxb{ margin:0 auto; width:400px;} 
+.boxa-l{ float:left; width:280px; height:80px; border:1px solid #F00} 
+.boxa-r{ float:right; width:100px; height:80px; border:1px solid #F00} 
+.boxb{ border:1px solid #000; height:40px; background:#999} 
+.clear {clear: both}
+/* 具体问题: 第一个大盒子里的子级使用了浮动float属性而产生了浮动，所以导致“.boxa”没有被撑开，而同级的“.boxb”盒子与“.boxa”紧贴，而“.boxa”高度没有，“.boxa”的子级浮动的与“.boxb”不是同级，“.boxb”盒子依然认为“.boxa”没有高度，所以导致“.boxb”DIV盒子就跑到“.boxa”子级DIV盒子下面形成了覆盖重叠现象。 */
+
+/* 解决办法: 要么清除浮动，要么设置“.boxa”高度，一般情况下文字内容不确定多少 就不能设置固定的高度，所以一般不能设置“.boxa”高度(当然能确定内容多高，这种情况下“.boxa”是可以设置一个高度即可解决覆盖问题。)。 */
+
+/* 清除浮动方法一: 使用clear样式清除浮动 => 在“.boxa”盒子</div>闭合前加clear样式清除浮动。 */
+/* 清除浮动方法二: 给父级添加overflow:hidden */
+</style> 
+</head> 
+<body> 
+<div class="boxa"> 
+<div class="boxa-l">内容左</div> 
+<div class="boxa-r">内容右</div> 
+<div class="clear">清除浮动</div>
+</div> 
+<div class="boxb">boxb盒子里的内容</div> 
+</body> 
+</html> 

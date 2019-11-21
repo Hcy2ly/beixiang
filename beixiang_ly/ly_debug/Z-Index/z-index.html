@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  .divcss5{
+    position:relative;
+  } 
+  .divcss5-1,.divcss5-2,.divcss5-3 {
+    width:100px;
+    height:50px;
+    position:absolute;
+  } 
+  .divcss5-1{
+    z-index:10;
+    background:red;
+    left:10px;
+    top:10px;
+  } 
+  .divcss5-2{
+    z-index:20;
+    background:green;
+    left:20px;
+    top:20px;
+  } 
+  .divcss5-3{
+    z-index:15;
+    background:yellow;
+    left:30px;
+    top:30px;
+  } 
+  /* z-index的数字越高越靠前，并且值必须为整数和正数（正数的整数） */
+  /* 展示顺序： green在最外面 -> 然后是yellow -> red在最里面 */
+  </style>
+</head>
+<body>
+  <div class="divcss5">
+    <div class="divcss5-1"></div> 
+    <div class="divcss5-2"></div> 
+    <div class="divcss5-3"></div> 
+  </div>
+</body>
+</html>

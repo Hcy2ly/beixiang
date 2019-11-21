@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #p {
+      margin: 300px auto;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body style="height: 1500px">
+  <p id="p">30</p>
+  <script>
+    /**
+     * 全局变量
+     */
+    let time = 3,   // 展示时间
+      timeId = null,  // 定时器id
+      topValue = 0
+
+    // 监听滚动
+    window.onscroll = function () {
+      // 当定时器不存在才执行
+      if (!timeId && time) {
+        countdown()
+      }
+
+      topValue = document.documentElement.scrollTop
+    }
+
+    // 倒计时方法
+    function countdown() {
+      timeId = setInterval(() => {
+        time--
+        console.log(time)
+        document.getElementById('p').innerText = time
+
+        // 30秒后清除循环定时器，结束倒计时
+        if (time <= 0) {
+          console.log('金币啊金币啊金币啊金币啊金币啊')
+          clearInterval(timeId)
+          timeId = null
+        }
+
+        isStop()
+      }, 1000);
+
+    }
+
+    function isStop() {
+      // 判断此刻到顶部的距离是否和1秒前的距离相等  
+      if (document.documentElement.scrollTop == topValue) {
+        clearInterval(timeId)
+        timeId = null;
+      }
+    } 
+  </script>
+</body>
+
+</html>

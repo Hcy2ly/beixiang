@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="email=no" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>邀请一位好友赚4元</title>
+  <script>
+    !(function (e, i) {
+      var t = e.documentElement,
+        n = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+        a = n ? Math.min(i.devicePixelRatio, 3) : 1,
+        m = "orientationchange" in window ? "orientationchange" : "resize";
+      t.dataset.dpr = a;
+      for (var d, l, c = !1, o = e.getElementsByTagName("meta"), r = 0; r < o.length; r++) (l = o[r]), "viewport" == l.name && ((c = !0), (d = l));
+      if (c) d.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no";
+      else {
+        var o = e.createElement("meta");
+        (o.name = "viewport"), (o.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no"), t.firstElementChild.appendChild(o);
+      }
+      var reset = function () {
+        var t = e.documentElement;
+        var html = document.getElementsByTagName("html")[0];
+        var settedFs = (settingFs = parseInt(html.style.fontSize));
+        var whileCount = 0;
+        while (true) {
+          var realFs = parseInt(window.getComputedStyle(html).fontSize);
+          var delta = realFs - settedFs;
+          if (Math.abs(delta) >= 1) {
+            //不相等
+            if (delta > 0) settingFs--;
+            else settingFs++;
+            // html.setAttribute('style', 'font-size:' + settingFs + 'px!important');
+            t.style.fontSize = settingFs + "px";
+          } else break;
+          if (whileCount++ > 100)
+            //之所以弄个100的循环跳出的原因，在于实在无法预判设备是否能计算得到36px，比如设备只能计算35px，37px，这样会死循环只能跳出了
+            break;
+        }
+        return;
+      };
+      var s = function () {
+        var e = t.clientWidth;
+        e / a > 640 && (e = 640 * a), (window.remScale = e / 640), (t.style.fontSize = 200 * (e / 640) + "px");
+        // alert(t.style.fontSize)
+        reset();
+      };
+      s(), e.addEventListener && i.addEventListener(m, s, !1);
+    })(document, window);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div id="prizeNotice"></div>
+    <div class="top-area">
+      <button class="top-inviteBtn"></button>
+    </div>
+    <div class="rule"></div>
+    <div class="get-redpacket">
+      <div class="title">
+        <div class="title-left"></div>
+        <span class="title-name">领现金奖励</span>
+        <div class="title-right"></div>
+      </div>
+      <div class="redpacket">
+        <div class="get-way">
+          <span>￥1</span>
+          <span>好友注册</span>
+        </div>
+        <div class="get-way">
+          <span>￥3</span>
+          <span class="people">好友首次完成购物</span>
+        </div>
+      </div>
+    </div>
+    <div class="getMoney_rule"></div>
+    <div class="had-invite"></div>
+    <div class="award-invited">
+      <div class="title">
+        <div class="title-left"></div>
+        <span class="title-name">被邀请人奖励</span>
+        <div class="title-right"></div>
+      </div>
+      <div class="awardLists">
+        <div class="awards award1">
+          <div class="money">￥<span>16.88</span>现金红包</div>
+          <span class="getMoney">可直接提现</span>
+        </div>
+        <div class="awards award2">
+          <div class="money">福利</div>
+          <span class="getMoney">0元购福利</span>
+        </div>
+      </div>
+    </div>
+    <div class="awardText">
+      <div class="title">
+        <div class="title-left"></div>
+        <span class="title-name">领钱攻略</span>
+        <div class="title-right"></div>
+      </div>
+      <div class="title1">三重大奖·让你赚不停</div>
+      <div class="content">
+        <p>1、让好友通过您的链接下载，好友也有奖励；</p>
+        <p>2、告诉好友：注册领最高16.88元现金红包，还有0元免费拿商品；</p>
+        <p>3、分享多个微信群，成功率提高3倍；</p>
+        <p>4、家人、朋友、同学聚会，记得邀请他们下载哦!</p>
+      </div>
+    </div>
+    <div class="fixed-bottom">
+      <span class="share-word">分享到：</span>
+      <!-- <div class="share-wechatQ">
+          <div class="show-img"></div>
+          <span>微信群</span>
+          <div class="share-wechatQ-tip">成功率98%</div>
+        </div>
+        <div class="share-wechat">
+          <div class="show-img"></div>
+          <span>微信好友</span>
+        </div> -->
+      <div class="share-wechatQ">
+        <div class="show-img"></div>
+        <span>微信邀请</span>
+      </div>
+      <div class="share-Picture">
+        <div class="show-img"></div>
+        <span>海报邀请</span>
+      </div>
+    </div>
+    <div class="rule-modal" style="display: none">
+      <div class="rule-content">
+        <i class="close"></i>
+        <div class="title">
+          <div class="title-left"></div>
+          <span class="title-name">活动规则</span>
+          <div class="title-right"></div>
+        </div>
+        <div class="desc">
+          <p>1、好友（兜满满新用户）通过您的分享链接下载并注册兜满满，立得1元奖励；</p>
+          <p>2、好友在7天内首次完成购物并确认收货，立得3元奖励；</p>
+          <p>3、邀请好友数量无上限，邀请越多奖励越多；</p>
+          <p>4、本活动最终解释权归兜满满官方所有。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

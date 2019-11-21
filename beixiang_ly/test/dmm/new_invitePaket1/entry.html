@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="email=no" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>兜满满-好友都在用的省钱赚钱APP</title>
+  <script>
+    !(function (e, i) {
+      var t = e.documentElement,
+        n = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+        a = n ? Math.min(i.devicePixelRatio, 3) : 1,
+        m = "orientationchange" in window ? "orientationchange" : "resize";
+      t.dataset.dpr = a;
+      for (var d, l, c = !1, o = e.getElementsByTagName("meta"), r = 0; r < o.length; r++) (l = o[r]), "viewport" == l.name && ((c = !0), (d = l));
+      if (c) d.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no";
+      else {
+        var o = e.createElement("meta");
+        (o.name = "viewport"), (o.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no"), t.firstElementChild.appendChild(o);
+      }
+      var reset = function () {
+        var t = e.documentElement;
+        var html = document.getElementsByTagName("html")[0];
+        var settedFs = (settingFs = parseInt(html.style.fontSize));
+        var whileCount = 0;
+        while (true) {
+          var realFs = parseInt(window.getComputedStyle(html).fontSize);
+          var delta = realFs - settedFs;
+          if (Math.abs(delta) >= 1) {
+            //不相等
+            if (delta > 0) settingFs--;
+            else settingFs++;
+            // html.setAttribute('style', 'font-size:' + settingFs + 'px!important');
+            t.style.fontSize = settingFs + "px";
+          } else break;
+          if (whileCount++ > 100)
+            //之所以弄个100的循环跳出的原因，在于实在无法预判设备是否能计算得到36px，比如设备只能计算35px，37px，这样会死循环只能跳出了
+            break;
+        }
+        return;
+      };
+      var s = function () {
+        var e = t.clientWidth;
+        e / a > 640 && (e = 640 * a), (window.remScale = e / 640), (t.style.fontSize = 200 * (e / 640) + "px");
+        // alert(t.style.fontSize)
+        reset();
+      };
+      s(), e.addEventListener && i.addEventListener(m, s, !1);
+    })(document, window);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="taoxiaocheng">
+      <div class="icon"></div>
+      <span>兜满满-好友都在用的省钱赚钱App</span>
+    </div>
+    <div id="top1" class="top">
+      <div class="cap-area">
+        <div class="cap"></div>
+      </div>
+      <div class="redpacket-bottom"></div>
+      <div class="coin"></div>
+      <div class="btn">
+        <div class="hand"></div>
+      </div>
+      <div class="daoying"></div>
+    </div>
+    <div id="top2" class="top">
+      <div class="cap-back"></div>
+      <div class="packet-paper">
+        <p class="words">恭喜获得现金红包</p>
+        <p class="money-detail">16.88<span>元</p>
+        <p class="time">红包即将消失00:<span class="min">29</span>:<span class="sec">59</span></p>
+      </div>
+      <div class="redpacket-bottom">
+        <div class="belong">收款账户：兜满满账户</div>
+        <div id="redpacket-btn">下载兜满满<div class="hand"></div>
+        </div>
+      </div>
+      <div class="coin"></div>
+      <div class="daoying"></div>
+    </div>
+    <div class="introduce">
+      <div class="title">
+        <div class="title-name">了解兜满满</div>
+      </div>
+      <div class="content">
+        <div class="item">
+          <div class="left"></div>
+          <div class="center"></div>
+          <div class="right">
+            <span class="txt">省钱</span>
+            <span class="txt1">搜内部优惠券<span class="txt2">立省80%</span></span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="left"></div>
+          <div class="center"></div>
+          <div class="right">
+            <span class="txt">返现</span>
+            <span class="txt1">下单返佣金，最高可<span class="txt2">免单</span></span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="left"></div>
+          <div class="center"></div>
+          <div class="right">
+            <span class="txt">赚钱</span>
+            <span class="txt1">边玩边赚，<span class="txt2">分享赚钱</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
