@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="abc" style="display:none">4117</div>
+    <meta charset="UTF-8">
+    <title>点击左右按钮图片来回翻转切换特效css3动画样式</title>
+    <script src="http://www.100sucai.com/js/jquery.js"></script>
+    <script src="http://www.100sucai.com/templates/default/js/common.js"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            var aid = $("#abc").text();
+            if (aid >= 2961) {
+                var url = "/online/" + aid;
+            } else {
+                var url = "/demo/" + aid + ".html";
+            }
+            //var url="/demo/"+aid+".html";
+            aid = $("#iframe").attr("src", url);
+        })
+        var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_5846068'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/stat.php%3Fid%3D5846068%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <span id="cnzz_stat_icon_5846068"><a href="https://www.cnzz.com/stat/website.php?web_id=5846068" target="_blank"
+            title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic.gif"></a></span>
+    <script src=" http://s5.cnzz.com/stat.php?id=5846068&amp;show=pic" type="text/javascript"></script>
+    <script src="http://c.cnzz.com/core.php?web_id=5846068&amp;show=pic&amp;t=z" charset="utf-8"
+        type="text/javascript"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            outline: none;
+        }
+
+        body {
+            background: #eee;
+            overflow: hidden;
+        }
+
+        .cont {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            height: 100%;
+            border: 0px solid #000;
+        }
+
+        #text {
+            position: absolute;
+            bottom: 0px;
+            min-width: 100%;
+            max-width: 100%;
+            min-height: 100%;
+            max-height: 100%;
+            border: 0px solid #00f;
+        }
+
+        #iframe {
+            height: 100%;
+            width: 100%;
+            background: #FFFFFF;
+        }
+    </style>
+    <div class="cont">
+        <iframe id="iframe" width="100%" frameborder="0" name="mainFrame" style="border:0px solid #f00;"
+            src="/online/4117"></iframe>
+    </div>
+</body>
+<script src="./index.js"></script>
+</html>

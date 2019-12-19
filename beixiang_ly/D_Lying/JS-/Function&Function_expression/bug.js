@@ -1,16 +1,17 @@
 // 对象内部的函数表达式
 var o={
   fn:function (){
-    console.log(fn);
+    console.log(fn); // 1fn无法访问到
+    // console.log(o.fn); //2
   }
 };
-o.fn();//ERROR报错 fn is not defined
+o.fn();//ERROR报错 1fn is not defined   2[Function: fn]
 
 //非对象内部的函数表达式
-var fn=function (){
-  console.log(fn);
-};
-fn();//function (){console.log(fn);};正确
+// var fn=function (){
+//   console.log(fn);
+// };
+// fn();//function (){console.log(fn);};正确
 
 // - 答:  使用非对象内部的函数表达式，可以访问到存放当前函数的变量；而对象内部的函数表达式就不能访问到。
 // - reason => 函数作用域链

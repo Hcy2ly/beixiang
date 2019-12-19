@@ -1,0 +1,179 @@
+/* 问题: 该有的处理兼容的前缀都写了，Android设备下运行正常，到了iphone下 位置就不对了，就不是在屏幕中心放大实现的效果了，而是偏移到了右下角，translate(-50%,-50%);就没有作用了; */
+/* bug:  */
+#img {
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  position: absolute;
+}
+@keyframes moveRight {
+  0% {
+    width: 10%;
+    height: 10%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  20% {
+    width: 20%;
+    height: 20%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  40% {
+    width: 30%;
+    height: 30%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  60% {
+    width: 50%;
+    height: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  80% {
+    width: 70%;
+    height: 70%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+}
+
+@-webkit-keyframes moveRight {
+  0% {
+    width: 10%;
+    height: 10%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  20% {
+    width: 20%;
+    height: 20%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  40% {
+    width: 30%;
+    height: 30%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  60% {
+    width: 40%;
+    height: 40%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  80% {
+    width: 60%;
+    height: 60%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+}
+/* 
+解决: 
+- 遇到兼容性问题，首先，先观察自己有没有处理兼容性，css3里的一些属性都是有兼容性的，-o-、-webkit-...;
+- 强烈建议各位小伙伴，在遇到兼容性的属性的时候，不要侥幸，遇到就写起来，否者后面会有很多大坑等着你;
+- 另外就是，提高自己的“搜商”，对症下药； */
+/* true: */
+#img {
+  display: none;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes moveRight {
+  0% {
+    width: 10%;
+    height: 10%;
+  }
+  20% {
+    width: 20%;
+    height: 20%;
+  }
+  40% {
+    width: 30%;
+    height: 30%;
+  }
+  60% {
+    width: 50%;
+    height: 50%;
+  }
+  80% {
+    width: 70%;
+    height: 70%;
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@-webkit-keyframes moveRight {
+  0% {
+    width: 10%;
+    height: 10%;
+  }
+  20% {
+    width: 20%;
+    height: 20%;
+  }
+  40% {
+    width: 30%;
+    height: 30%;
+  }
+  60% {
+    width: 40%;
+    height: 40%;
+  }
+  80% {
+    width: 60%;
+    height: 60%;
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+  }
+}

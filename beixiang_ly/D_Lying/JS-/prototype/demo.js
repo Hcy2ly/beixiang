@@ -1,7 +1,7 @@
 function Parent(){
     this.name = 'kevin';
 }
-// 本没有类，哪来父类，子类，所以js是通过通过prototype属性构造的原型式继承
+// 本没有类，哪来父类，子类，所以js是通过prototype属性构造的原型式继承
 // Person 是一个函数 函数运行内部有this指针 -> new？ object
 //  js 本没有类，只有对象，object
 
