@@ -1,0 +1,29 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-12-18 15:29:56
+ * @LastEditTime : 2019-12-18 15:45:33
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\1_js\index.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <iframe src="/demo1_window_iframe2.html" id="ifr1" name="ifr1" scrolling="yes">
+        <p>Your browser does not support iframes.</p>
+    </iframe>
+    <script type="text/javascript">
+        console.log(window.frames['ifr1'].window);
+        console.dir(document.getElementById("ifr1").contentWindow);
+    </script>
+</body>
+
+</html>
