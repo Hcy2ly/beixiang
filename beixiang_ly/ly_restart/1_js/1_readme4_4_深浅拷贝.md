@@ -1,4 +1,12 @@
 <!--
+ * @Author: your name
+ * @Date: 2019-12-18 20:44:09
+ * @LastEditTime: 2019-12-20 00:47:37
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\1_js\1_readme4_4_深浅拷贝.md
+ -->
+<!--
  * @Author: Liao Ying
  * @Date: 2019-12-18 20:44:09
  * @LastEditTime : 2019-12-18 20:45:26
@@ -55,3 +63,6 @@
 * 【如何实现真正的深拷贝】？
     1. JSON.parse()
         网上流传的一个黑科技，使用var newObj = JSON.parse(JSON.stringify(obj))可以实现对象的深拷贝，但是该方法存在一些问题：
+        - 无法作用于函数，RegExp特殊对象，不过对发生进行深拷贝，我觉得并不需要，如果有需要对函数进行深拷贝用途的地方，欢迎...
+        - 会抛弃对象的constructor，所有的构造函数都会指向Object。
+        - 对象有循环引用，会报错。
