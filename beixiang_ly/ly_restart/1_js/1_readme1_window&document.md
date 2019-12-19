@@ -33,13 +33,14 @@
         - document表示的是一个文档对象，window表示的是一个窗口对象，一个窗口下可以有多个文档对象。
         - 一个窗口下只有一个window.location.href，但是可能有多个document.URL、document.location.href。
         - Window对象的location属性，引用的是一个Location对象，对象可以有很多属性。
-        - Document对象的location属性，只是一个只读字符串，不具备Location对象任何特性。
+        - window.location.href和document.location.href可以被赋值，然后跳转到其它页面，document.URL只能读不能写
         - 在大多数情况下，document.location和location.href是相同的。 但是，当存在服务器重定向时，document.location包含的是已经装载的URL，而location.href包含的则是原始请求的文档的URL。
             - document.location == location.href  //true
             - document.location === location.href  //false
             - document.location  //{href: "https://blog.csdn.net/xiaogangblog/article/details/100043558", ancestorOrigins: DOMStringList, origin: "https://blog.csdn.net", protocol: "https:", replace: ƒ, …}
             - location.href  //"https://blog.csdn.net/xiaogangblog/article/details/100043558"
-
+        - contentWindow:获取指定窗口的window对象，所有主流浏览器都支持；
+        - contentDocument:获取指定窗口的document对象，IE6 IE7不支持;
 
  * window： 代表浏览器中的一个打开的窗口
     - 对象属性：
@@ -85,11 +86,18 @@
                 3. 某些浏览器会错误标识自身以绕过站点测试
                 4. 浏览器无法报告发布晚于浏览器的新操作系统
         6. window.location 是最有用的BOM对象之一，它提供了一些导航信息。
-        即是window对象的属性，也是document对象的属性。即window.location === document.location; //true 引用的是同一个location对象
-        location对象的用处不只表现在它保存着当前的文档的信息，还表现在它将URL解析为独立的片段，让开发人员可以通过不同的属性访问这些片段。
             - window.location.hash 返回URL中的hash（#号后跟0或者多个字符），如果URL中不包含散列，则返回空字符串。 //""(假如有"#contents")
             - window.location.host 返回服务器名称和端口号（如果有）//www.baidu.com"
-            - window.location.hostname 
+            - window.location.hostname 返回不带端口号的服务器名称
+            - window.location.href 返回当前加载页面的完整url。而location对象的toString()也返回这个值。
+            - window.location.pathname 返回url中的目录或者文件名。
+            - window.location.port 返回url指定的端口号。如果不存在，则返回空字符串。
+            - window.location.protocol 返回页面使用协议。
+            - window.location.search 返回url 中 ?后的所有字符串。
+
+* Location:
+    * 即是window对象的属性，也是document对象的属性。即window.location === document.location; //true 引用的是同一个location对象。
+    * location对象的用处不只表现在它保存着当前的文档的信息，还表现在它将URL解析为独立的片段，让开发人员可以通过不同的属性访问这些片段。
 
 
  * document:  代表整个HTML文档，可用来访问页面中的所有元素。
