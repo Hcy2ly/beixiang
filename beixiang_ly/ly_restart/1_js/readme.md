@@ -1,7 +1,15 @@
 <!--
+ * @Author: your name
+ * @Date: 2019-12-15 13:36:34
+ * @LastEditTime: 2019-12-20 14:43:47
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\1_js\readme.md
+ -->
+<!--
  * @Author: liaoying
  * @Date: 2019-12-15 13:36:34
- * @LastEditTime : 2019-12-18 18:18:34
+ * @LastEditTime : 2019-12-20 01:36:46
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\ly_restart\1_js\readme.md
@@ -62,7 +70,7 @@
                 b.age = 21; //给对象添加年龄属性并给值21
                 console.log(a.age);     //22
                 var c = { name: "lz", age: 22b}; //声明新对象c，会开辟一个新的内存空间保存该对象c的所有相关属性值和方法。【类似于深拷贝 d = JSON.parse(JSON.stringify(b)); 值相同，但是内存地址不一样了。】
-                console.log(a === c); //false  引用类型是按照引用比较【进行“指针地址”比较】,由于a c引用的是不同的Object所以得到的结果是fasle.
+                console.log(a === c); //false  引用类型是按照引用比较【进行“指针地址”比较】,由于a，c 引用的是不同的Object，所以得到的结果是fasle.
                 
     * 7种
         - 第一种 undefined (等同于(===) void 0)问：为什么有的编程规范要求用 void 0 代替 undefined？
@@ -151,10 +159,10 @@
                 for(var v of o) 
                     console.log(v); // 0 1 2 3 ... 9
 
-        - 第六种 Boolean
+        - 第六种 Boolean （ture/false）
 
         - 第七种 Object 
-            * 问：为什么给对象添加的方法能用在基本类型上？
+            * js Object
                 - js对象的定义是“属性的集合”。属性分为数据属性和访问器属性，二者都是key-value结构，key可以是字符串或者Symbol类型。
                 - js的“类”仅仅是运行时对象的一个私有属性，而javaScript中是无法自定义类型的。
                 - Number，String 和 Boolean,三个构造器是两用的，当跟new搭配时，他们产生对象，当直接调用时，他们表示强制类型转换。

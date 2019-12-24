@@ -5,7 +5,7 @@
   - prototype属性指向 父类的实例
    - 将prototype.constructor 指向构造函数 Child.prototype.constructor = Child;
 
-   类 Paren 三部分 prototype是方法上的属性
+   类 Parent 三部分 prototype是方法上的属性
    1. 构造函数 new Fn(){}  this=>{}
    2. 构造函数 prototype 属性 方法
       对象沿着原型链去查找方法

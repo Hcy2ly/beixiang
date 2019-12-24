@@ -1,0 +1,436 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-12-19 16:24:41
+ * @LastEditTime : 2019-12-24 22:27:58
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \activity-h5\src\page\actNewYear\entry.html
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="email=no" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" /> -->
+  <title>双"Dan"活动</title>
+  <script>
+    ! function (e, i) {
+      var t = e.documentElement,
+        n = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+        a = n ? Math.min(i.devicePixelRatio, 3) : 1,
+        m = "orientationchange" in window ? "orientationchange" : "resize";
+      t.dataset.dpr = a;
+      for (var d, l, c = !1, o = e.getElementsByTagName("meta"), r = 0; r < o.length; r++) l = o[r], "viewport" == l
+        .name &&
+        (c = !0, d = l);
+      if (c) d.content = "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no";
+      else {
+        var o = e.createElement("meta");
+        o.name = "viewport", o.content =
+          "width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no", t
+            .firstElementChild
+            .appendChild(o)
+      }
+      var reset = function () {
+        var t = e.documentElement
+        var html = document.getElementsByTagName('html')[0];
+        var settedFs = settingFs = parseInt(html.style.fontSize);
+        var whileCount = 0;
+        while (true) {
+          var realFs = parseInt(window.getComputedStyle(html).fontSize);
+          var delta = realFs - settedFs;
+          if (Math.abs(delta) >= 1) //不相等
+          {
+            if (delta > 0) settingFs--;
+            else settingFs++;
+            // html.setAttribute('style', 'font-size:' + settingFs + 'px!important');
+            t.style.fontSize = settingFs + "px";
+          } else
+            break;
+          if (whileCount++ > 100) //之所以弄个100的循环跳出的原因，在于实在无法预判设备是否能计算得到36px，比如设备只能计算35px，37px，这样会死循环只能跳出了
+            break
+        }
+        return;
+      }
+      var s = function () {
+        var e = t.clientWidth;
+        e / a > 640 && (e = 640 * a), window.remScale = e / 640, t.style.fontSize = 200 * (e / 640) + "px";
+        // alert(t.style.fontSize)
+        reset();
+      };
+      s(), e.addEventListener && i.addEventListener(m, s, !1);
+
+    }(document, window);
+  </script>
+</head>
+
+<body>
+  <!-- 年度大放送 -->
+  <div id="NewYear_container">
+    <div class="theme">
+      <div class="rule">规则</div>
+    </div>
+    <div class="content-ranking">
+      <div class="title">
+        <div class="title_left"></div>
+        <div class="title_center">
+          <p>前3名&nbsp;再拿大额现金红包</p>
+        </div>
+        <div class="title_right"></div>
+      </div>
+      <div class="time">
+        <div class="center-body">
+          <span class="dashed left"></span>
+          <span class="time-txt">12月24日-1月1日</span>
+          <span class="dashed right"> </span>
+        </div>
+      </div>
+      <div class="ranking-list3">
+        <div class="second">
+          <div class="avator">
+            <div class="tip">2</div>
+          </div>
+          <span class="txt1">奖855元</span>
+          <span class="txt2"><span class="txt2-count">***</span>单</span>
+          <span class="list-username">***</span>
+        </div>
+        <div class="first">
+          <div class="avator">
+            <div class="tip">1</div>
+            <div class="win"></div>
+          </div>
+          <span class="txt1">奖1515元</span>
+          <span class="txt2"><span class="txt2-count">***</span>单</span>
+          <span class="list-username">***</span>
+        </div>
+        <div class="third">
+          <div class="avator">
+            <div class="tip">3</div>
+          </div>
+          <span class="txt1">奖515元</span>
+          <span class="txt2"><span class="txt2-count">***</span>单</span>
+          <span class="list-username">***</span>
+        </div>
+      </div>
+      <div class="ranking-me">
+        <p class="my-ranking">我的排名： <span class="my-top">未上榜</span></p>
+        <p class="my-order">订单量：<span class="my-num">0</span></p>
+      </div>
+      <button class="signUp">
+        <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+        <span class="button-txt">我要报名</span>
+      </button>
+      <div class="ranking-body">
+        <div class="header">
+          <span class="ranking">排名</span>
+          <span class="nickname">用户昵称</span>
+          <span class="order">订单量</span>
+        </div>
+        <div class="nothing">
+          <i></i>
+          <span>尚未出炉，敬请期待</span>
+        </div>
+        <div class="lists">
+          <div class="list456"></div>
+          <div class="lists-detail"></div>
+          <div class="more">
+            <span class="down">点击查看更多</span>
+            <i></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-award">
+      <div class="title">
+        <div class="title_left"></div>
+        <div class="title_center">
+          <p>活动期间下单&nbsp;得额外红包</p>
+        </div>
+        <div class="title_right"></div>
+      </div>
+      <div class="time">
+        <div class="center-body">
+          <span class="dashed left"> </span>
+          <span class="time-txt">1月2日即可领取</span>
+          <span class="dashed right"> </span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="red">
+          <span class="price">0.66元/单</span>
+          <span class="num">3-5笔订单</span>
+        </div>
+        <div class="red">
+          <span class="price">0.88元/单</span>
+          <span class="num">6-10笔订单</span>
+        </div>
+        <div class="red">
+          <span class="price">1.28元/单</span>
+          <span class="num">11-20笔订单</span>
+        </div>
+        <div class="red">
+          <span class="price">最高奖188.88元</span>
+          <span class="num">21笔订单及以上</span>
+        </div>
+      </div>
+      <div class="ending2">
+        <div class="ending">
+          <span>活动已结束</span>
+        </div>
+        <button class="joinFalse">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          未参与
+        </button>
+      </div>
+      <div class="body-me">
+        <div class="red">
+          <span class="price">补贴：*元</span>
+          <span class="price-tips">1月2日即可领取</span>
+        </div>
+        <div class="me-text">
+          <span class="txt-name">我的订单：</span>
+          <span class="txt-num">*单</span>
+        </div>
+        <button class="go-get">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          <span class="button-txt">领取</span>
+        </button>
+        <button class="goTo">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          <span class="button-txt">去下单</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <!-- 元旦感恩回馈 -->
+  <div id="NewYear_container2">
+    <div class="theme">
+      <div class="rule">规则</div>
+    </div>
+    <div class="content-award">
+      <div class="title">
+        <div class="title_left"></div>
+        <div class="title_center">
+          <p>活动期间下单&nbsp;得额外红包</p>
+        </div>
+        <div class="title_right"></div>
+      </div>
+      <div class="time">
+        <div class="center-body">
+          <span class="dashed left"> </span>
+          <span class="time-txt">1月2日即可领取</span>
+          <span class="dashed right"> </span>
+        </div>
+      </div>
+      <div class="ranking-me">
+        <p class="my-ranking">我的排名：<span class="my-top">*</span></p>
+        <p class="my-order">订单量：<span class="my-num">*</span></p>
+      </div>
+      <div class="body">
+        <div class="red">
+          <span class="price">0.66元/单</span>
+          <span class="num">3-5笔订单</span>
+        </div>
+        <div class="red">
+          <span class="price">0.88元/单</span>
+          <span class="num">6-10笔订单</span>
+        </div>
+        <div class="red">
+          <span class="price">1.28元/单</span>
+          <span class="num">11-20笔订单</span>
+        </div>
+        <div class="red">
+          <span class="price">最高奖188.88元</span>
+          <span class="num">21笔订单及以上</span>
+        </div>
+      </div>
+      <button class="signUp">
+        <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+        <span class="button-txt">我要报名</span>
+      </button>
+      <div class="ending2">
+        <div class="ending">
+          <span>活动已结束</span>
+        </div>
+        <button class="joinFalse">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          未参与
+        </button>
+      </div>
+    </div>
+    <div class="content-award-me">
+      <div class="title">
+        <div class="title_left"></div>
+        <div class="title_center">
+          <p>活动期间下单&nbsp;得额外红包</p>
+        </div>
+        <div class="title_right"></div>
+      </div>
+      <div class="time">
+        <div class="center-body">
+          <span class="dashed left"> </span>
+          <span class="time-txt">1月2日即可领取</span>
+          <span class="dashed right"> </span>
+        </div>
+      </div>
+      <div class="body-me">
+        <div class="red">
+          <span class="price">补贴：0元</span>
+          <span class="price-tips">1月2日即可领取</span>
+        </div>
+        <div class="me-text">
+          <span class="txt-name">我的订单：</span>
+          <span class="txt-num">0单</span>
+        </div>
+        <button class="go-get">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          <span class="button-txt">领取</span>
+        </button>
+        <button class="goTo">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          <span class="button-txt">去下单</span>
+        </button>
+      </div>
+      <div class="ending2">
+        <div class="ending">
+          <span>活动已结束</span>
+        </div>
+        <button class="joinFalse">
+          <span class="b"><span class="b1"></span><span class="b2"></span> </span>
+          未参与
+        </button>
+      </div>
+    </div>
+    <div class="content-ranking">
+      <div class="title">
+        <div class="title_left"></div>
+        <div class="title_center">
+          <p>前3名&nbsp;再拿大额现金红包</p>
+        </div>
+        <div class="title_right"></div>
+      </div>
+      <div class="time">
+        <div class="center-body">
+          <span class="dashed left"></span>
+          <span class="time-txt">12月24日-1月1日</span>
+          <span class="dashed right"></span>
+        </div>
+      </div>
+      <div class="ranking-list3">
+        <div class="second">
+          <div class="avator">
+            <div class="tip">2</div>
+          </div>
+          <span class="txt1">奖855元</span>
+          <span class="txt2"><span class="txt2-count">***</span>单</span>
+          <span class="list-username">***</span>
+        </div>
+        <div class="first">
+          <div class="avator">
+            <div class="tip">1</div>
+            <div class="win"></div>
+          </div>
+          <span class="txt1">奖1515元</span>
+          <span class="txt2"><span class="txt2-count">***</span>单</span>
+          <span class="list-username">***</span>
+        </div>
+        <div class="third">
+          <div class="avator">
+            <div class="tip">3</div>
+          </div>
+          <span class="txt1">奖515元</span>
+          <span class="txt2"><span class="txt2-count">***</span>单</span>
+          <span class="list-username">***</span>
+        </div>
+      </div>
+      <div class="ranking-body">
+        <div class="header">
+          <span class="ranking">排名</span>
+          <span class="nickname">用户昵称</span>
+          <span class="order">订单量</span>
+        </div>
+        <div class="nothing">
+          <i></i>
+          <span>尚未出炉，敬请期待</span>
+        </div>
+        <div class="lists">
+          <div class="list456">
+            <!-- <div class="list">
+              <div class="list-ranking">4</div>
+              <div class="list-user">
+                <i class="avator"></i>
+                <span>彩虹小白马是谁的小白马</span>
+              </div>
+              <div class="list-order">128</div>
+            </div>
+            <div class="list">
+              <div class="list-ranking">5</div>
+              <div class="list-user">
+                <i class="avator"></i>
+                <span>小白马</span>
+              </div>
+              <div class="list-order">128</div>
+            </div>
+            <div class="list">
+              <div class="list-ranking">6</div>
+              <div class="list-user">
+                <i class="avator"></i>
+                <span>121545452</span>
+              </div>
+              <div class="list-order">128</div>
+            </div> -->
+          </div>
+          <div class="lists-detail">
+          </div>
+          <div class="more">
+            <span class="down">点击查看更多</span>
+            <i></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 规则 -->
+  <div class="rule-model">
+    <div class="rule-main">
+      <div class="rule-title">
+        <div class="title_left"></div>
+        <div class="title_center">
+          <p>活动规则</p>
+        </div>
+        <div class="title_right"></div>
+      </div>
+      <div class="rule-body">
+        <div class="rule-warpper">
+          <p>1.历史订单≥2的用户才能参与此活动；</p>
+          <p>2.活动时间：12月24日-1月1日，活动期间的产生的自购并且实际支付价格不低于2元的订单，才能参与激励奖励，订单奖励针对全场订单；</p>
+          <p>3.本次激励奖励有：订单阶梯奖励和排行榜奖励（如2个奖励满足，则同时领取）其中PK排行榜次日展示；</p>
+          <p>4.自购订单大于3单才能参与阶梯奖励，3≤订单≤5的可获得0.66元/单，6≤订单≤10得0.88元/单，11≤订单≤20得1.28元/单，订单大于21得28.88-188.88元随机现金红包；</p>
+          <p>5.阶梯奖励会在用户确认收货后到账，如若发生订单退款的情况，则取消对应订单的奖励；</p>
+          <p>6.活动中，若发现恶意刷单的情况，奖励清零，并加入黑名单；</p>
+        </div>
+      </div>
+      <div class="rule-tips">*本活动最终解释权归桃小橙官方所有</div>
+    </div>
+    <div class="close"></div>
+  </div>
+  <!-- 领取奖励 -->
+  <div class="get-award">
+    <div class="award-content">
+      <div class="title-bg">领取成功</div>
+      <span class="icon-num"><i class="icon"></i><span class="num">+0</span>元</span>
+      <p>订单确认收货后奖励到账</p>
+      <button class="get">开心收下</button>
+    </div>
+  </div>
+
+</body>
+
+</html>
