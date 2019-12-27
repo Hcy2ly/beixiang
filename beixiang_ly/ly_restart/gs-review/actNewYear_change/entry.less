@@ -20,7 +20,7 @@ html {
 
 #NewYear_container {
   padding-bottom: 20 / @rem;
-  display: none;
+  // display: none;
   background: rgba(253, 147, 90, 1);
   .theme {
     .bg(750, 1334, "bg1.png");
@@ -41,7 +41,7 @@ html {
       padding: 38 / @rem 45 / @rem;
     }
     .body-me {
-      display: none;
+      // display: none;
       text-align: center;
       .red {
         margin: 0 auto;
@@ -58,16 +58,16 @@ html {
 
 #NewYear_container2 {
   padding-bottom: 34 / @rem;
-  display: none;
+  // display: none;
   background: #fcb599;
   .theme {
     text-align: center;
     .bg(750, 1334, "bg2.png");
     .rule {
       background: linear-gradient(
-        90deg,
-        rgba(243, 35, 34, 1) 0%,
-        rgba(255, 117, 98, 1) 100%
+        180deg,
+        rgba(246, 100, 137, 1) 0%,
+        rgba(239, 45, 90, 1) 100%
       );
       color: rgba(255, 255, 255, 1);
     }
@@ -90,7 +90,7 @@ html {
     }
   }
   .content-award-me {
-    display: none;
+    // display: none;
     height: 612 / @rem;
     .joinFalse {
       margin-top: 60 / @rem;
@@ -122,6 +122,8 @@ html {
   }
   //规则
   .rule {
+    position: relative;
+    left: 40 / @rem;
     width: 82 / @rem;
     height: 66 / @rem;
     padding: 15 / @rem;
@@ -152,6 +154,7 @@ html {
     margin-bottom: 20 / @rem;
     text-align: center;
     &.joinFalse {
+      pointer-events: none;
       background: linear-gradient(
         180deg,
         rgba(224, 224, 224, 1) 0%,
@@ -161,7 +164,8 @@ html {
       box-shadow: 0 / @rem 2 / @rem 8 / @rem 0 / @rem rgba(255, 255, 255, 0.6);
       color: rgba(102, 102, 102, 1);
     }
-    &.go-get {
+    &.go-get,
+    &.goTo {
       display: none;
     }
     .b {
@@ -217,15 +221,9 @@ html {
     .my-top,
     .my-num {
       color: rgba(248, 77, 69, 1);
-    }
-    .my-top {
-      text-align: left;
-      font-size: 26 / @rem;
       font-weight: 500;
-    }
-    .my-num {
-      font-size: 32 / @rem;
-      font-weight: 600;
+      font-size: 28 / @rem;
+      text-align: left;
     }
   }
   //标题
@@ -485,7 +483,7 @@ html {
         }
       }
       .lists {
-        display: none;
+        // display: none;
         background: rgba(255, 255, 255, 1);
         .list {
           width: 100%;
@@ -507,7 +505,7 @@ html {
           }
           .list-ranking {
             width: 128 / @rem;
-            font-size: 36 / @rem;
+            font-size: 34 / @rem;
             font-family: PingFangSC-Semibold, PingFang SC;
             font-weight: 600;
             color: rgba(248, 77, 69, 1);
@@ -543,6 +541,7 @@ html {
           .list-order {
             text-align: center;
             width: 152 / @rem;
+            font-size: 30 / @rem;
             &.isMe {
               color: rgba(248, 77, 69, 1);
             }
@@ -623,7 +622,7 @@ html {
       }
     }
     .body-me {
-      // display: none;
+      //  // display: none;
       padding-top: 74 / @rem;
       position: relative;
       text-align: center;
@@ -660,7 +659,7 @@ html {
           color: rgba(0, 0, 0, 1);
         }
         .txt-num {
-          font-size: 32 / @rem;
+          font-size: 28 / @rem;
           font-weight: 600;
           color: rgba(248, 77, 69, 1);
         }
@@ -670,7 +669,7 @@ html {
       }
     }
     .ending2 {
-      display: none;
+      // display: none;
       padding-top: 54 / @rem;
       .ending {
         margin: 0 auto;
@@ -784,8 +783,8 @@ html {
     .bg(52, 52, "close.png");
   }
 }
-//奖励弹窗
 
+//奖励弹窗
 .get-award {
   display: none;
   position: fixed;

@@ -1,7 +1,7 @@
 /*
  * @Author: Liao Ying
  * @Date: 2019-12-19 14:21:42
- * @LastEditTime : 2019-12-24 22:31:13
+ * @LastEditTime : 2019-12-26 11:15:58
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \activity-h5\src\page\actNewYear\entry.js
@@ -124,10 +124,10 @@ var activity = {
                 } else {
                   $('.content-award').hide(); //body
                   $('.content-award-me').show(); //body-me
-                  // if (self.isLayer()) {
+                }
+                if (self.isLayer()) { //活动结束之后可以领取
                   $('.goTo').hide();
                   $('.go-get').show();
-                  // }
                 }
                 totalPrice && $('.body-me .price').text(`补贴：${totalPrice}元`);
                 orderNum && $('.body-me .txt-num').text(`${orderNum}单`);
@@ -373,7 +373,7 @@ var activity = {
             $('.go-get').addClass('joinFalse');
             $('.go-get .button-txt').text('已领取');
             $('.get-award').show();
-            $('.icon-num .num').text(self.getMoney);
+            $('.icon-num .num').text(`+${self.getMoney}`);
           }
         } else {
           console.log(desc);

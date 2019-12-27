@@ -65,9 +65,9 @@ html {
     .bg(750, 1334, "bg2.png");
     .rule {
       background: linear-gradient(
-        90deg,
-        rgba(243, 35, 34, 1) 0%,
-        rgba(255, 117, 98, 1) 100%
+        180deg,
+        rgba(246, 100, 137, 1) 0%,
+        rgba(239, 45, 90, 1) 100%
       );
       color: rgba(255, 255, 255, 1);
     }
@@ -122,6 +122,8 @@ html {
   }
   //规则
   .rule {
+    position: relative;
+    left: 40 / @rem;
     width: 82 / @rem;
     height: 66 / @rem;
     padding: 15 / @rem;
@@ -217,15 +219,9 @@ html {
     .my-top,
     .my-num {
       color: rgba(248, 77, 69, 1);
-    }
-    .my-top {
-      text-align: left;
-      font-size: 26 / @rem;
       font-weight: 500;
-    }
-    .my-num {
-      font-size: 32 / @rem;
-      font-weight: 600;
+      font-size: 28 / @rem;
+      text-align: left;
     }
   }
   //标题
@@ -507,7 +503,7 @@ html {
           }
           .list-ranking {
             width: 128 / @rem;
-            font-size: 36 / @rem;
+            font-size: 34 / @rem;
             font-family: PingFangSC-Semibold, PingFang SC;
             font-weight: 600;
             color: rgba(248, 77, 69, 1);
@@ -543,6 +539,7 @@ html {
           .list-order {
             text-align: center;
             width: 152 / @rem;
+            font-size: 30 / @rem;
             &.isMe {
               color: rgba(248, 77, 69, 1);
             }
@@ -660,7 +657,7 @@ html {
           color: rgba(0, 0, 0, 1);
         }
         .txt-num {
-          font-size: 32 / @rem;
+          font-size: 28 / @rem;
           font-weight: 600;
           color: rgba(248, 77, 69, 1);
         }
@@ -784,8 +781,8 @@ html {
     .bg(52, 52, "close.png");
   }
 }
-//奖励弹窗
 
+//奖励弹窗
 .get-award {
   display: none;
   position: fixed;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2019-12-20 14:18:24
- * @LastEditTime : 2019-12-20 15:39:00
+ * @LastEditTime : 2019-12-27 12:00:11
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\ly_restart\9_ms\readme.md
@@ -22,3 +22,7 @@
 6. 职业规划 半年，一到三年，更长。
 其实实习期，你就说工资随意不太看重，主要是发展的方向和学习目标为主
 毕业了，就按行业水平给就行，主要前3年以积累经验和学习基础为主
+
+7. 字符串的方法。
+8. 数组的方法。
+9. 对象的方法。
