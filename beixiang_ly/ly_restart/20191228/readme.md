@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2019-12-28 14:52:08
- * @LastEditTime : 2019-12-28 17:17:47
+ * @LastEditTime : 2019-12-29 23:33:56
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\ly_restart\20191228\readme.md
@@ -12,5 +12,5 @@
 
 
 4. 意外收获： 
-    
+    yxj 记录学习知识点。
 
