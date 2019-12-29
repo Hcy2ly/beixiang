@@ -1,7 +1,7 @@
 /*
  * @Author: Liao Ying
  * @Date: 2019-12-19 14:21:42
- * @LastEditTime : 2019-12-28 00:02:18
+ * @LastEditTime : 2019-12-29 12:29:28
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \activity-h5\src\page\actNewYear\entry.js
@@ -13,7 +13,7 @@ import utils from "lib/utils";
 import { domain } from "../../utils/getDomain";
 // import Log from "lib/log";
 // import JSB from "../../lib/jsb";
-import countdown from "../../lib/countdown"; //倒计时插件
+import countdown from "./countdown"; //倒计时插件
 // import VConsole from "vconsole/dist/vconsole.min.js"; //import vconsole
 // new VConsole(); // 初始化
 
@@ -31,13 +31,11 @@ var activity = {
   isOdd: true,
   getMoney: 0,
   init() {
-    $('.body-me').hide();
-    this.isOdd = (this.userId % 2 != 0); //奇数
-    this.isOdd ? this._showInfos.page1() : this._showInfos.page2();
+    this.showInfos();
     $('.more, .pack-up').hide(); //加载更多和收起隐藏
     // 页面曝光埋点
     // Log.pageExposureLog();
-    this.judgeTime();
+    !this._timeSelect.isEarly() && this.ajaxIndex(); //先做一个时间判断 因为需要展示排行榜页面的情况只有在活动期间和活动结束 / 活动开始前是没有的
     this.bind();
   },
   //页面点击事件
@@ -53,7 +51,7 @@ var activity = {
     });
     //点击报名 -> 倒计时72:00:00 -> 去下单
     $('.signUp').off().on("click", function () {
-      !self.isTureTime() ? self.ajaxJoin() : self.showCountdown();
+      self._timeSelect.isEarly() ? self.showCountdown() : self.ajaxJoin();
       // Log.pageMainClickLog();
     });
     //去下单
@@ -86,20 +84,14 @@ var activity = {
   },
 
   //展示活动未开始前页面信息 page1 page2
-  _showInfos: {
-    page1() {
-      $('#NewYear_container2').hide();
-      $('#NewYear_container').show();
-      $('title').text("元旦感恩回馈");
-      $('.ranking-me').hide();
-    },
-    page2() {
-      $('#NewYear_container').hide();
-      $('#NewYear_container2').show();
-      $('html,body').attr("background", "#FCB599");
-      $('title').text("年度大PK");
-      $('.ranking-me').hide();
-    }
+  showInfos() {
+    var self = activity;
+    self.isOdd = (self.userId % 2 != 0); //奇数
+    $(`#NewYear_container${self.isOdd ? 2 : ''}`).hide();
+    $(`#NewYear_container${self.isOdd ? '' : 2}`).show();
+    $('title').text(`${self.isOdd ? '元旦感恩回馈' : '年度大PK'}`);
+    $('.ranking-me').hide();
+    !self.isOdd && $('html,body').attr("background", "#FCB599");
   },
   //展示加载更多和收起
   _showUpDown: {
@@ -112,17 +104,7 @@ var activity = {
       $('.more').hide();
     }
   },
-  //先做一个时间判断 因为需要展示排行榜页面的情况只有在活动期间和活动结束 / 活动开始前是没有的
-  judgeTime() {
-    var self = activity;
-    //如果时间还没到
-    if (self.isEarly()) {
-      // eslint-disable-next-line no-console
-      console.log('敬请期待~');
-    } else { //时间
-      self.ajaxIndex(); //请求接口做活动期间和结束的区分
-    }
-  },
+
   //请求首页面数据接口
   ajaxIndex() {
     let self = activity;
@@ -133,11 +115,11 @@ var activity = {
       },
       success: function (res) {
         const { code, data = {}, desc } = utils.filterDataNull(res);
-        const { joinFlag, receiveFlag, totalPrice, rank, orderNum, rankList } = data;
+        const { joinFlag, receiveFlag, totalPrice, rank, orderNum, rankList = [] } = data;
         if (code == "0") {
           if (data) {
             //看看是否有排行榜信息 （不必根据是否在规定时间展示）
-            if (rankList && rankList.length > 0) {
+            if (rankList.length > 0) {
               self.showTop123(rankList); //展示前三（上墙）
             }
             // 个人排行展示 报名了都显示
@@ -163,9 +145,9 @@ var activity = {
               totalPrice && $('.body-me .price').text(`补贴：${totalPrice}元`);
               orderNum && $('.body-me .txt-num').text(`${orderNum}单`);
             }
-            
+
             //在活动范围
-            if (self.isTureTime()) {
+            if (self._timeSelect.isTureTime()) {
               // 如果参与过报名
               if (joinFlag) {
                 //看看补贴是否有 
@@ -206,7 +188,7 @@ var activity = {
                     $('.go-get .button-txt').text('已领取');
                   } else {
                     //没领取是否在规定时间
-                    if (self.isCanReceive()) {
+                    if (self._timeSelect.isCanReceive()) {
                       $('.go-get').show();
                     } else {
                       gameOver();
@@ -231,39 +213,56 @@ var activity = {
 
   //展示前三名
   showTop123(rankList) {
+    const _rankList = [].concat(rankList);
     var self = activity;
-    var lens;
-    if (rankList.length >= 3) {
-      lens = 3;
-      //展示前三后面的所有。
-      self.showLists(rankList);
-    } else {
-      lens = rankList.length;
-    }
-    rankListFor();
-    function rankListFor() {
-      for (let i = 0; i < lens; i++) {
-        $(`.top${i + 1} .avator`).attr('background', `url(${rankList[i].img}) center/100% no-repeat`);
-        $(`.top${i + 1} .txt2-count`).text(rankList[i].orderCount);
-        $(`.top${i + 1} .list-username`).text(rankList[i].nickName);
-      }
-    }
+    const top = _rankList.length > 3 ? _rankList.splice(0, 3) : _rankList;
+    top.forEach(({ img, orderCount, nickName }, index) => {
+      $(`.top${index + 1}`).html(`
+      <div class="avator" style="background:url(${img}) center/100% no-repeat">
+        <div class="tip">${index + 1}</div>
+      </div>
+      <span class="txt1">奖855元</span>
+      <span class="txt2"><span class="txt2-count">${orderCount}</span>单</span>
+      <span class="list-username">${nickName}</span>`);
+    });
+    self.showLists(_rankList);
+
+    // var lens;
+    // if (rankList.length >= 3) {
+    //   lens = 3;
+    //   //展示前三后面的所有。
+    //   self.showLists(rankList);
+    // } else {
+    //   lens = rankList.length;
+    // }
+    // rankListFor();
+    // function rankListFor() {
+    //   for (let i = 0; i < lens; i++) {
+    //     $(`.top${i + 1} .avator`).attr('background', `url(${rankList[i].img}) center/100% no-repeat`);
+    //     $(`.top${i + 1} .txt2-count`).text(rankList[i].orderCount);
+    //     $(`.top${i + 1} .list-username`).text(rankList[i].nickName);
+    //   }
+    // }
   },
 
   //展示前三之后排名
   showLists(rankList) {
     $('.nothing').remove(); //移除
-    let self = activity, listDatil;
+    let self = activity;
+    const _lists = [].concat(rankList);
+    let lists = _lists.length > 3 ? _lists.splice(0, 3) : _lists;
+    self.appendLists(lists, 4);
+    _lists.length > 3 && self._showUpDown.down();
 
-    if (rankList.length >= 6) {
-      listDatil = rankList.splice(3, 3); //从第四个开始截取三个 456
-      self.appendLists(listDatil, 4);
-      self._showUpDown.down();
-    } else {
-      listDatil = rankList.splice(3, rankList.length - 3); //从第四个开始截取三个 456
-      self.appendLists(listDatil, 4);
-      // self._showUpDown.up();
-    }
+    // if (rankList.length > 3) {
+    //   listDatil = rankList.splice(0, 3);
+    //   self.appendLists(listDatil, 4);
+    //   self._showUpDown.down();
+    // } else {
+    //   listDatil = rankList.splice(3, rankList.length - 3); //从第四个开始截取三个 456
+    //   self.appendLists(listDatil, 4);
+    //   // self._showUpDown.up();
+    // }
   },
 
   //append 排行榜
@@ -324,13 +323,13 @@ var activity = {
         const { code, data = {}, desc } = utils.filterDataNull(res);
         if (code == "0") {
           if (data) { //根据数据判断
-            if (self.isTureTime()) { //在活动期间
+            if (self._timeSelect.isTureTime()) { //在活动期间
               utils.showToast("报名成功", 1000);
               self.ajaxIndex(); //重新请求数据渲染
             }
           } else {
-            self.isTureTime() && utils.showToast("您暂无参与资格", 1000);
-            self.isLayer() && utils.showToast("活动已结束", 1000);
+            self._timeSelect.isTureTime() && utils.showToast("您暂无参与资格", 1000);
+            self._timeSelect.isLayer() && utils.showToast("活动已结束", 1000);
           }
         } else {
           console.log(desc);
@@ -366,10 +365,11 @@ var activity = {
   // 倒计时
   showCountdown() {
     let self = activity;
-    self.isTureTime();
+    self._timeSelect.isTureTime();
+    var dom = self.isOdd ? $("#NewYear_container .signUp .button-txt") : $("#NewYear_container2 .signUp .button-txt");
     (self.countDown && self.countDown > 0) && countdown.init({
-      container: $(".signUp .button-txt"),
-      timeStamp: self.countDown,  //时间戳以秒为单位
+      container: dom,
+      timeStamp: self.countDown,
       formate: 'HH:MM:SS',
       counting: () => { },
       end: () => {
@@ -378,132 +378,49 @@ var activity = {
     });
   },
 
-  //判断是否在指定期间内
-  isTureTime() {
-    // 将计划开始时间转成以秒为单位：
-    let planStartTime = "2019-12-23";
-    let startTime = new Array();
-    startTime = planStartTime.split('-');
-    planStartTime = Date.UTC(parseInt(startTime[0]), parseInt(startTime[1]), parseInt(startTime[2]));
-    // 将计划结束时间转成以秒为单位：
-    let planStopTime = "2020-1-1";
-    let stopTime = new Array();
-    stopTime = planStopTime.split('-');
-    planStopTime = Date.UTC(parseInt(stopTime[0]), parseInt(stopTime[1]), parseInt(stopTime[2]));
-
-    //获取当前时间
-    let nowTime = new Date();
-    //当前年
-    let nowYear = nowTime.getFullYear();
-    //当前月，记得要加1
-    let nowMonth = nowTime.getMonth() + 1;
-    //当前日
-    let nowDay = nowTime.getDate();
-    // 当前小时
-    let nowHours = nowTime.getHours();
-    // 当前分钟
-    let nowMinutes = nowTime.getMinutes();
-    // 当前秒
-    let nowSeconds = nowTime.getSeconds();
-
-    // 将当前系统时间转化成以秒为单位：
-    nowTime = Date.UTC(nowYear, nowMonth, nowDay);
-    activity.countDown = Date.UTC(nowYear, nowMonth, nowDay, nowHours, nowMinutes, nowSeconds) - planStartTime;
-
-    // 判断：如果当前系统时间大于等于开始时间以及小于等于结束时间则登记成功
-    if (nowTime >= planStartTime && nowTime <= planStopTime) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  //活动结束之后
-  isLayer() {
-    // 将计划结束时间转成以秒为单位：
-    let planStopTime = "2020-1-1";
-    let stopTime = new Array();
-    stopTime = planStopTime.split('-');
-    planStopTime = Date.UTC(parseInt(stopTime[0]), parseInt(stopTime[1]), parseInt(stopTime[2]));
-
-    //获取当前时间
-    let nowTime = new Date();
-    //当前年
-    let nowYear = nowTime.getFullYear();
-    //当前月，记得要加1
-    let nowMonth = nowTime.getMonth() + 1;
-    //当前日
-    let nowDay = nowTime.getDate();
-    // 将当前系统时间转化成以秒为单位：
-    nowTime = Date.UTC(nowYear, nowMonth, nowDay);
-
-    // 判断：如果当前系统时间大于等于开始时间以及小于等于结束时间则登记成功
-    if (nowTime > planStopTime) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  //活动之前
-  isEarly() {
-    // 将计划开始时间转成以秒为单位：
-    let planStartTime = "2019-12-24";
-    let startTime = new Array();
-    startTime = planStartTime.split('-');
-    planStartTime = Date.UTC(parseInt(startTime[0]), parseInt(startTime[1]), parseInt(startTime[2]));
-
-    //获取当前时间
-    let nowTime = new Date();
-    //当前年
-    let nowYear = nowTime.getFullYear();
-    //当前月，记得要加1
-    let nowMonth = nowTime.getMonth() + 1;
-    //当前日
-    let nowDay = nowTime.getDate();
-    // 将当前系统时间转化成以秒为单位：
-    nowTime = Date.UTC(nowYear, nowMonth, nowDay);
-
-    // 判断：如果当前系统时间大于等于开始时间以及小于等于结束时间则登记成功
-    if (nowTime < planStartTime) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  //活动结束之后 控制仅限1月2日可领取奖励。
-  isCanReceive() {
-    // 将计划开始时间转成以秒为单位：
-    let planStartTime = "2020-1-1";
-    let startTime = new Array();
-    startTime = planStartTime.split('-');
-    planStartTime = Date.UTC(parseInt(startTime[0]), parseInt(startTime[1]), parseInt(startTime[2]));
-    // 将计划结束时间转成以秒为单位：
-    let planStopTime = "2020-1-3";
-    let stopTime = new Array();
-    stopTime = planStopTime.split('-');
-    planStopTime = Date.UTC(parseInt(stopTime[0]), parseInt(stopTime[1]), parseInt(stopTime[2]));
-
-    //获取当前时间
-    let nowTime = new Date();
-    //当前年
-    let nowYear = nowTime.getFullYear();
-    //当前月，记得要加1
-    let nowMonth = nowTime.getMonth() + 1;
-    //当前日
-    let nowDay = nowTime.getDate();
-    // 将当前系统时间转化成以秒为单位：
-    nowTime = Date.UTC(nowYear, nowMonth, nowDay);
-
-    // 判断：如果当前系统时间大于开始时间以及小于结束时间则登记成功
-    if (nowTime > planStartTime && nowTime < planStopTime) {
-      return true;
-    } else {
-      return false;
+  //时间选择
+  _timeSelect: {
+    planStartTime: Date.UTC(2019, 12, 24),
+    planStopTime: Date.UTC(2020, 1, 1),
+    getTrueTime: Date.UTC(2020, 1, 2),
+    nowTime: new Date(),
+    //活动结束之后
+    isEarly() {
+      let nowYear = this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
+      let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
+      let nowHours =  this.nowTime.getHours(); //当前时
+      let nowMinutes =  this.nowTime.getMinutes(); //当前分
+      let nowSeconds =  this.nowTime.getSeconds(); //当前秒
+      activity.countDown = parseInt(Date.UTC(nowYear, nowMonth, nowDay, nowHours, nowMinutes, nowSeconds) - this.planStartTime); //倒计时
+      return (now < this.planStartTime);
+    },
+    //在活动期间
+    isTureTime() {
+      let nowYear =  this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
+      let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
+      return (now >= this.planStartTime && now <= this.planStopTime);
+    },
+    //活动结束之后
+    isLayer() {
+      let nowYear =  this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
+      let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
+      return (now > this.planStopTime);
+    },
+    //活动结束之后 控制仅限1月2日可领取奖励。
+    isCanReceive() {
+      let nowYear =  this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
+      let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
+      return (now == this.getTrueTime);
     }
   }
-
 };
 if (isApp) {
   const actCommon = new ActCommon(() => {
