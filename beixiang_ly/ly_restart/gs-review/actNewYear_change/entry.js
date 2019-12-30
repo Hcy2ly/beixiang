@@ -1,7 +1,7 @@
 /*
  * @Author: Liao Ying
  * @Date: 2019-12-19 14:21:42
- * @LastEditTime : 2019-12-31 01:24:01
+ * @LastEditTime : 2019-12-31 01:41:01
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \activity-h5\src\page\actNewYear\entry.js
@@ -219,20 +219,20 @@ var activity = {
       <div class="avator" style="background:url(${img}) center/100% no-repeat">
         <div class="tip">${index + 1}</div>
       </div>
-      <span class="txt1">${index == 0 ? '奖1515元': index == 1 ? '奖855元': '奖515元'}</span>
+      <span class="txt1">${index == 0 ? '奖1515元' : index == 1 ? '奖855元' : '奖515元'}</span>
       <span class="txt2"><span class="txt2-count">${orderCount}</span>单</span>
       <span class="list-username">${nickName}</span>`);
     });
-    self.showLists(_rankList);
+    activity.showLists(_rankList);
   },
 
   //展示前三之后排名
   showLists(rankList) {
     $('.nothing').remove(); //移除
-    const _lists = [].concat(rankList); 
+    const _lists = [].concat(rankList);
     const lists = _lists.length > 3 ? _lists.splice(0, 3) : _lists;
     activity.appendLists(lists, 4);
-    _lists.length > 3 && activity._showUpDown.down();
+    rankList.length > 3 && activity._showUpDown.down();
   },
 
   //append 排行榜
