@@ -1,0 +1,38 @@
+<!--
+ * @Author: ly
+ * @Date: 2019-12-30 14:29:41
+ * @LastEditTime : 2019-12-30 15:07:54
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\9_ms\4_addEventListener2.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="list">
+        <li>111</li>
+        <li>222</li>
+        <li>333</li>
+        <li>444</li>
+        <span>nihao a </span>
+    </ul>
+    <div id="list2"></div>
+    
+    <script type="text/javascript">
+        document.getElementById('list').addEventListener('click', function (e) {
+           console.log(this); //如果这样输出，事件源就是 list,
+           console.log(e.target);
+            // e.target.innerHTML = "被点击"; //点击那个 那个文案变成被点击 未指定标签
+        });
+        document.getElementById('list2').addEventListener('click', function (e) {
+           console.log('点击list2, 我并不是事件代理');
+        });
+    </script>
+</body>
+</html>

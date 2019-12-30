@@ -1,0 +1,30 @@
+<!--
+ * @Author: ly
+ * @Date: 2019-12-30 16:03:40
+ * @LastEditTime : 2019-12-30 17:00:03
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\9_ms\4_event.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div">1234556789</div>
+    <script>
+        document.onmousemove = function (ev) {
+            var e = ev || window.event;
+            var div = document.getElementById('div');
+            div.innerHTML = "clientX:" + e.clientX;
+        }
+    </script>
+</body>
+
+</html>

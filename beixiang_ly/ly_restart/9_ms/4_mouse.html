@@ -1,0 +1,62 @@
+<!--
+ * @Author: ly
+ * @Date: 2019-12-30 17:16:46
+ * @LastEditTime : 2019-12-30 17:32:49
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\9_ms\4_mouse.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .container {
+        width: 300px;
+        height: 100px;
+        border: 1px solid #c00;
+    }
+
+    input[type="button"] {
+        margin: 50px;
+        border: none;
+        width: 100px;
+        height: 50px;
+        background: green;
+    }
+</style>
+
+<body>
+    <span style="white-space:pre"> </span>
+    <div id="div" class="container"></div>
+    <span style="white-space:pre"> </span>
+    <div id="div1" class="container"></div>
+    <span style="white-space:pre"> </span>
+    <input type="button" value="test" onclick="test();">
+    <script>
+        document.onmousemove = function (ev) {
+            var e = ev || window.event;
+            var div = document.getElementById('div');
+            div.innerHTML = "浏览器clientX: " + e.clientX + ",clientY:" + e.clientY +
+                "</br> 电脑显示器screenX:" + e.screenX + ",screenY:" + e.screenY;
+        }
+
+        function test() {
+            var e = event || window.event;
+            var div1 = document.getElementById('div1');
+            div1.innerHTML = "鼠标距离事件源（点击的方块）的位置offsetX:" + e.offsetX + ",offsetY : " + e.offsetY;
+        }
+    </script>
+</body>
+
+</html>

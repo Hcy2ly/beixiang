@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2019-12-20 14:18:24
- * @LastEditTime : 2019-12-29 23:27:58
+ * @LastEditTime : 2019-12-30 17:41:36
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\ly_restart\9_ms\readme.md
@@ -57,4 +57,5 @@
 
 # demo： 
   * format.js 实现千位分隔
-  * this
+  * this.js  箭头函数
+  * 

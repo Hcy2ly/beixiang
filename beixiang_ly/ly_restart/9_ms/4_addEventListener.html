@@ -1,0 +1,74 @@
+<!--
+ * @Author: ly
+ * @Date: 2019-12-30 09:35:27
+ * @LastEditTime : 2019-12-30 13:44:34
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang_ly\ly_restart\9_ms\addEventListener.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    #parent {
+        width: 400px;
+        height: 200px;
+        background: #000;
+    }
+
+    #child {
+        width: 200px;
+        height: 100px;
+        background: red;
+    }
+</style>
+
+<body>
+    <div id="parent">
+        <div id="child" class="child"></div>
+    </div>
+
+    <script>
+        const parent = document.querySelector('#parent')
+        const child = document.querySelector('#child')
+
+        // //均点击子元素触发事件的不同顺序
+        // //1 点击 child  输出parent事件被触发，child事件被触发。
+        // parent.addEventListener('click', function (e) {
+        //     console.log('parent事件被触发，', this.id)
+        // }, false)  //设置冒泡阶段再进行事件处理 
+        // child.addEventListener('click', function (e) {
+        //     console.log('child事件被触发，', this.id)
+        // }, false) //设置冒泡阶段再进行事件处理 true or false
+        // // 当事件源为子元素，父元素设置【冒泡】阶段再进行事件处理，那么子元素设置为冒泡或者捕捉都会在点击子元素的时候按照 子元素->父元素 这样的冒泡顺序触发。
+
+
+        // //2 点击 child  输出parent事件被触发，child事件被触发。
+        // parent.addEventListener('click', function (e) {
+        //     console.log('parent事件被触发，', this.id)
+        // }, true)  //设置捕捉阶段就进行事件处理
+        // child.addEventListener('click', function (e) {
+        //     console.log('child事件被触发，', this.id)
+        // }, true)  //设置捕捉阶段就进行事件处理 true or false
+
+        // // 当事件源为子元素，父元素设置【捕捉】阶段再进行事件处理，那么子元素设置为冒泡或者捕捉都会在点击子元素的时候按照 父元素->子元素 捕捉顺序触发。
+
+        //3 点击 child  输出parent事件被触发，child事件被触发。
+        parent.addEventListener('click', function (e) {
+            console.log('parent事件被触发，', this.id)
+        })  //如果不设置，默认false，即设置冒泡阶段再进行事件处理 
+        child.addEventListener('click', function (e) {
+            console.log('child事件被触发，', this.id)
+        }) //如果不设置，默认false，，即设置冒泡阶段再进行事件处理 true or false
+        //等同于1
+
+    </script>
+</body>
+
+</html>
