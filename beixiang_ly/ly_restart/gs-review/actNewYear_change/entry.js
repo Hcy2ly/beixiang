@@ -1,7 +1,7 @@
 /*
  * @Author: Liao Ying
  * @Date: 2019-12-19 14:21:42
- * @LastEditTime : 2019-12-31 01:15:53
+ * @LastEditTime : 2019-12-31 01:20:11
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \activity-h5\src\page\actNewYear\entry.js
@@ -91,7 +91,6 @@ var activity = {
     $(`#NewYear_container${self.isOdd ? '' : 2}`).show();
     $('title').text(`${self.isOdd ? '元旦感恩回馈' : '年度大PK'}`);
     $('.ranking-me').hide();
-    !self.isOdd && $('html,body').attr("background", "#FCB599");
   },
   //展示加载更多和收起
   _showUpDown: {
@@ -214,52 +213,29 @@ var activity = {
   //展示前三名
   showTop123(rankList) {
     const _rankList = [].concat(rankList);
+    var self = activity;
     const top = _rankList.length > 3 ? _rankList.splice(0, 3) : _rankList;
     top.forEach(({ img, orderCount, nickName }, index) => {
       $(`.top${index + 1}`).html(`
       <div class="avator" style="background:url(${img}) center/100% no-repeat">
         <div class="tip">${index + 1}</div>
       </div>
-      <span class="txt1">${index == 0 ? '奖1515元' : index == 1 ? '奖855元' : '奖515元'}</span>
+      <span class="txt1">${index == 0 ? '奖1515元': index == 1 ? '奖855元': '奖515元'}</span>
       <span class="txt2"><span class="txt2-count">${orderCount}</span>单</span>
       <span class="list-username">${nickName}</span>`);
     });
-    activity.showLists(_rankList); //规定大于3再去append更多
-
-    // var lens;
-    // if (rankList.length >= 3) {
-    //   lens = 3;
-    //   //展示前三后面的所有。
-    //   self.showLists(rankList);
-    // } else {
-    //   lens = rankList.length;
-    // }
-    // rankListFor();
-    // function rankListFor() {
-    //   for (let i = 0; i < lens; i++) {
-    //     $(`.top${i + 1} .avator`).attr('background', `url(${rankList[i].img}) center/100% no-repeat`);
-    //     $(`.top${i + 1} .txt2-count`).text(rankList[i].orderCount);
-    //     $(`.top${i + 1} .list-username`).text(rankList[i].nickName);
-    //   }
-    // }
+    self.showLists(_rankList);
   },
 
   //展示前三之后排名
   showLists(rankList) {
     $('.nothing').remove(); //移除
     let self = activity;
-    let _lists = [].concat(rankList);
-    _lists = _lists.length > 3 ? _lists.splice(0, 3) : _lists;
-    self.appendLists(_lists, 4);
-    // if (rankList.length > 3) {
-    //   listDatil = rankList.splice(0, 3);
-    //   self.appendLists(listDatil, 4);
-    //   self._showUpDown.down();
-    // } else {
-    //   listDatil = rankList.splice(3, rankList.length - 3); //从第四个开始截取三个 456
-    //   self.appendLists(listDatil, 4);
-    //   // self._showUpDown.up();
-    // }
+    
+    const _lists = [].concat(rankList); 
+    const lists = _lists.length > 3 ? _lists.splice(0, 3) : _lists;
+    self.appendLists(lists, 4);
+    _lists.length > 3 && self._showUpDown.down();
   },
 
   //append 排行榜
@@ -280,7 +256,6 @@ var activity = {
     });
     if (m == 4) { //初始值。
       $('.list456').html(dom);
-      activity._showUpDown.down();
     } else {
       $('.lists-detail').html(dom);
     }
@@ -385,36 +360,36 @@ var activity = {
     //活动结束之后
     isEarly() {
       let nowYear = this.nowTime.getFullYear(); //当前年
-      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay = this.nowTime.getDate(); //当前日
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
-      let nowHours = this.nowTime.getHours(); //当前时
-      let nowMinutes = this.nowTime.getMinutes(); //当前分
-      let nowSeconds = this.nowTime.getSeconds(); //当前秒
+      let nowHours =  this.nowTime.getHours(); //当前时
+      let nowMinutes =  this.nowTime.getMinutes(); //当前分
+      let nowSeconds =  this.nowTime.getSeconds(); //当前秒
       activity.countDown = parseInt(Date.UTC(nowYear, nowMonth, nowDay, nowHours, nowMinutes, nowSeconds) - this.planStartTime); //倒计时
       return (now < this.planStartTime);
     },
     //在活动期间
     isTureTime() {
-      let nowYear = this.nowTime.getFullYear(); //当前年
-      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay = this.nowTime.getDate(); //当前日
+      let nowYear =  this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
       return (now >= this.planStartTime && now <= this.planStopTime);
     },
     //活动结束之后
     isLayer() {
-      let nowYear = this.nowTime.getFullYear(); //当前年
-      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay = this.nowTime.getDate(); //当前日
+      let nowYear =  this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
       return (now > this.planStopTime);
     },
     //活动结束之后 控制仅限1月2日可领取奖励。
     isCanReceive() {
-      let nowYear = this.nowTime.getFullYear(); //当前年
-      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay = this.nowTime.getDate(); //当前日
+      let nowYear =  this.nowTime.getFullYear(); //当前年
+      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay =  this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
       return (now == this.getTrueTime);
     }
