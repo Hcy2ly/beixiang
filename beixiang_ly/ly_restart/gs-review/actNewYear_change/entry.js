@@ -1,7 +1,7 @@
 /*
  * @Author: Liao Ying
  * @Date: 2019-12-19 14:21:42
- * @LastEditTime : 2019-12-31 01:20:11
+ * @LastEditTime : 2019-12-31 01:24:01
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \activity-h5\src\page\actNewYear\entry.js
@@ -213,7 +213,6 @@ var activity = {
   //展示前三名
   showTop123(rankList) {
     const _rankList = [].concat(rankList);
-    var self = activity;
     const top = _rankList.length > 3 ? _rankList.splice(0, 3) : _rankList;
     top.forEach(({ img, orderCount, nickName }, index) => {
       $(`.top${index + 1}`).html(`
@@ -230,12 +229,10 @@ var activity = {
   //展示前三之后排名
   showLists(rankList) {
     $('.nothing').remove(); //移除
-    let self = activity;
-    
     const _lists = [].concat(rankList); 
     const lists = _lists.length > 3 ? _lists.splice(0, 3) : _lists;
-    self.appendLists(lists, 4);
-    _lists.length > 3 && self._showUpDown.down();
+    activity.appendLists(lists, 4);
+    _lists.length > 3 && activity._showUpDown.down();
   },
 
   //append 排行榜
@@ -360,36 +357,36 @@ var activity = {
     //活动结束之后
     isEarly() {
       let nowYear = this.nowTime.getFullYear(); //当前年
-      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay =  this.nowTime.getDate(); //当前日
+      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay = this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
-      let nowHours =  this.nowTime.getHours(); //当前时
-      let nowMinutes =  this.nowTime.getMinutes(); //当前分
-      let nowSeconds =  this.nowTime.getSeconds(); //当前秒
+      let nowHours = this.nowTime.getHours(); //当前时
+      let nowMinutes = this.nowTime.getMinutes(); //当前分
+      let nowSeconds = this.nowTime.getSeconds(); //当前秒
       activity.countDown = parseInt(Date.UTC(nowYear, nowMonth, nowDay, nowHours, nowMinutes, nowSeconds) - this.planStartTime); //倒计时
       return (now < this.planStartTime);
     },
     //在活动期间
     isTureTime() {
-      let nowYear =  this.nowTime.getFullYear(); //当前年
-      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay =  this.nowTime.getDate(); //当前日
+      let nowYear = this.nowTime.getFullYear(); //当前年
+      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay = this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
       return (now >= this.planStartTime && now <= this.planStopTime);
     },
     //活动结束之后
     isLayer() {
-      let nowYear =  this.nowTime.getFullYear(); //当前年
-      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay =  this.nowTime.getDate(); //当前日
+      let nowYear = this.nowTime.getFullYear(); //当前年
+      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay = this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
       return (now > this.planStopTime);
     },
     //活动结束之后 控制仅限1月2日可领取奖励。
     isCanReceive() {
-      let nowYear =  this.nowTime.getFullYear(); //当前年
-      let nowMonth =  this.nowTime.getMonth() + 1; //当前月，记得要加1
-      let nowDay =  this.nowTime.getDate(); //当前日
+      let nowYear = this.nowTime.getFullYear(); //当前年
+      let nowMonth = this.nowTime.getMonth() + 1; //当前月，记得要加1
+      let nowDay = this.nowTime.getDate(); //当前日
       let now = Date.UTC(nowYear, nowMonth, nowDay); // 将当前系统时间转化成以豪秒为单位
       return (now == this.getTrueTime);
     }
