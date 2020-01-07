@@ -5,9 +5,15 @@
 javascript eventloop
 
 - 抛在前面的问题：
+  * 补充一个问题： 为什么js为单线程？
   单线程如何做到异步？
   事件循环的过程是怎样的？
   macrotask 和 microtask 是什么，它们有何区别？
+  
+* js为单线程：  
+    1. js语言的一大特点就是单线程，也就是说，同一个时间只能做一件事。那么，为什么js不能有多个线程呢？这样能提高效率啊。
+  js的单线程，于它的用途有关。作为浏览器的脚本语言，js 的主要用途是与用户互动，以及操作DOM。 这决定了js语言的本质只能是单线程，因为浏览器只想让他做这件简单的事情，并不想复杂化。
+    2. 假设js 是多线程，假设有一个线程在某DOM节点上添加内容，另一个线程删除了这个节点，那这时候的浏览器应该以哪个线程为准呢？？所以会带来除了主次之分的各种复杂问题。
 
 - 单线程和异步
   提到 js，就会想到单线程，异步，那么单线程是如何做到异步的呢？概念先行，先要了解下单线程和异步之间的关系。
@@ -164,4 +170,168 @@ Tasks, microtasks, queues and schedules
 HTML 系列：macrotask 和 microtask
 http://www.ruanyifeng.com/blog/2014/10/event-loop.html
 
+
+2020/1/7补充：（阮一峰） 
+* 任务队列：
+  * 同步任务和异步任务咋来的？
+    - 单线程意味着，所有任务需要排队，任务一个一个执行。
+    - 如果排队是因为计算量大，CPU忙不过来，倒也算了，但是很多时候CPU是闲着的，因为IO设备（输入输出设备）很慢（比如Ajax操作从网络读取数据），不得不等着结果出来，再往下执行。
+    - js 设计者意识到，这时候主线程完全可以不管 I/O 这个挂起处于等待中的任务，完全可以先运行排在后面的任务，等到IO这边返回了结果再回头把挂起的任务执行。
+
+    于是，所有任务就被分成两种： 一种 同步， 一种 异步。
+      * 同步任务： 在主线程上排队执行的任务（这里会形成一个执行栈）
+      * 异步任务： 不进入主线程，进入'任务队列'的任务，只有'任务队列'通知主线程，某个异步任务可以执行了，然后该任务在主线程执行完同步任务才会进入执行栈排队，等待被执行。
+
+  * 具体来说，异步执行的运行机制如下。（同步执行也是如此，因为它可以被视为没有异步任务的异步执行。）
+    1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+    2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+    3. 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，就会结束等待状态，进入执行栈，js 开始执行。
+    4. 主线程不断重复上面的第三步。
+
+  其实就是只要主线程空了，就会去读取"任务队列"，这就是JavaScript的运行机制。这个过程会不断重复。
+
+* 事件和回调函数：
+  - "任务队列"是一个事件的队列（也可以理解成消息的队列），IO设备完成一项任务，就在"任务队列"中添加一个事件，表示相关的异步任务可以进入"执行栈"了。主线程读取"任务队列"，就是读取里面有哪些事件。
+
+  - "任务队列"中的事件，除了IO设备的事件以外，还包括一些用户产生的事件（比如鼠标点击、页面滚动等等）。只要指定过回调函数，这些事件发生时就会进入"任务队列"，等待主线程读取。
+
+  - 所谓"回调函数"（callback），就是那些会被主线程挂起来的代码。异步任务必须指定回调函数，当主线程开始执行异步任务，就是执行对应的回调函数。
+
+  - "任务队列"是一个先进先出的数据结构，排在前面的事件，优先被主线程读取。主线程的读取过程基本上是自动的，只要执行栈一清空，"任务队列"上第一位的事件就自动进入主线程。但是，由于存在后文提到的"定时器"功能，主线程首先要检查一下执行时间，某些事件只有到了规定的时间，才能返回主线程。
+
+* Event Loop （事件循环）
+主线程从"任务队列"中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）。
+  为了更好地理解Event Loop，看图：
+
+  ![事件循环](http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100802.png)
+
+  上面这张图中，主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码有需要异步处理的(即各种WebAPI)，它们在"任务队列"中加入需要在这些api中执行的各种回调事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取"任务队列"，依次执行这些回调函数。
+
+  即js主线程总是先执行栈中的代码（同步任务），再去读取执行"任务队列"（异步任务）。
+
+* 自我理解：
+  code： 
+    var a = 3;
+    for(var i = 0; i<1000; i++) { 
+      console.log(i); //假如此处是我需要在页面出来之后才可能用到的东西，我不输出任何东西，你还会以为是我浏览器太卡了。其实我在做着准备工作呢。但是对于用户来缩，眼睛就是真相，视觉决定你的优异，所以这种时候我们就可以先耍赖我们先把她想看的展示出来告诉她我们完成了，然后我们再去准备我们还没有准备完的。这样她第一感觉就是我们做完了，等到她再去看里面的一些细节的时候，我们已经偷偷的搞定了。
+    };// 按照js同步执行原则，执行完这个会输出0-999 这一千个值。然后输出后面的a值 这样的话我需要等待的输出a值的效果就会很忙显得很卡顿。
+
+    console.log('我完成啦~ a:'+ a);
+
+    为了达到上面说的效果，我们只需要将耗时的事件放异步执行就好了。即：
+
+    var a = 3;
+    setTimeout(() => {for(var i = 0; i<1000; i++) { 
+      console.log(i);
+    }},0);
+
+    console.log('a:'+ a); //先输出a 在去执行上面的1000个数
+
+
+
 # node 篇
+Node.js也是单线程的Event Loop，但是它的运行机制不同于浏览器环境。
+
+![node循环事件](http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100803.png)
+
+根据上图，Node.js的运行机制如下。
+  1. V8引擎解析JavaScript脚本。
+  2. 解析后的代码，调用Node API。
+  3. libuv库负责Node API的执行。它将不同的任务分配给不同的线程，形成一个Event Loop（事件循环），以异步的方式将任务的执行结果返回给V8引擎。
+  4. V8引擎再将结果返回给用户。
+ 
+这里我要放上一张关于 浏览器和nodejs 对于 宏任务和微任务 支持与否的区别图：
+
+  宏任务图 / 微任务图
+
+很明显，除了setTimeout和setInterval这两个方法，Node.js还提供了另外两个与"任务队列"有关的方法：process.nextTick和setImmediate。它们可以帮助我们加深对"任务队列"的理解。
+  * process.nextTick方法可以在当前"执行栈"的尾部----下一次Event Loop（主线程读取"任务队列"）之前----触发回调函数。也就是说，它指定的任务总是发生在所有异步任务之前。[微任务（=浏览器支持的promise.then），一定是在同步任务执行完之后执行，然后才是异步任务队列]
+  * setImmediate方法则是在当前"任务队列"的尾部添加事件，也就是说，它指定的任务总是在下一次Event Loop时执行，这与setTimeout(fn, 0)很像。[宏任务（=等同于setTimeout(fn,0)），是异步任务，会在同步任务和微任务执行完后执行]
+
+  1. 来吧，先看看process.nextTick例子：
+
+      process.nextTick(function A() {
+      console.log(1);
+        process.nextTick(function B(){console.log(2);});
+      });
+
+      setTimeout(function timeout() {
+        console.log('TIMEOUT FIRED');
+      }, 0)
+      // 1
+      // 2
+      // TIMEOUT FIRED
+    
+  上面代码中，由于process.nextTick方法指定的回调函数，总是在当前"执行栈"的尾部触发，所以不仅函数A比setTimeout指定的回调函数timeout先执行，而且函数B也比timeout先执行。这说明，如果有多个process.nextTick语句（不管它们是否嵌套），将全部在当前"执行栈"执行。
+
+  2. 现在，再看setImmediate。
+    - code1:
+        setImmediate(function A() {
+          console.log(1);
+          setImmediate(function B(){console.log(2);});
+        });
+
+        setTimeout(function timeout() {
+          console.log('TIMEOUT FIRED');
+        }, 0);
+
+        //node1 输出答案不一
+            // 1
+            // TIMEOUT FIRED
+            // 2
+
+            // TIMEOUT FIRED
+            // 1
+            // 2
+
+    - code2:
+        setImmediate(function (){
+          setImmediate(function A() {
+            console.log(1);
+            setImmediate(function B(){console.log(2);});
+          });
+          
+          setTimeout(function timeout() {
+            console.log('TIMEOUT FIRED');
+          }, 0);
+        });
+
+        // node2 答案不一
+            //   1
+            //   TIMEOUT FIRED
+            //   2
+            
+            //   TIMEOUT FIRED
+            //   1
+            //   2
+
+* code1 和 code2 的输出结果总是不稳定的问题怎么解决呢？
+  1. 方法一：确保这个循环的执行速度会超过定时器的倒计时
+        setTimeout(_ => console.log('setTimeout'))
+        setImmediate(_ => console.log('setImmediate'))
+        let countdown = 1e9;
+        while(countdown--) { } // 我们确保这个循环的执行速度会超过定时器的倒计时，导致这轮循环没有结束时，setTimeout已经可以执行回调了，所以会先执行`setTimeout`再结束这一轮循环，也就是说开始执行`setImmediate`
+
+        // 执行结果：一定是先输出setTimeOut
+            // setTimeout
+            // setImmediate
+
+  2. 方法二: 如果在另一个宏任务中，必然是setImmediate先执行：
+        require('fs').readFile(__dirname, _ => {
+          setTimeout(_ => console.log('timeout'))
+          setImmediate(_ => console.log('immediate'))
+        }); 
+
+        // 执行结果：
+            // immediate
+            // timeout
+
+* process.nextTick
+  就像上边说的，这个可以认为是一个类似于Promise和MutationObserver的微任务实现，在代码执行的过程中可以随时插入nextTick，并且会保证在下一个宏任务开始之前所执行。
+
+    - 像下面这样的递归调用process.nextTick，将会没完没了，主线程根本不会去读取"事件队列"！
+        process.nextTick(function foo() {
+          process.nextTick(foo);
+        });
+
+    - 由于process.nextTick指定的回调函数是在本次"事件循环"触发，而setImmediate指定的是在下次"事件循环"触发，所以很显然，前者总是比后者发生得早，而且执行效率也高（因为不用检查"任务队列"）。
