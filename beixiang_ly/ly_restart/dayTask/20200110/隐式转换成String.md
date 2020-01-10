@@ -64,8 +64,75 @@ console.log(a); // "123"
    2. 【+ - * / %(算术运算符) 】
    3. 【> < >= <= == != === !=== (关系运算符)】
 3. 转成boolean类型：!（逻辑非运算符）
-  
+
+
+
+**string类型和String类型**
+
+对于typeof ，js的数据类型来说，string是字符串类型，但是String类型却是object类型。
+
+* 先上个代码看看
+  * var l = 'liao';
+  * var y = new String('ying');
+  * console.log(typeof l); // string
+  * console.log(typeof y); //object
+  * b instanceof String; // true
+
+1. string
+
+2. String
+
+   **属性**
+
+   * 字符串String类型的每个实例都有一个length属性，表示字符串中的字符个数。由于字符串是不可变的，所以字符串的长度也不可变
+
+     * 字符串的length属性不会在for/in循环中枚举，也不能通过delete操作符删除
+
+     * [注意]对于字符串s来说，最后一个字符的索引是s.length - 1
+
+   ```JS
+           var str = "test";
+           console.log(str.length);//4
+           str.length = 6;
+           console.log(str,str.length);//"test",4
+   ```
+
+   **实例方法**
+
+   - 字符串String对象有多达20多个实例方法，包括toString()、toLocaleString()、valueOf()从Object对象继承的3种对象通用方法，chartAt()、中括号[]、charCodeAt()和fromCharCode()4种访问字符方法，concat()和加号+这2种字符串拼接方法，slice()、substr()和substring()3种创建子字符串方法，toLowerCase()、toLocaleLowerCase()、toUpperCase()、toLocaleUpperCase()这4种大小写转换方法，indexOf()和lastIndexOf()这2种查找字符串位置的方法，match()、search()、replace()、split()这4种正则匹配方法以及去除首尾空格的trim()方法和字符串比较的localeCompare()方法
+
+   **对象通用方法**
+
+   - String类型是与字符串（js基本类型string）对应的**包装类型**，继承了Object对象的通用方法toString()、toLocaleString()、valueOf()这三个方法。
+
+     - 【toString()】
+
+       ​	toString()方法返回string的原始字符串值
+
+     - 【toLocaleString()】
+
+       ​	toLocaleString()方法返回string的原始字符串值
+
+     - 【valueOf()】
+
+       ​	valueOf()方法返回string的原始字符串值
+
+   - **code：**
+
+```JS
+            console.log("test".valueOf());//"test"
+            console.log("test".toString());//"test"
+            console.log("test".toLocaleString());//"test"
+```
+
+
+
+
 
 参考原文： <https://blog.csdn.net/JEFF_luyiduan/article/details/86975650>
 
 <https://blog.csdn.net/itcast_cn/article/details/82887895>
+
+<https://www.jianshu.com/p/3bfa7442a2bd>
+
+<https://www.cnblogs.com/xiaohuochai/p/5612962.html>
