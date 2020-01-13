@@ -1,32 +1,28 @@
 <!--
  * @Author: your name
  * @Date: 2020-01-09 13:46:39
- * @LastEditTime : 2020-01-12 00:24:42
+ * @LastEditTime : 2020-01-13 23:55:33
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\LY_Restart\9_ms\艾耕科技\readme.md
  -->
   艾耕科技：
-    1. 静态页面
-    2. 数据json 化
+    1. 静态页面 Carousel
+    2. 数据json 化  demo1 [demo2]
 
 
-1. 
-  // 将字符串转化json对象：
-  // var json = JSON.parse(str); //专门针对单引号套双引号的严格格式。
-  // var json = eval("(" + str + ")");
-  // var json = (new Function("return " + str))();
+* 将字符串转化json对象：
+  var json = JSON.parse(str); //专门针对单引号套双引号的严格格式。
+  var json = eval("(" + str + ")");
+  var json = (new Function("return " + str))();
 
   function strToJson(str) {
     // var json = (new Function("return " + str))();
     var json = eval("(" + str + ")");
     console.log(json);
   }
-
-  // var str =
-  //   "奴隶社会,非洲,古埃及文明,金字塔,亚洲,两河流域文明,汉谟拉比法典,,古印度,种姓制度,,,佛教的创立,欧洲,希腊,希腊城邦,,,雅典民主,,罗马,城邦,,,帝国的征服与扩展,,希腊罗马古典文化,建筑艺术,,,公历";
-    
-  strToJson('{"name":"小明","age":18}');
+  
+  strToJson('{"name":"小明","age":18}'); // 专门针对单引号套双引号的严格格式。
 
 # Array 对象属性
 
