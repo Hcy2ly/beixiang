@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-01-14 21:54:47
- * @LastEditTime: 2020-01-14 21:54:51
- * @LastEditors: your name
+ * @LastEditTime : 2020-01-15 19:33:49
+ * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\LY_Restart\书籍推荐\readme.md
  -->
@@ -28,3 +28,35 @@
   css相关的书籍推荐：
 
   10.《css权威指南》，css基础知识点那是讲得非常清楚的。什么层叠优先级、line-height啥的。不是随便一本书都敢叫“权威指南”的。
+
+
+# 学习网站推荐：
+  1. css/stylus  张鑫旭
+
+  2. git 	廖雪峰
+  https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/001434499763408e24c210985d34edcabbca944b4239e20000
+
+  https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013744142037508cf42e51debf49668810645e02887691000
+  Git：
+  git init
+  git add (+文件名）
+  git commit -m '注释'
+  git log --oneline
+  git reset --hard (1bf2b15为某个文件的hash码）
+
+  3. es6  	伢羽老师
+
+
+  4. jquery
+  http://jqweui.cn/components#buttons?tdsourcetag=s_pcqq_aiomsg
+
+  5. weui
+  https://www.bootcdn.cn/weui/
+
+  6. json格式化工具
+  http://www.bejson.com
+
+  7. leetcode讲解 ...
+
+  8. http://open.souche.com/  大搜车
+  这个系统的核心贡献是设计了logo。。另外给实习生打打下手调调像素什么的
