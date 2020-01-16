@@ -1,12 +1,12 @@
 <!--
- * @Author: your name
+ * @Author: Ly
  * @Date: 2020-01-09 13:46:39
  * @LastEditTime : 2020-01-13 23:55:33
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\LY_Restart\9_ms\艾耕科技\readme.md
  -->
-  艾耕科技：
+    艾耕科技：
     1. 静态页面 Carousel
     2. 数据json 化  demo1 [demo2]
 
@@ -103,6 +103,7 @@ pop() 方法用于删除并返回数组的最后一个元素。
   1. 第一个是增强for循环，是不使用下标的一种遍历方式，简单高效，缺点是不能使用下标。
   2. 如果想要循环一个json就用第一个，如果想循环一个数组就用第二个。
   3. 前者循环的是属性，后者循环的才是数组。 
+
     - 若项目中对数组属性进行了扩展，那切记不能使用前者，否则在循环数组时扩展的函数体也会被当做数据返回。 
     - var data = { p1:1, p2:"b" }; for (var i in data){ console.log(i); alert(eval("data." + i)); } 
       //p1 

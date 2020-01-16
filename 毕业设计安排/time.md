@@ -1,7 +1,7 @@
 <!--
  * @Author: LY
  * @Date: 2020-01-14 23:27:56
- * @LastEditTime : 2020-01-15 19:42:29
+ * @LastEditTime : 2020-01-16 15:13:27
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang_ly\毕业设计安排\time.md
@@ -19,7 +19,7 @@
 
 6. 论文评阅并申请校外答辩 4.27-5.8
 
-7. 校外答辩 5.9-5.17
+7. 校外答辩 5.9-5.17j
 
 8. 论文评阅并校内答辩 5.18-5.31
 
