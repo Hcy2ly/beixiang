@@ -237,6 +237,8 @@ db 命令先了当前操作的文档（数据库）：
 
 ![img](https://atts.w3cschool.cn/attachments/day_160812/201608121717378222.png)
 
+
+
 ## 数据库
 
 一个mongodb中可以建立多个数据库。
@@ -282,7 +284,7 @@ local
 
 在下一个章节我们将详细讲解MongoDB中命令的使用。
 
-数据库也通过名字来标识。数据库名可以是满足以下条件的任意UTF-8字符串。
+**数据库也通过名字来标识。数据库名可以是满足以下条件的任意UTF-8字符串。**
 
 - 不能是空字符串（"")。
 - 不得含有' '（空格)、.、$、/、\和\0 (空宇符)。
@@ -292,8 +294,12 @@ local
 有一些数据库名是保留的，可以直接访问这些有特殊作用的数据库。
 
 - **admin**： 从权限的角度来看，这是"root"数据库。要是将一个用户添加到这个数据库，这个用户自动继承所有数据库的权限。一些特定的服务器端命令也只能从这个数据库运行，比如列出所有的数据库或者关闭服务器。
+
 - **local:** 这个数据永远不会被复制，可以用来存储限于本地单台服务器的任意集合
+
 - **config**: 当Mongo用于分片设置时，config数据库在内部使用，用于保存分片的相关信息。
+
+  
 
 ## 文档
 
@@ -437,3 +443,159 @@ dbname.system.*
 | Binary Data        | 二进制数据。用于存储二进制数据。                             |
 | Code               | 代码类型。用于在文档中存储 JavaScript 代码。                 |
 | Regular expression | 正则表达式类型。用于存储正则表达式。                         |
+
+
+
+***
+
+​	每一个你不满意的现在，都有一个你没有努力的曾经。
+
+****
+
+
+
+# MongoDB 连接
+
+******
+
+## 描述
+
+在本教程我们将讨论MongoDB的不同连接方式。
+
+------
+
+## 启动 MongoDB服务
+
+在前面的教程中，我们已经讨论[了如何启动MongoDB服](https://www.w3cschool.cn/mongodb/mongodb-window-install.html)务，你只需要在MongoDB安装目录的bin目录下执行'mongod'即可。
+
+执行启动操作后，mongodb在输出一些必要信息后不会输出任何信息，之后就等待连接的建立，当连接被建立后，就会开始打印日志信息。
+
+你可以使用MongoDB shell 来连接 MongoDB 服务器。你也可以使用PHP来连接mongodb。本教程我们会使用 MongoDB shell来连接Mongodb服务，之后的章节我们将会介绍如何通过php 来连接MongoDB服务。
+
+默认情况下，MongoDB的启动端口为27017。比MongoDB启动端口大1000的端口为MongoDB的web用户界面，你可以再浏览器中输入http://localhost:28017 来访问MongoDB的web用户界面。
+
+ps：
+
+1. 第一步  管理员打开powershell 
+2. 第二步  cd C:\tools\mongodb\bin  
+3. 第三步  ./mongod --dbpath C:\tools\mongodb\data（data里面没有数据）
+
+------
+
+## 通过shell连接MongoDB服务
+
+你可以通过执行以下命令来连接MongoDB的服务。
+
+**注意：**localhost为主机名，这个选项是必须的：
+
+- 使用默认端口来连接 MongoDB 的服务。
+
+```linux
+		mongodb://localhost
+```
+
+- 通过 shell 连接 MongoDB 服务：
+
+```linux
+        $ ./mongo
+        MongoDB shell version: 4.0.9
+        connecting to: test
+        ... 
+```
+
+当你执行以上命令时，你可以看到以下输出结果：
+
+​	![连接MongoDB服务](C:\Users\lz\Documents\笔记\restart\images\mongod_localhost.png)
+
+这时候你返回查看运行 **./mongod** 命令的窗口，可以看到是从哪里连接到MongoDB的服务器，您可以看到如下信息：
+
+```
+……省略信息……
+2020-01-23T23:56:07.135+0800 I -        [conn3] end connection 127.0.0.1:56872 (1 connection now open)
+2020-01-23T23:56:10.581+0800 I NETWORK  [thread1] connection accepted from 127.0.0.1:56966 #4 (1 connection now open)
+2020-01-23T23:56:10.582+0800 I NETWORK  [conn4] received client metadata from 127.0.0.1:56966 conn4: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.4.16-26-g315d49ee78" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } } # 该行表明一个来自本机的连接
+
+……省略信息……
+```
+
+------
+
+## MongoDB连接命令格式
+
+使用用户名和密码连接到MongoDB服务器，你必须使用 'username:password@hostname/dbname' 格式，'username'为用户名，'password' 为密码。
+
+使用用户名和密码连接登陆到默认数据库：<、p>
+
+mongodb://mongo_admin:AxB6_w3r@localhost/
+
+以上命令中，用户 mongo_admin使用密码AxB6_w3r连接到本地的MongoDB服务上。输出结果如下所示：<、p> ![mongodb-connect-with-username-and-password-to-default-database](https://7n.w3cschool.cn/statics/images/course/2013/10/mongodb-connect-with-username-and-password-to-default-database.png)
+
+使用用户名和密码连接登陆到指定数据库：
+
+连接到指定数据库的格式如下：
+
+mongodb://mongo_admin:AxB6_w3r@localhost/w3r
+
+------
+
+## 更多连接实例
+
+连接本地数据库服务器，端口是默认的。
+
+mongodb://localhost
+
+使用用户名fred，密码foobar登录localhost的admin数据库。
+
+mongodb://fred:foobar@localhost
+
+使用用户名fred，密码foobar登录localhost的baz数据库。
+
+mongodb://fred:foobar@localhost/baz
+
+连接 replica pair, 服务器1为example1.com服务器2为example2。
+
+mongodb://example1.com:27017,example2.com:27017
+
+连接 replica set 三台服务器 (端口 27017, 27018, 和27019):
+
+mongodb://localhost,localhost:27018,localhost:27019
+
+连接 replica set 三台服务器, 写入操作应用在主服务器 并且分布查询到从服务器。
+
+mongodb://host1,host2,host3/?slaveOk=true
+
+直接连接第一个服务器，无论是replica set一部分或者主服务器或者从服务器。
+
+mongodb://host1,host2,host3/?connect=direct;slaveOk=true
+
+当你的连接服务器有优先级，还需要列出所有服务器，你可以使用上述连接方式。
+
+安全模式连接到localhost:
+
+mongodb://localhost/?safe=true
+
+以安全模式连接到replica set，并且等待至少两个复制服务器成功写入，超时时间设置为2秒。
+
+mongodb://host1,host2,host3/?safe=true;w=2;wtimeoutMS=2000
+
+------
+
+## 参数选项说明
+
+标准格式：
+
+mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
+
+标准的连接格式包含了多个选项(options)，如下所示：
+
+| 选项                | 描述                                                         |
+| :------------------ | :----------------------------------------------------------- |
+| replicaSet=name     | 验证replica set的名称。 Impliesconnect=replicaSet.           |
+| slaveOk=true\|false | true:在connect=direct模式下，驱动会连接第一台机器，即使这台服务器不是主。在connect=replicaSet模式下，驱动会发送所有的写请求到主并且把读取操作分布在其他从服务器。false: 在 connect=direct模式下，驱动会自动找寻主服务器. 在connect=replicaSet 模式下，驱动仅仅连接主服务器，并且所有的读写命令都连接到主服务器。 |
+| safe=true\|false    | true: 在执行更新操作之后，驱动都会发送getLastError命令来确保更新成功。(还要参考 wtimeoutMS).false: 在每次更新之后，驱动不会发送getLastError来确保更新成功。 |
+| w=n                 | 驱动添加 { w : n } 到getLastError命令. 应用于safe=true。     |
+| wtimeoutMS=ms       | 驱动添加 { wtimeout : ms } 到 getlasterror 命令. 应用于 safe=true. |
+| fsync=true\|false   | true: 驱动添加 { fsync : true } 到 getlasterror 命令.应用于 safe=true.false: 驱动不会添加到getLastError命令中。 |
+| journal=true\|false | 如果设置wie true, 同步到 journal (在提交到数据库前写入到实体中). 应用于 safe=true |
+| connectTimeoutMS=ms | 可以打开连接的时间。                                         |
+| socketTimeoutMS=ms  | 发送和接受sockets的时间。                                    |
