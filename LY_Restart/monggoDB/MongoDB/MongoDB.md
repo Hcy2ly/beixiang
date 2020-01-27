@@ -649,3 +649,484 @@ test    0.078GB
 
 MongoDB 中默认的数据库为 test，如果你没有创建新的数据库，集合将存放在 test 数据库中。
 
+# MongoDB 删除数据库
+
+## MongoDB 删除数据库
+
+### 语法
+
+MongoDB 删除数据库的语法格式如下：
+
+```
+db.dropDatabase()
+```
+
+删除当前数据库，默认为 test，你可以使用 db 命令查看当前数据库名。
+
+### 实例
+
+以下实例我们删除了数据库 youj。
+
+首先，查看所有数据库：
+
+```
+> show dbs
+local   0.078GB
+youj  0.078GB
+test    0.078GB
+```
+
+接下来我们切换到数据库 youj：
+
+```
+> use youj
+switched to db youj
+> 
+```
+
+执行删除命令：
+
+```
+> db.dropDatabase()
+{ "dropped" : "youj", "ok" : 1 }
+```
+
+最后，我们再通过 show dbs 命令数据库是否删除成功：
+
+```
+> show dbs
+local  0.078GB
+test   0.078GB
+> 
+```
+
+### 删除集合
+
+集合删除语法格式如下：
+
+```
+db.collection.drop()
+```
+
+# MongoDB 插入文档
+
+## MongoDB 插入文档
+
+本章节中我们将向大家介绍如何将数据插入到MongoDB的集合中。
+
+文档的数据结构和JSON基本一样。
+
+所有存储在集合中的数据都是BSON格式。
+
+BSON是一种类json的一种二进制形式的存储格式,简称Binary JSON。
+
+## 插入文档
+
+MongoDB 使用 insert() 或 save() 方法向集合中插入文档，语法如下：
+
+```
+db.COLLECTION_NAME.insert(document)
+```
+
+### 实例
+
+以下文档可以存储在 MongoDB 的 w3cschool.cn数据库 的 col集合中：
+
+```
+>db.col.insert({title: 'MongoDB 教程', 
+    description: 'MongoDB 是一个 Nosql 数据库',
+    by: 'w3cschool',
+    url: 'http://www.w3cschool.cn',
+    tags: ['mongodb', 'database', 'NoSQL'],
+    likes: 100
+})
+```
+
+以上实例中 col 是我们的集合名，前一章节我们已经创建过了，如果该集合不在该数据库中， MongoDB 会自动创建该集合并插入文档。
+
+查看已插入文档：
+
+```
+> db.col.find()
+{ "_id" : ObjectId("56064886ade2f21f36b03134"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "w3cschool", "url" : "http://www.w3cschool.cn", "tags" : [ "mongodb", "database", "NoSQL" ], "likes" : 100 }
+> 
+```
+
+我们也可以将数据定义为一个变量，如下所示：
+
+
+
+```
+> document=({title: 'MongoDB 教程', 
+    description: 'MongoDB 是一个 Nosql 数据库',
+    by: 'w3cschool',
+    url: 'http://www.w3cschool.cn',
+    tags: ['mongodb', 'database', 'NoSQL'],
+    likes: 100
+});
+```
+
+执行后显示结果如下：
+
+```
+{
+        "title" : "MongoDB 教程",
+        "description" : "MongoDB 是一个 Nosql 数据库",
+        "by" : "w3cschool",
+        "url" : "http://www.w3cschool.cn",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+```
+
+执行插入操作：
+
+```
+> db.col.insert(document)
+WriteResult({ "nInserted" : 1 })
+> 
+```
+
+插入文档你也可以使用 db.col.save(document) 命令。如果不指定 _id 字段 save() 方法类似于 insert() 方法。如果指定 _id 字段，则会更新该 _id 的数据。
+
+# MongoDB 更新文档
+
+## MongoDB使用update()函数更新数据
+
+## 描述
+
+本章节我们将开始学习如何更新MongoDB中的集合数据。
+
+MongoDB数据更新可以使用update()函数。
+
+db.collection.update( criteria, objNew, upsert, multi )
+
+update()函数接受以下四个参数：
+
+- **criteria** : update的查询条件，类似sql update查询内where后面的。
+- **objNew** : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的
+- **upsert** : 这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+- **multi** : mongodb默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
+- 
+
+在本教程中我们使用的数据库名称为"myinfo"，集合名称为"userdetails"，以下为插入的数据：
+
+ \> document=({"user_id" : "MNOPBWN","password" :"MNOPBWN" ,"date_of_join" : "16/10/2010" 
+,"education" :"M.C.A." , "profession" : "CONSULTANT","interest" : "MUSIC","community_name" :["MODERN MUSIC", 
+"CLASSICAL MUSIC","WESTERN MUSIC"],"community_moder_id" : ["MR. BBB","MR. JJJ","MR MMM"],"community_members" : 
+[500,200,1500],"friends_id" : ["MMM123","NNN123","OOO123"],"ban_friends_id" :["BAN123","BAN456","BAN789"]});
+
+\> db.userdetails.insert(document)
+
+\> document=({"user_id" : "QRSTBWN","password" :"QRSTBWN" ,"date_of_join" : "17/10/2010" ,"education" :"M.B.A." 
+, "profession" : "MARKETING","interest" : "MUSIC","community_name" :["MODERN MUSIC", "CLASSICAL MUSIC","WESTERN 
+MUSIC"],"community_moder_id" : ["MR. BBB","MR. JJJ","MR MMM"],"community_members" : [500,200,1500],"friends_id" :
+ ["MMM123","NNN123","OOO123"],"ban_friends_id" :["BAN123","BAN456","BAN789"]});
+
+\> db.userdetails.insert(document)
+
+## update() 命令
+
+如果我们想将"userdetails"集合中"user_id"为"QRSTBWN"的"password"字段修改为"NEWPASSWORD"，那么我们可以使用update()命令来实现（如下实例所示）。
+
+如果criteria参数匹配集合中的任何一条数据，它将会执行替换命令，否则会插入一条新的数据。
+
+以下实例将更新第一条匹配条件的数据：
+
+\> db.userdetails.update({"user_id" : "QRSTBWN"},{"user_id" : "QRSTBWN","password" :"NEWPASSWORD" 
+,"date_of_join" : "17/10/2010" ,"education" :"M.B.A." , "profession" : "MARKETING","interest" : 
+"MUSIC","community_name" :["MODERN MUSIC", "CLASSICAL MUSIC","WESTERN MUSIC"],"community_moder_id" : ["MR. 
+BBB","MR. JJJ","MR MMM"],"community_members" : [500,200,1500],"friends_id" : ["MMM123","NNN123","OOO123"],"ban_friends_id" :["BAN123","BAN456","BAN789"]});
+
+![update-data-into-mongodb-comand](https://7n.w3cschool.cn/statics/images/course/update-data-into-mongodb-comand.gif)
+
+## 查看集合中更新后的数据
+
+我们可以使用以下命令查看数据是否更新：
+
+\>db.userdetails.find();
+
+![update-data-into-mongodb-view](https://7n.w3cschool.cn/statics/images/course/2013/10/update-data-into-mongodb-view.gif)
+
+## 更多实例
+
+只更新第一条记录：
+
+ db.test0.update( { "count" : { $gt : 1 } } , { $set : { "test2" : "OK"} } ); 
+
+全部更新：
+
+ db.test0.update( { "count" : { $gt : 3 } } , { $set : { "test2" : "OK"} },false,true ); 
+
+只添加第一条：
+
+ db.test0.update( { "count" : { $gt : 4 } } , { $set : { "test5" : "OK"} },true,false ); 
+
+全部添加加进去:
+
+ db.test0.update( { "count" : { $gt : 5 } } , { $set : { "test5" : "OK"} },true,true ); 
+
+全部更新：
+
+ db.test0.update( { "count" : { $gt : 15 } } , { $inc : { "count" : 1} },false,true );
+
+只更新第一条记录：
+
+ db.test0.update( { "count" : { $gt : 10 } } , { $inc : { "count" : 1} },false,false );
+
+# MongoDB 删除文档
+
+## MongoDB 删除文档
+
+在前面的几个章节中我们已经学习了MongoDB中如何为集合添加数据和更新数据。在本章节中我们将继续学习MongoDB集合的删除。
+
+MongoDB remove()函数是用来移除集合中的数据。
+
+MongoDB数据更新可以使用update()函数。在执行remove()函数前先执行find()命令来判断执行的条件是否正确，这是一个比较好的习惯。
+
+### 语法
+
+remove() 方法的基本语法格式如下所示：
+
+```
+db.collection.remove(
+   <query>,
+   <justOne>
+)
+```
+
+如果你的 MongoDB 是 2.6 版本以后的，语法格式如下：
+
+```
+db.collection.remove(
+   <query>,
+   {
+     justOne: <boolean>,
+     writeConcern: <document>
+   }
+)
+```
+
+**参数说明：**
+
+- **query** :（可选）删除的文档的条件。
+- **justOne** : （可选）如果设为 true 或 1，则只删除一个文档。
+- **writeConcern** :（可选）抛出异常的级别。
+
+### 实例
+
+以下文档我们执行两次插入操作：
+
+```
+>db.col.insert({title: 'MongoDB 教程', 
+    description: 'MongoDB 是一个 Nosql 数据库',
+    by: 'w3cschool',
+    url: 'http://www.w3cschool.cn',
+    tags: ['mongodb', 'database', 'NoSQL'],
+    likes: 100
+})
+```
+
+使用 find() 函数查询数据：
+
+```
+> db.col.find()
+{ "_id" : ObjectId("56066169ade2f21f36b03137"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "w3cschool", "url" : "http://www.w3cschool.cn", "tags" : [ "mongodb", "database", "NoSQL" ], "likes" : 100 }
+{ "_id" : ObjectId("5606616dade2f21f36b03138"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "w3cschool", "url" : "http://www.w3cschool.cn", "tags" : [ "mongodb", "database", "NoSQL" ], "likes" : 100 }
+```
+
+接下来我们移除 title 为 'MongoDB 教程' 的文档：
+
+```
+>db.col.remove({'title':'MongoDB 教程'})
+WriteResult({ "nRemoved" : 2 })           # 删除了两条数据
+>db.col.find()
+……                                        # 没有数据
+```
+
+------
+
+如果你只想删除第一条找到的记录可以设置 justOne 为 1，如下所示：
+
+```
+>db.COLLECTION_NAME.remove(DELETION_CRITERIA,1)
+```
+
+如果你想删除所有数据，可以使用以下方式（类似常规 SQL 的 truncate 命令）：
+
+```
+>db.col.remove({})
+>db.col.find()
+>
+```
+
+
+
+# MongoDB 查询文档
+
+## 
+
+## MongoDB 查询文档
+
+### 语法
+
+MongoDB 查询数据的语法格式如下：
+
+```
+>db.COLLECTION_NAME.find()
+```
+
+find() 方法以非结构化的方式来显示所有文档。
+
+如果你需要以易读的方式来读取数据，可以使用 pretty() 方法，语法格式如下：
+
+```
+>db.col.find().pretty()
+```
+
+pretty() 方法以格式化的方式来显示所有文档。
+
+### 实例
+
+以下实例我们查询了集合 col 中的数据：
+
+```
+> db.col.find().pretty()
+{
+        "_id" : ObjectId("56063f17ade2f21f36b03133"),
+        "title" : "MongoDB 教程",
+        "description" : "MongoDB 是一个 Nosql 数据库",
+        "by" : "w3cschool",
+        "url" : "http://www.w3cschool.cn",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+```
+
+除了 find() 方法之外，还有一个 findOne() 方法，它只返回一个文档。
+
+------
+
+## MongoDB 与 RDBMS Where 语句比较
+
+如果你熟悉常规的 SQL 数据，通过下表可以更好的理解 MongoDB 的条件语句查询：
+
+| 操作       | 格式                     | 范例                                        | RDBMS中的类似语句        |
+| ---------- | ------------------------ | ------------------------------------------- | ------------------------ |
+| 等于       | `{<key>:<value>`}        | `db.col.find({"by":"w3cschool"}).pretty()`  | `where by = 'w3cschool'` |
+| 小于       | `{<key>:{$lt:<value>}}`  | `db.col.find({"likes":{$lt:50}}).pretty()`  | `where likes < 50`       |
+| 小于或等于 | `{<key>:{$lte:<value>}}` | `db.col.find({"likes":{$lte:50}}).pretty()` | `where likes <= 50`      |
+| 大于       | `{<key>:{$gt:<value>}}`  | `db.col.find({"likes":{$gt:50}}).pretty()`  | `where likes > 50`       |
+| 大于或等于 | `{<key>:{$gte:<value>}}` | `db.col.find({"likes":{$gte:50}}).pretty()` | `where likes >= 50`      |
+| 不等于     | `{<key>:{$ne:<value>}}`  | `db.col.find({"likes":{$ne:50}}).pretty()`  | `where likes != 50`      |
+
+------
+
+## MongoDB AND 条件
+
+MongoDB 的 find() 方法可以传入多个键(key)，每个键(key)以逗号隔开，及常规 SQL 的 AND 条件。
+
+语法格式如下：
+
+```
+>db.col.find({key1:value1, key2:value2}).pretty()
+```
+
+### 实例
+
+以下实例通过 **by** 和 **title** 键来查询 **w3cschool** 中 **MongoDB 教程** 的数据
+
+```
+> db.col.find({"by":"w3cschool", "title":"MongoDB 教程"}).pretty()
+{
+        "_id" : ObjectId("56063f17ade2f21f36b03133"),
+        "title" : "MongoDB 教程",
+        "description" : "MongoDB 是一个 Nosql 数据库",
+        "by" : "w3cschool",
+        "url" : "http://www.w3cschool.cn",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+```
+
+以上实例中类似于 WHERE 语句：**WHERE by='w3cschool' AND title='MongoDB 教程'**
+
+------
+
+## MongoDB OR 条件
+
+MongoDB OR 条件语句使用了关键字 **$or**,语法格式如下：
+
+```
+>db.col.find(
+   {
+      $or: [
+	     {key1: value1}, {key2:value2}
+      ]
+   }
+).pretty()
+```
+
+### 实例
+
+以下实例中，我们演示了查询键 **by** 值为 w3cschool 或键 **title** 值为 **MongoDB 教程** 的文档。
+
+```
+>db.col.find({$or:[{"by":"w3cschool"},{"title": "MongoDB 教程"}]}).pretty()
+{
+        "_id" : ObjectId("56063f17ade2f21f36b03133"),
+        "title" : "MongoDB 教程",
+        "description" : "MongoDB 是一个 Nosql 数据库",
+        "by" : "w3cschool",
+        "url" : "http://www.w3cschool.cn",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+>
+```
+
+------
+
+## AND 和 OR 联合使用
+
+以下实例演示了 AND 和 OR 联合使用，类似常规 SQL 语句为： **'where likes>50 AND (by = 'w3cschool' OR title = 'MongoDB 教程')'**
+
+```
+>db.col.find({"likes": {$gt:50}, $or: [{"by": "w3cschool"},{"title": "MongoDB 教程"}]}).pretty()
+{
+        "_id" : ObjectId("56063f17ade2f21f36b03133"),
+        "title" : "MongoDB 教程",
+        "description" : "MongoDB 是一个 Nosql 数据库",
+        "by" : "w3cschool",
+        "url" : "http://www.w3cschool.cn",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+```
+
+
+
+
+
+
+  
