@@ -47,7 +47,7 @@ MongoDB 将数据存储为一个文档。MongoDB是一个基于分布式文件�
 
 - MongoDB安装简单。
 
-  
+  ![1580225254961](C:\Users\lz\AppData\Roaming\Typora\typora-user-images\1580225254961.png)
 
 ## 历史发展
 
@@ -616,13 +616,13 @@ use DATABASE_NAME
 
 ### 实例
 
-以下实例我们创建了数据库 youj:
+以下实例我们创建了数据库 database1:
 
 ```
-> use youj
-switched to db youj
+> use database1
+switched to db database1
 > db
-youj
+database1
 > 
 ```
 
@@ -630,24 +630,26 @@ youj
 
 ```
 > show dbs
-local  0.078GB
-test   0.078GB
+admin  0.000GB
+local  0.000GB
 > 
 ```
 
-可以看到，我们刚创建的数据库 youj 并不在数据库的列表中， 要显示它，我们需要向 youj 数据库插入一些数据。
+可以看到，我们刚创建的数据库 databsae1 并不在数据库的列表中， 要显示它，我们需要向 database1 数据库插入一些数据。
 
 ```
-> db.youj.insert({"name":"W3Cschool教程"})
+> db.database1.insert({"name":“数据库1”})
 WriteResult({ "nInserted" : 1 })
 > show dbs
-local   0.078GB
-youj  0.078GB
-test    0.078GB
+admin  0.000GB
+database1  0.000GB
+local  0.000GB
 > 
 ```
 
 MongoDB 中默认的数据库为 test，如果你没有创建新的数据库，集合将存放在 test 数据库中。
+
+**注意:** *在 MongoDB 中，集合只有在内容插入后才会创建! 就是说，创建集合(数据表)后要再插入一个文档(记录)，集合才会真正创建。*
 
 # MongoDB 删除数据库
 
@@ -730,7 +732,7 @@ db.COLLECTION_NAME.insert(document)
 
 ### 实例
 
-以下文档可以存储在 MongoDB 的 w3cschool.cn数据库 的 col集合中：
+以下文档可以存储在 MongoDB 的 w3cschool.cn数据库 的 col 集合中：
 
 ```
 >db.col.insert({title: 'MongoDB 教程', 
@@ -1128,5 +1130,276 @@ MongoDB OR 条件语句使用了关键字 **$or**,语法格式如下：
 
 
 
+# MongoDB 条件操作符
 
-  
+## 描述
+
+条件操作符用于比较两个表达式并从mongoDB集合中获取数据。
+
+在本章节中，我们将讨论如何在MongoDB中使用条件操作符。
+
+MongoDB中条件操作符有：
+
+- (>) 大于 - $gt
+- (<) 小于 - $lt
+- (>=) 大于等于 - $gte
+- (<= ) 小于等于 - $lte
+
+**我们使用的数据库名称为"runoob" 我们的集合名称为"col"，以下为我们插入的数据。**
+
+为了方便测试，我们可以先使用以下命令清空集合 "col" 的数据：
+
+```
+db.col.remove({})
+```
+
+插入以下数据
+
+```
+>db.col.insert({
+    title: 'PHP 教程', 
+    description: 'PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['php'],
+    likes: 200
+})
+>db.col.insert({title: 'Java 教程', 
+    description: 'Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['java'],
+    likes: 150
+})
+>db.col.insert({title: 'MongoDB 教程', 
+    description: 'MongoDB 是一个 Nosql 数据库',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['mongodb'],
+    likes: 100
+})
+```
+
+使用find()命令查看数据：
+
+```
+> db.col.find()
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
+## MongoDB (>) 大于操作符 - $gt
+
+如果你想获取 "col" 集合中 "likes" 大于 100 的数据，你可以使用以下命令：
+
+```
+db.col.find({likes : {$gt : 100}})
+```
+
+类似于SQL语句：
+
+```
+Select * from col where likes > 100;
+```
+
+输出结果：
+
+```
+> db.col.find({likes : {$gt : 100}})
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+> 
+```
+
+## MongoDB（>=）大于等于操作符 - $gte
+
+如果你想获取"col"集合中 "likes" 大于等于 100 的数据，你可以使用以下命令：
+
+```
+db.col.find({likes : {$gte : 100}})
+```
+
+类似于SQL语句：
+
+```
+Select * from col where likes >=100;
+```
+
+输出结果：
+
+
+
+```
+> db.col.find({likes : {$gte : 100}})
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+> 
+```
+
+## MongoDB (<) 小于操作符 - $lt
+
+如果你想获取"col"集合中 "likes" 小于 150 的数据，你可以使用以下命令：
+
+```
+db.col.find({likes : {$lt : 150}})
+```
+
+类似于SQL语句：
+
+```
+Select * from col where likes < 150;
+```
+
+输出结果：
+
+
+
+```
+> db.col.find({likes : {$lt : 150}})
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
+## MongoDB (<=) 小于等于操作符 - $lte
+
+如果你想获取"col"集合中 "likes" 小于等于 150 的数据，你可以使用以下命令：
+
+```
+db.col.find({likes : {$lte : 150}})
+```
+
+类似于SQL语句：
+
+```
+Select * from col where likes <= 150;
+```
+
+输出结果：
+
+```
+> db.col.find({likes : {$lte : 150}})
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
+## MongoDB 使用 (<) 和 (>) 查询 - $lt 和 $gt
+
+如果你想获取"col"集合中 "likes" 大于100，小于 200 的数据，你可以使用以下命令：
+
+```
+db.col.find({likes : {$lt :200, $gt : 100}})
+```
+
+类似于SQL语句：
+
+```
+Select * from col where likes>100 AND  likes<200;
+```
+
+输出结果：
+
+
+
+```
+> db.col.find({likes : {$lt :200, $gt : 100}})
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+> 
+```
+
+
+
+
+
+
+
+
+
+# MongoDB $type 操作符
+
+## 描述
+
+在本章节中，我们将继续讨论MongoDB中条件操作符 $type。
+
+$type操作符是基于BSON类型来检索集合中匹配的数据类型，并返回结果。
+
+MongoDB 中可以使用的类型如下表所示：
+
+| **类型**                | **数字** | **备注**         |
+| :---------------------- | :------- | :--------------- |
+| Double                  | 1        |                  |
+| String                  | 2        |                  |
+| Object                  | 3        |                  |
+| Array                   | 4        |                  |
+| Binary data             | 5        |                  |
+| Undefined               | 6        | 已废弃。         |
+| Object id               | 7        |                  |
+| Boolean                 | 8        |                  |
+| Date                    | 9        |                  |
+| Null                    | 10       |                  |
+| Regular Expression      | 11       |                  |
+| JavaScript              | 13       |                  |
+| Symbol                  | 14       |                  |
+| JavaScript (with scope) | 15       |                  |
+| 32-bit integer          | 16       |                  |
+| Timestamp               | 17       |                  |
+| 64-bit integer          | 18       |                  |
+| Min key                 | 255      | Query with `-1`. |
+| Max key                 | 127      |                  |
+
+**我们使用的数据库名称为"runoob" 我们的集合名称为"col"，以下为我们插入的数据。**
+
+简单的集合"col"：
+
+```
+>db.col.insert({
+    title: 'PHP 教程', 
+    description: 'PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['php'],
+    likes: 200
+})
+>db.col.insert({title: 'Java 教程', 
+    description: 'Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['java'],
+    likes: 150
+})
+>db.col.insert({title: 'MongoDB 教程', 
+    description: 'MongoDB 是一个 Nosql 数据库',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['mongodb'],
+    likes: 100
+})
+```
+
+使用find()命令查看数据：
+
+```
+> db.col.find()
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
+## MongoDB 操作符 - $type 实例
+
+如果想获取 "col" 集合中 title 为 String 的数据，你可以使用以下命令：
+
+```
+db.col.find({"title" : {$type : 2}})
+或
+db.col.find({"title" : {$type : 'string'}})
+```
+
+输出结果为：
+
+```
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
