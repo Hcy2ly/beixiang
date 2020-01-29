@@ -710,6 +710,137 @@ test   0.078GB
 db.collection.drop()
 ```
 
+
+
+# MongoDB 创建集合
+
+本章节我们为大家介绍如何使用 MongoDB 来创建集合。
+
+MongoDB 中使用 **createCollection()** 方法来创建集合。
+
+语法格式：
+
+```
+db.createCollection(name, options)
+```
+
+参数说明：
+
+- name: 要创建的集合名称
+- options: 可选参数, 指定有关内存大小及索引的选项
+
+options 可以是如下参数：
+
+| 字段        | 类型 | 描述                                                         |
+| :---------- | :--- | :----------------------------------------------------------- |
+| capped      | 布尔 | （可选）如果为 true，则创建固定集合。固定集合是指有着固定大小的集合，当达到最大值时，它会自动覆盖最早的文档。 **当该值为 true 时，必须指定 size 参数。** |
+| autoIndexId | 布尔 | （可选）如为 true，自动在 _id 字段创建索引。默认为 false。   |
+| size        | 数值 | （可选）为固定集合指定一个最大值，以千字节计（KB）。 **如果 capped 为 true，也需要指定该字段。** |
+| max         | 数值 | （可选）指定固定集合中包含文档的最大数量。                   |
+
+在插入文档时，MongoDB 首先检查固定集合的 size 字段，然后检查 max 字段。
+
+### 实例
+
+在 test 数据库中创建 runoob 集合：
+
+```
+> use test
+switched to db test
+> db.createCollection("runoob")
+{ "ok" : 1 }
+>
+```
+
+如果要查看已有集合，可以使用 **show collections** 或 **show tables** 命令：
+
+```
+> show collections
+runoob
+system.indexes
+```
+
+下面是带有几个关键参数的 createCollection() 的用法：
+
+创建固定集合 mycol，整个集合空间大小 6142800 KB, 文档最大个数为 10000 个。
+
+```
+> db.createCollection("mycol", { capped : true, autoIndexId : true, size : 
+   6142800, max : 10000 } )
+{ "ok" : 1 }
+>
+```
+
+在 MongoDB 中，你不需要创建集合。当你插入一些文档时，MongoDB 会自动创建集合。
+
+```
+> db.mycol2.insert({"name" : "菜鸟教程"})
+> show collections
+mycol2
+...
+```
+
+
+
+# MongoDB 删除集合
+
+本章节我们为大家介绍如何使用 MongoDB 来删除集合。
+
+MongoDB 中使用 drop() 方法来删除集合。
+
+**语法格式：**
+
+```
+db.collection.drop()
+```
+
+参数说明：
+
+- 无
+
+**返回值**
+
+如果成功删除选定集合，则 drop() 方法返回 true，否则返回 false。
+
+### 实例
+
+在数据库 mydb 中，我们可以先通过 **show collections** 命令查看已存在的集合：
+
+```
+>use mydb
+switched to db mydb
+>show collections
+mycol
+mycol2
+system.indexes
+runoob
+>
+```
+
+接着删除集合 mycol2 :
+
+```
+>db.mycol2.drop()
+true
+>
+```
+
+通过 show collections 再次查看数据库 mydb 中的集合：
+
+```
+>show collections
+mycol
+system.indexes
+runoob
+>
+```
+
+从结果中可以看出 mycol2 集合已被删除。
+
+
+
+
+
 # MongoDB 插入文档
 
 ## MongoDB 插入文档
@@ -966,11 +1097,45 @@ WriteResult({ "nRemoved" : 2 })           # 删除了两条数据
 >
 ```
 
+### 补充
 
+1. remove() 方法已经过时了，现在官方推荐使用 deleteOne() 和 deleteMany() 方法。
+
+   如删除集合下全部文档：
+
+   ```
+   db.inventory.deleteMany({})
+   ```
+
+   删除 status 等于 A 的全部文档：
+
+   ```
+   db.inventory.deleteMany({ status : "A" })
+   ```
+
+   删除 status 等于 D 的一个文档：
+
+   ```
+   db.inventory.deleteOne( { status: "D" } )
+   ```
+
+2. 
+
+   remove() 方法 并不会真正释放空间。
+
+   需要继续执行 db.repairDatabase() 来回收磁盘空间。
+
+   ```
+   > db.repairDatabase()
+   或者
+   > db.runCommand({ repairDatabase: 1 })
+   ```
+
+# 
 
 # MongoDB 查询文档
 
-## 
+*****
 
 ## MongoDB 查询文档
 
@@ -1307,9 +1472,43 @@ Select * from col where likes>100 AND  likes<200;
 > 
 ```
 
+## 补充
 
 
 
+1. ```
+   $gt -------- greater than  >
+   
+   $gte --------- gt equal  >=
+   
+   $lt -------- less than  <
+   
+   $lte --------- lt equal  <=
+   
+   $ne ----------- not equal  !=
+   
+   $eq  --------  equal  =
+   ```
+
+2. **模糊查询**
+
+   查询 title 包含"教"字的文档：
+
+   ```
+   db.col.find({title:/教/})
+   ```
+
+   查询 title 字段以"教"字开头的文档：
+
+   ```
+   db.col.find({title:/^教/})
+   ```
+
+   查询 titl e字段以"教"字结尾的文档：
+
+   ```
+   db.col.find({title:/教$/})
+   ```
 
 
 
@@ -1403,3 +1602,176 @@ db.col.find({"title" : {$type : 'string'}})
 { "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
 ```
 
+
+
+
+
+# MongoDB Limit与Skip方法
+
+------
+
+## MongoDB Limit() 方法
+
+如果你需要在MongoDB中读取指定数量的数据记录，可以使用MongoDB的Limit方法，limit()方法接受一个数字参数，该参数指定从MongoDB中读取的记录条数。
+
+### 语法
+
+limit()方法基本语法如下所示：
+
+```
+>db.COLLECTION_NAME.find().limit(NUMBER)
+```
+
+### 实例
+
+集合 col 中的数据如下：
+
+```
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
+以下实例为显示查询文档中的两条记录：
+
+```
+> db.col.find({},{"title":1,_id:0}).limit(2)
+{ "title" : "PHP 教程" }
+{ "title" : "Java 教程" }
+>
+```
+
+注：如果你们没有指定limit()方法中的参数则显示集合中的所有数据。
+
+------
+
+## MongoDB Skip() 方法
+
+我们除了可以使用limit()方法来读取指定数量的数据外，还可以使用skip()方法来跳过指定数量的数据，skip方法同样接受一个数字参数作为跳过的记录条数。
+
+### 语法
+
+skip() 方法脚本语法格式如下：
+
+```
+>db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER)
+```
+
+### 实例
+
+以下实例只会显示第二条文档数据
+
+```
+>db.col.find({},{"title":1,_id:0}).limit(1).skip(1)
+{ "title" : "Java 教程" }
+>
+```
+
+**注:**skip()方法默认参数为 0 。
+
+
+
+# MongoDB 排序
+
+------
+
+## MongoDB sort() 方法
+
+在 MongoDB 中使用 sort() 方法对数据进行排序，sort() 方法可以通过参数指定排序的字段，并使用 1 和 -1 来指定排序的方式，其中 1 为升序排列，而 -1 是用于降序排列。
+
+### 语法
+
+sort()方法基本语法如下所示：
+
+```
+>db.COLLECTION_NAME.find().sort({KEY:1})
+```
+
+### 实例
+
+col 集合中的数据如下：
+
+```
+{ "_id" : ObjectId("56066542ade2f21f36b0313a"), "title" : "PHP 教程", "description" : "PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "php" ], "likes" : 200 }
+{ "_id" : ObjectId("56066549ade2f21f36b0313b"), "title" : "Java 教程", "description" : "Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "java" ], "likes" : 150 }
+{ "_id" : ObjectId("5606654fade2f21f36b0313c"), "title" : "MongoDB 教程", "description" : "MongoDB 是一个 Nosql 数据库", "by" : "菜鸟教程", "url" : "http://www.runoob.com", "tags" : [ "mongodb" ], "likes" : 100 }
+```
+
+以下实例演示了 col 集合中的数据按字段 likes 的降序排列：
+
+```
+>db.col.find({},{"title":1,_id:0}).sort({"likes":-1})
+{ "title" : "PHP 教程" }
+{ "title" : "Java 教程" }
+{ "title" : "MongoDB 教程" }
+>
+```
+
+
+
+
+
+# MongoDB 索引
+
+索引通常能够极大的提高查询的效率，如果没有索引，MongoDB在读取数据时必须扫描集合中的每个文件并选取那些符合查询条件的记录。
+
+这种扫描全集合的查询效率是非常低的，特别在处理大量的数据时，查询可以要花费几十秒甚至几分钟，这对网站的性能是非常致命的。
+
+索引是特殊的数据结构，索引存储在一个易于遍历读取的数据集合中，索引是对数据库表中一列或多列的值进行排序的一种结构
+
+------
+
+## createIndex() 方法
+
+MongoDB使用 createIndex() 方法来创建索引。
+
+> 注意在 3.0.0 版本前创建索引方法为 db.collection.ensureIndex()，之后的版本使用了 db.collection.createIndex() 方法，ensureIndex() 还能用，但只是 createIndex() 的别名。
+
+### 语法
+
+createIndex()方法基本语法格式如下所示：
+
+```
+>db.collection.createIndex(keys, options)
+```
+
+语法中 Key 值为你要创建的索引字段，1 为指定按升序创建索引，如果你想按降序来创建索引指定为 -1 即可。
+
+### 实例
+
+```
+>db.col.createIndex({"title":1})
+>
+```
+
+createIndex() 方法中你也可以设置使用多个字段创建索引（关系型数据库中称作复合索引）。
+
+```
+>db.col.createIndex({"title":1,"description":-1})
+>
+```
+
+createIndex() 接收可选参数，可选参数列表如下：
+
+| Parameter          | Type          | Description                                                  |
+| :----------------- | :------------ | :----------------------------------------------------------- |
+| background         | Boolean       | 建索引过程会阻塞其它数据库操作，background可指定以后台方式创建索引，即增加 "background" 可选参数。 "background" 默认值为**false**。 |
+| unique             | Boolean       | 建立的索引是否唯一。指定为true创建唯一索引。默认值为**false**. |
+| name               | string        | 索引的名称。如果未指定，MongoDB的通过连接索引的字段名和排序顺序生成一个索引名称。 |
+| dropDups           | Boolean       | **3.0+版本已废弃。**在建立唯一索引时是否删除重复记录,指定 true 创建唯一索引。默认值为 **false**. |
+| sparse             | Boolean       | 对文档中不存在的字段数据不启用索引；这个参数需要特别注意，如果设置为true的话，在索引字段中不会查询出不包含对应字段的文档.。默认值为 **false**. |
+| expireAfterSeconds | integer       | 指定一个以秒为单位的数值，完成 TTL设定，设定集合的生存时间。 |
+| v                  | index version | 索引的版本号。默认的索引版本取决于mongod创建索引时运行的版本。 |
+| weights            | document      | 索引权重值，数值在 1 到 99,999 之间，表示该索引相对于其他索引字段的得分权重。 |
+| default_language   | string        | 对于文本索引，该参数决定了停用词及词干和词器的规则的列表。 默认为英语 |
+| language_override  | string        | 对于文本索引，该参数指定了包含在文档中的字段名，语言覆盖默认的language，默认值为 language. |
+
+### 实例
+
+在后台创建索引：
+
+```
+db.values.createIndex({open: 1, close: 1}, {background: true})
+```
+
+通过在创建索引时加 background:true 的选项，让创建工作在后台执行
