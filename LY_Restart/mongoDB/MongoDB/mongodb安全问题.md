@@ -177,5 +177,3 @@ mongodb://simpleUser:simplePass@your.db.ip.address:27017/foo
 # 结语
 
 在使用数据库的过程中，一定要注意安全风险，由于 Mongodb 的默认配置，使得数据库有入侵风险，应该予以防范。
-
-原文： https://www.jianshu.com/p/79caa1cc49a5

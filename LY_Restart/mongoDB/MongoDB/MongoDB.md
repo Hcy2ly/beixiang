@@ -1775,3 +1775,1397 @@ db.values.createIndex({open: 1, close: 1}, {background: true})
 ```
 
 通过在创建索引时加 background:true 的选项，让创建工作在后台执行
+
+
+
+# MongoDB 聚合
+
+## MongoDB 聚合
+
+MongoDB中聚合(aggregate)主要用于处理数据(诸如统计平均值,求和等)，并返回计算后的数据结果。有点类似sql语句中的 count(*)。
+
+------
+
+## aggregate() 方法
+
+MongoDB中聚合的方法使用aggregate()。
+
+### 语法
+
+aggregate() 方法的基本语法格式如下所示：
+
+```
+>db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION)
+```
+
+### 实例
+
+集合中的数据如下：
+
+```
+{
+   _id: ObjectId(7df78ad8902c)
+   title: 'MongoDB Overview', 
+   description: 'MongoDB is no sql database',
+   by_user: 'w3cschool.cn',
+   url: 'http://www.w3cschool.cn',
+   tags: ['mongodb', 'database', 'NoSQL'],
+   likes: 100
+},
+{
+   _id: ObjectId(7df78ad8902d)
+   title: 'NoSQL Overview', 
+   description: 'No sql database is very fast',
+   by_user: 'w3cschool.cn',
+   url: 'http://www.w3cschool.cn',
+   tags: ['mongodb', 'database', 'NoSQL'],
+   likes: 10
+},
+{
+   _id: ObjectId(7df78ad8902e)
+   title: 'Neo4j Overview', 
+   description: 'Neo4j is no sql database',
+   by_user: 'Neo4j',
+   url: 'http://www.neo4j.com',
+   tags: ['neo4j', 'database', 'NoSQL'],
+   likes: 750
+},
+```
+
+现在我们通过以上集合计算每个作者所写的文章数，使用aggregate()计算结果如下：
+
+```
+> db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+{
+   "result" : [
+      {
+         "_id" : "w3cschool.cn",
+         "num_tutorial" : 2
+      },
+      {
+         "_id" : "Neo4j",
+         "num_tutorial" : 1
+      }
+   ],
+   "ok" : 1
+}
+>
+```
+
+以上实例类似sql语句： *select by_user, count(\*) from mycol group by by_user*
+
+在上面的例子中，我们通过字段by_user字段对数据进行分组，并计算by_user字段相同值的总和。
+
+下表展示了一些聚合的表达式:
+
+| 表达式    | 描述                                           | 实例                                                         |
+| :-------- | :--------------------------------------------- | :----------------------------------------------------------- |
+| $sum      | 计算总和。                                     | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}]) |
+| $avg      | 计算平均值                                     | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}]) |
+| $min      | 获取集合中所有文档对应值得最小值。             | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}]) |
+| $max      | 获取集合中所有文档对应值得最大值。             | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}]) |
+| $push     | 在结果文档中插入值到一个数组中。               | db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}]) |
+| $addToSet | 在结果文档中插入值到一个数组中，但不创建副本。 | db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}]) |
+| $first    | 根据资源文档的排序获取第一个文档数据。         | db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}]) |
+| $last     | 根据资源文档的排序获取最后一个文档数据         | db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}]) |
+
+------
+
+## 管道的概念
+
+管道在Unix和Linux中一般用于将当前命令的输出结果作为下一个命令的参数。
+
+MongoDB的聚合管道将MongoDB文档在一个管道处理完毕后将结果传递给下一个管道处理。管道操作是可以重复的。
+
+表达式：处理输入文档并输出。表达式是无状态的，只能用于计算当前聚合管道的文档，不能处理其它的文档。
+
+这里我们介绍一下聚合框架中常用的几个操作：
+
+- $project：修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+- $match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+- $limit：用来限制MongoDB聚合管道返回的文档数。
+- $skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+- $unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+- $group：将集合中的文档分组，可用于统计结果。
+- $sort：将输入文档排序后输出。
+- $geoNear：输出接近某一地理位置的有序文档。
+
+### 管道操作符实例
+
+1、$project实例
+
+
+
+```
+db.article.aggregate(
+    { $project : {
+        title : 1 ,
+        author : 1 ,
+    }}
+ );
+```
+
+这样的话结果中就只还有_id,tilte和author三个字段了，默认情况下_id字段是被包含的，如果要想不包含_id话可以这样:
+
+```
+db.article.aggregate(
+    { $project : {
+        _id : 0 ,
+        title : 1 ,
+        author : 1
+    }});
+```
+
+2.$match实例
+
+```
+db.articles.aggregate( [
+                        { $match : { score : { $gt : 70, $lte : 90 } } },
+                        { $group: { _id: null, count: { $sum: 1 } } }
+                       ] );
+```
+
+$match用于获取分数大于70小于或等于90记录，然后将符合条件的记录送到下一阶段$group管道操作符进行处理。
+
+3.$skip实例
+
+```
+db.article.aggregate(
+    { $skip : 5 });
+```
+
+经过$skip管道操作符处理后，前五个文档被"过滤"掉。
+
+
+
+# MongoDB 复制(副本集)
+
+## MongoDB 复制（副本集）
+
+MongoDB复制是将数据同步在多个服务器的过程。
+
+复制提供了数据的冗余备份，并在多个服务器上存储数据副本，提高了数据的可用性， 并可以保证数据的安全性。
+
+复制还允许您从硬件故障和服务中断中恢复数据。
+
+------
+
+## 什么是复制?
+
+- 保障数据的安全性
+- 数据高可用性 (24*7)
+- 灾难恢复
+- 无需停机维护（如备份，重建索引，压缩）
+- 分布式读取数据
+
+------
+
+## MongoDB复制原理
+
+mongodb的复制至少需要两个节点。其中一个是主节点，负责处理客户端请求，其余的都是从节点，负责复制主节点上的数据。
+
+mongodb各个节点常见的搭配方式为：一主一从、一主多从。
+
+主节点记录在其上的所有操作oplog，从节点定期轮询主节点获取这些操作，然后对自己的数据副本执行这些操作，从而保证从节点的数据与主节点一致。
+
+MongoDB复制结构图如下所示：
+
+![MongoDB复制结构图](https://7n.w3cschool.cn/statics/images/course/replication.png)
+
+以上结构图总，客户端总主节点读取数据，在客户端写入数据到主节点是， 主节点与从节点进行数据交互保障数据的一致性。
+
+### 副本集特征：
+
+- N 个节点的集群
+- 任何节点可作为主节点
+- 所有写入操作都在主节点上
+- 自动故障转移
+- 自动恢复
+
+------
+
+## MongoDB副本集设置
+
+在本教程中我们使用同一个MongoDB来做MongoDB主从的实验， 操作步骤如下：
+
+1、关闭正在运行的MongoDB服务器。
+
+现在我们通过指定 --replSet 选项来启动mongoDB。--replSet 基本语法格式如下：
+
+```
+mongod --port "PORT" --dbpath "YOUR_DB_DATA_PATH" --replSet "REPLICA_SET_INSTANCE_NAME"
+```
+
+### 实例
+
+```
+mongod --port 27017 --dbpath "D:\set up\mongodb\data" --replSet rs0
+```
+
+以上实例会启动一个名为rs0的MongoDB实例，其端口号为27017。
+
+启动后打开命令提示框并连接上mongoDB服务。
+
+在Mongo客户端使用命令rs.initiate()来启动一个新的副本集。
+
+我们可以使用rs.conf()来查看副本集的配置
+
+查看副本集姿态使用 rs.status() 命令
+
+------
+
+## 副本集添加成员
+
+添加副本集的成员，我们需要使用多条服务器来启动mongo服务。进入Mongo客户端，并使用rs.add()方法来添加副本集的成员。
+
+### 语法
+
+rs.add() 命令基本语法格式如下：
+
+```
+>rs.add(HOST_NAME:PORT)
+```
+
+### 实例
+
+假设你已经启动了一个名为mongod1.net，端口号为27017的Mongo服务。 在客户端命令窗口使用rs.add() 命令将其添加到副本集中，命令如下所示：
+
+```
+>rs.add("mongod1.net:27017")
+>
+```
+
+MongoDB中你只能通过主节点将Mongo服务添加到副本集中， 判断当前运行的Mongo服务是否为主节点可以使用命令db.isMaster() 。
+
+MongoDB的副本集与我们常见的主从有所不同，主从在主机宕机后所有服务将停止，而副本集在主机宕机后，副本会接管主节点成为主节点，不会出现宕机的情况。
+
+
+
+
+  MongoDB 分片
+
+## MongoDB 分片
+
+------
+
+## 分片
+
+在Mongodb里面存在另一种集群，就是分片技术,可以满足MongoDB数据量大量增长的需求。
+
+当MongoDB存储海量的数据时，一台机器可能不足以存储数据也足以提供可接受的读写吞吐量。这时，我们就可以通过在多台机器上分割数据，使得数据库系统能存储和处理更多的数据。
+
+------
+
+## 为什么使用分片
+
+- 复制所有的写入操作到主节点
+- 延迟的敏感数据会在主节点查询
+- 单个副本集限制在12个节点
+- 当请求量巨大时会出现内存不足。
+- 本地磁盘不足
+- 垂直扩展价格昂贵
+
+------
+
+## MongoDB分片
+
+下图展示了在MongoDB中使用分片集群结构分布：
+
+![img](https://7n.w3cschool.cn/statics/images/course/sharding.png)
+
+上图中主要有如下所述三个主要组件：
+
+- Shard:
+
+  用于存储实际的数据块，实际生产环境中一个shard server角色可由几台机器组个一个relica set承担，防止主机单点故障
+
+- Config Server:
+
+  mongod实例，存储了整个 ClusterMetadata，其中包括 chunk信息。
+
+- Query Routers:
+
+  前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用。
+
+------
+
+## 分片实例
+
+分片结构端口分布如下：
+
+```
+Shard Server 1：27020
+Shard Server 2：27021
+Shard Server 3：27022
+Shard Server 4：27023
+Config Server ：27100
+Route Process：40000
+```
+
+步骤一：启动Shard Server
+
+```
+[root@100 /]# mkdir -p /www/mongoDB/shard/s0
+[root@100 /]# mkdir -p /www/mongoDB/shard/s1
+[root@100 /]# mkdir -p /www/mongoDB/shard/s2
+[root@100 /]# mkdir -p /www/mongoDB/shard/s3
+[root@100 /]# mkdir -p /www/mongoDB/shard/log
+[root@100 /]# /usr/local/mongoDB/bin/mongod --port 27020 --dbpath=/www/mongoDB/shard/s0 --logpath=/www/mongoDB/shard/log/s0.log --logappend --fork
+....
+[root@100 /]# /usr/local/mongoDB/bin/mongod --port 27023 --dbpath=/www/mongoDB/shard/s3 --logpath=/www/mongoDB/shard/log/s3.log --logappend --fork
+```
+
+步骤二： 启动Config Server
+
+```
+[root@100 /]# mkdir -p /www/mongoDB/shard/config
+[root@100 /]# /usr/local/mongoDB/bin/mongod --port 27100 --dbpath=/www/mongoDB/shard/config --logpath=/www/mongoDB/shard/log/config.log --logappend --fork
+```
+
+**注意：**这里我们完全可以像启动普通mongodb服务一样启动，不需要添加—shardsvr和configsvr参数。因为这两个参数的作用就是改变启动端口的，所以我们自行指定了端口就可以。
+
+步骤三： 启动Route Process
+
+```
+/usr/local/mongoDB/bin/mongos --port 40000 --configdb localhost:27100 --fork --logpath=/www/mongoDB/shard/log/route.log --chunkSize 500
+```
+
+mongos启动参数中，chunkSize这一项是用来指定chunk的大小的，单位是MB，默认大小为200MB.
+
+步骤四： 配置Sharding
+
+接下来，我们使用MongoDB Shell登录到mongos，添加Shard节点
+
+```
+[root@100 shard]# /usr/local/mongoDB/bin/mongo admin --port 40000
+MongoDB shell version: 2.0.7
+connecting to: 127.0.0.1:40000/admin
+mongos> db.runCommand({ addshard:"localhost:27020" })
+{ "shardAdded" : "shard0000", "ok" : 1 }
+......
+mongos> db.runCommand({ addshard:"localhost:27029" })
+{ "shardAdded" : "shard0009", "ok" : 1 }
+mongos> db.runCommand({ enablesharding:"test" }) #设置分片存储的数据库
+{ "ok" : 1 }
+mongos> db.runCommand({ shardcollection: "test.log", key: { id:1,time:1}})
+{ "collectionsharded" : "test.log", "ok" : 1 }
+```
+
+步骤五： 程序代码内无需太大更改，直接按照连接普通的mongo数据库那样，将数据库连接接入接口40000
+
+
+
+
+
+# MongoDB 备份与恢复
+
+## MongoDB 备份(mongodump)与恢复(mongorerstore)
+
+------
+
+## MongoDB数据备份
+
+在Mongodb中我们使用mongodump命令来备份MongoDB数据。该命令可以导出所有数据到指定目录中。
+
+mongodump命令可以通过参数指定导出的数据量级转存的服务器。
+
+### 语法
+
+mongodump命令脚本语法如下：
+
+```
+>mongodump -h dbhost -d dbname -o dbdirectory
+```
+
+- -h：
+
+  MongDB所在服务器地址，例如：127.0.0.1，当然也可以指定端口号：127.0.0.1:27017
+
+- -d：
+
+  需要备份的数据库实例，例如：test
+
+- -o：
+
+  备份的数据存放位置，例如：c:\data\dump，当然该目录需要提前建立，在备份完成后，系统自动在dump目录下建立一个test目录，这个目录里面存放该数据库实例的备份数据。
+
+### 实例
+
+在本地使用 27017 启动你的mongod服务。打开命令提示符窗口，进入MongoDB安装目录的bin目录输入命令mongodump:
+
+```
+>mongodump
+```
+
+执行以上命令后，客户端会连接到ip为 127.0.0.1 端口号为 27017 的MongoDB服务上，并备份所有数据到 bin/dump/ 目录中。命令输出结果如下：
+
+![MongoDB数据备份](https://7n.w3cschool.cn/statics/images/course/mongodump.png)
+
+mongodump 命令可选参数列表如下所示：
+
+| 语法                                              | 描述                           | 实例                                             |
+| :------------------------------------------------ | :----------------------------- | :----------------------------------------------- |
+| mongodump --host HOST_NAME --port PORT_NUMBER     | 该命令将备份所有MongoDB数据    | mongodump --host w3cschool.cn --port 27017       |
+| mongodump --dbpath DB_PATH --out BACKUP_DIRECTORY |                                | mongodump --dbpath /data/db/ --out /data/backup/ |
+| mongodump --collection COLLECTION --db DB_NAME    | 该命令将备份指定数据库的集合。 | mongodump --collection mycol --db test           |
+
+------
+
+## MongoDB数据恢复
+
+mongodb使用 mongorerstore 命令来恢复备份的数据。
+
+### 语法
+
+mongorestore命令脚本语法如下：
+
+```
+>mongorestore -h dbhost -d dbname --directoryperdb dbdirectory
+```
+
+- -h：
+
+  MongoDB所在服务器地址
+
+- -d：
+
+  需要恢复的数据库实例，例如：test，当然这个名称也可以和备份时候的不一样，比如test2
+
+- --directoryperdb：
+
+  备份数据所在位置，例如：c:\data\dump\test，这里为什么要多加一个test，而不是备份时候的dump，读者自己查看提示吧！
+
+- --drop：
+
+  恢复的时候，先删除当前数据，然后恢复备份的数据。就是说，恢复后，备份后添加修改的数据都会被删除，慎用哦！
+
+接下来我们执行以下命令:
+
+```
+>mongorestore
+```
+
+执行以上命令输出结果如下：
+
+![MongoDB数据恢复](https://7n.w3cschool.cn/statics/images/course/mongorestore.png)
+
+
+
+
+
+
+
+# MongoDB 监控
+
+## MongoDB 监控
+
+在你已经安装部署并允许MongoDB服务后，你必须要了解MongoDB的运行情况，并查看MongoDB的性能。这样在大流量得情况下可以很好的应对并保证MongoDB正常运作。
+
+MongoDB中提供了mongostat 和 mongotop 两个命令来监控MongoDB的运行情况。
+
+------
+
+## mongostat 命令
+
+mongostat是mongodb自带的状态检测工具，在命令行下使用。它会间隔固定时间获取mongodb的当前运行状态，并输出。如果你发现数据库突然变慢或者有其他问题的话，你第一手的操作就考虑采用mongostat来查看mongo的状态。
+
+启动你的Mongod服务，进入到你安装的MongoDB目录下的bin目录， 然后输入mongostat命令，如下所示：
+
+```
+D:\set up\mongodb\bin>mongostat
+```
+
+以上命令输出结果如下：
+
+
+
+## mongotop 命令
+
+mongotop也是mongodb下的一个内置工具，mongotop提供了一个方法，用来跟踪一个MongoDB的实例，查看哪些大量的时间花费在读取和写入数据。 mongotop提供每个集合的水平的统计数据。默认情况下，mongotop返回值的每一秒。
+
+启动你的Mongod服务，进入到你安装的MongoDB目录下的bin目录， 然后输入mongotop命令，如下所示：
+
+```
+D:\set up\mongodb\bin>mongotop
+```
+
+以上命令执行输出结果如下：
+
+![img](https://7n.w3cschool.cn/statics/images/course/mongotop.png)
+
+带参数实例
+
+```
+ E:\mongodb-win32-x86_64-2.2.1\bin>mongotop 10
+```
+
+![img](https://7n.w3cschool.cn/statics/images/course/29122412-e32a9f09e46e496a8833433fdb421311.gif)
+
+后面的10是*<sleeptime>*参数 ，可以不使用，等待的时间长度，以秒为单位，mongotop等待调用之间。通过的默认mongotop返回数据的每一秒。
+
+```
+ E:\mongodb-win32-x86_64-2.2.1\bin>mongotop --locks
+```
+
+报告每个数据库的锁的使用中，使用mongotop - 锁，这将产生以下输出：
+
+![img](https://7n.w3cschool.cn/statics/images/course/29122706-bfdd58e62c404b948f8039c489f8be81.gif)
+
+输出结果字段说明：
+
+- ns：
+
+  包含数据库命名空间，后者结合了数据库名称和集合。
+
+- **db：**
+
+  包含数据库的名称。名为 . 的数据库针对全局锁定，而非特定数据库。
+
+- **total：**
+
+  mongod花费的时间工作在这个命名空间提供总额。
+
+- **read：**
+
+  提供了大量的时间，这mongod花费在执行读操作，在此命名空间。
+
+- **write：**
+
+  提供这个命名空间进行写操作，这mongod花了大量的时间。
+
+
+
+
+
+
+
+# MongoDB Java
+
+## MongoDB Java
+
+环境配置
+
+在Java程序中如果要使用MongoDB，你需要确保已经安装了Java环境及MongoDB JDBC 驱动。
+
+你可以参考本站的Java教程来安装Java程序。现在让我们来检测你是否安装了 MongoDB JDBC 驱动。
+
+- 首先你必须下载mongo jar包，下载地址：https://github.com/mongodb/mongo-java-driver/downloads, 请确保下载最新版本。
+- 你需要将mongo.jar包含在你的 classpath 中。。
+
+------
+
+## 连接数据库
+
+连接数据库，你需要指定数据库名称，如果指定的数据库不存在，mongo会自动创建数据库。
+
+连接数据库的Java代码如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+		 // 连接到 mongodb 服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+         // 连接到数据库
+         DB db = mongoClient.getDB( "test" );
+		 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+		 System.out.println("Authentication: "+auth);
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+现在，让我们来编译运行程序并创建数据库test。
+
+你可以更加你的实际环境改变MongoDB JDBC驱动的路径。
+
+本实例将MongoDB JDBC启动包 mongo-2.10.1.jar 放在本地目录下:
+
+```
+$javac MongoDBJDBC.java
+$java -classpath ".:mongo-2.10.1.jar" MongoDBJDBC
+Connect to database successfully
+Authentication: true
+```
+
+如果你使用的是Window系统，你可以按以下命令来编译执行程序：
+
+```
+$javac MongoDBJDBC.java
+$java -classpath ".;mongo-2.10.1.jar" MongoDBJDBC
+Connect to database successfully
+Authentication: true
+```
+
+如果用户名及密码正确，则Authentication 的值为true。
+
+------
+
+## 创建集合
+
+我们可以使用com.mongodb.DB类中的createCollection()来创建集合
+
+代码片段如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+	     // 连接到 mongodb 服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+         // 连接到数据库
+         DB db = mongoClient.getDB( "test" );
+	 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+	 System.out.println("Authentication: "+auth);
+         DBCollection coll = db.createCollection("mycol");
+         System.out.println("Collection created successfully");
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+编译运行以上程序，输出结果如下:
+
+```
+Connect to database successfully
+Authentication: true
+Collection created successfully
+```
+
+------
+
+## 获取集合
+
+我们可以使用com.mongodb.DBCollection类的 getCollection() 方法来获取一个集合
+
+代码片段如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+	     // 连接到 mongodb 服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+         // 连接到数据库
+         DB db = mongoClient.getDB( "test" );
+	 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+	 System.out.println("Authentication: "+auth);
+         DBCollection coll = db.createCollection("mycol");
+         System.out.println("Collection created successfully");
+         DBCollection coll = db.getCollection("mycol");
+         System.out.println("Collection mycol selected successfully");
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+编译运行以上程序，输出结果如下:
+
+```
+Connect to database successfully
+Authentication: true
+Collection created successfully
+Collection mycol selected successfully
+```
+
+------
+
+## 插入文档
+
+我们可以使用com.mongodb.DBCollection类的 insert() 方法来插入一个文档
+
+代码片段如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+		 // 连接到 mongodb 服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+         // 连接到数据库
+         DB db = mongoClient.getDB( "test" );
+	 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+	 System.out.println("Authentication: "+auth);         
+         DBCollection coll = db.getCollection("mycol");
+         System.out.println("Collection mycol selected successfully");
+         BasicDBObject doc = new BasicDBObject("title", "MongoDB").
+            append("description", "database").
+            append("likes", 100).
+            append("url", "//www.w3cschool.cn/mongodb/").
+            append("by", "w3cschool.cn");
+         coll.insert(doc);
+         System.out.println("Document inserted successfully");
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+编译运行以上程序，输出结果如下:
+
+```
+Connect to database successfully
+Authentication: true
+Collection mycol selected successfully
+Document inserted successfully
+```
+
+------
+
+## 检索所有文档
+
+我们可以使用com.mongodb.DBCollection类中的 find() 方法来获取集合中的所有文档。
+
+此方法返回一个游标，所以你需要遍历这个游标。
+
+代码片段如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+		// 连接到 mongodb 服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+          // 连接到数据库
+         DB db = mongoClient.getDB( "test" );
+	 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+	 System.out.println("Authentication: "+auth);         
+         DBCollection coll = db.getCollection("mycol");
+         System.out.println("Collection mycol selected successfully");
+         DBCursor cursor = coll.find();
+         int i=1;
+         while (cursor.hasNext()) { 
+            System.out.println("Inserted Document: "+i); 
+            System.out.println(cursor.next()); 
+            i++;
+         }
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+编译运行以上程序，输出结果如下:
+
+```
+Connect to database successfully
+Authentication: true
+Collection mycol selected successfully
+Inserted Document: 1
+{
+   "_id" : ObjectId(7df78ad8902c),
+   "title": "MongoDB",
+   "description": "database",
+   "likes": 100,
+   "url": "//www.w3cschool.cn/mongodb/",
+   "by": "w3cschool.cn"
+}
+```
+
+------
+
+## 更新文档
+
+你可以使用 com.mongodb.DBCollection 类中的 update() 方法来更新集合中的文档。
+
+代码片段如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+	 // 连接到Mongodb服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+         // 连接到你的数据库
+         DB db = mongoClient.getDB( "test" );
+	 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+	 System.out.println("Authentication: "+auth);         
+         DBCollection coll = db.getCollection("mycol");
+         System.out.println("Collection mycol selected successfully");
+         DBCursor cursor = coll.find();
+         while (cursor.hasNext()) { 
+            DBObject updateDocument = cursor.next();
+            updateDocument.put("likes","200")
+            coll.update(updateDocument); 
+         }
+         System.out.println("Document updated successfully");
+         cursor = coll.find();
+         int i=1;
+         while (cursor.hasNext()) { 
+            System.out.println("Updated Document: "+i); 
+            System.out.println(cursor.next()); 
+            i++;
+         }
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+编译运行以上程序，输出结果如下:
+
+```
+Connect to database successfully
+Authentication: true
+Collection mycol selected successfully
+Document updated successfully
+Updated Document: 1
+{
+   "_id" : ObjectId(7df78ad8902c),
+   "title": "MongoDB",
+   "description": "database",
+   "likes": 200,
+   "url": "//www.w3cschool.cn/mongodb/",
+   "by": "w3cschool.cn"
+}
+```
+
+------
+
+## 删除第一个文档
+
+要删除集合中的第一个文档，首先你需要使用com.mongodb.DBCollection类中的 findOne()方法来获取第一个文档，然后使用remove 方法删除。
+
+代码片段如下：
+
+```
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+import java.util.Arrays;
+
+public class MongoDBJDBC{
+   public static void main( String args[] ){
+      try{   
+	 // 连接到Mongodb服务
+         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+         // 连接到你的数据库
+         DB db = mongoClient.getDB( "test" );
+	 System.out.println("Connect to database successfully");
+         boolean auth = db.authenticate(myUserName, myPassword);
+	 System.out.println("Authentication: "+auth);         
+         DBCollection coll = db.getCollection("mycol");
+         System.out.println("Collection mycol selected successfully");
+         DBObject myDoc = coll.findOne();
+         coll.remove(myDoc);
+         DBCursor cursor = coll.find();
+         int i=1;
+         while (cursor.hasNext()) { 
+            System.out.println("Inserted Document: "+i); 
+            System.out.println(cursor.next()); 
+            i++;
+         }
+         System.out.println("Document deleted successfully");
+      }catch(Exception e){
+	     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	  }
+   }
+}
+```
+
+编译运行以上程序，输出结果如下:
+
+```
+Connect to database successfully
+Authentication: true
+Collection mycol selected successfully
+Document deleted successfully
+```
+
+你还可以使用 save(), limit(), skip(), sort() 等方法来操作MongoDB数据库。
+
+
+
+
+
+# MongoDB PHP 扩展
+
+## jQuery parent descendant 选择器
+
+[![jQuery 选择器](https://7n.w3cschool.cn/statics/images/course/up.gif) jQuery 选择器](https://www.w3cschool.cn/mongodb/jquery-ref-selectors.html)
+
+## 实例
+
+选取 <div> 元素的后代的所有 <span> 元素：
+
+$("div span")
+
+尝试一下 »
+
+------
+
+## 定义和用法
+
+("parent descendant") 选择器选取指定元素的后代的所有元素。
+
+元素的后代可以是元素的第一代、第二代、第三代等等。
+
+------
+
+## 语法
+
+ ("*parent descendant*")
+
+| 参数         | 描述                                         |
+| :----------- | :------------------------------------------- |
+| *parent*     | 必需。规定要选取的父元素。                   |
+| *descendant* | 必需。规定要选取的（指定父元素的）后代元素。 |
+
+------
+
+
+
+## 尝试一下 - 实例
+
+[选取  元素的后代的所有  元素](https://www.w3cschool.cn/tryrun/showhtml/tryjquery_sel_parent_descendant2)
+如何选取 <ul> 元素的后代的所有 <li> 元素。
+
+
+
+
+
+
+
+
+
+# MongoDB PHP
+
+## MongoDB PHP
+
+在php中使用mongodb你必须使用 mongodb的php驱动。
+
+MongoDB PHP在各平台上的安装及驱动包下载请查看:PHP安装MongoDB扩展驱动
+
+## 确保连接及选择一个数据库
+
+为了确保正确连接，你需要指定数据库名，如果数据库在mongoDB中不存在，mongoDB会自动创建
+
+代码片段如下：
+
+```
+<?php    // 连接到mongodb    $m = new MongoClient();    echo "Connection to database successfully";    // 选择一个数据库    $db = $m->mydb;
+   echo "Database mydb selected";
+?>
+```
+
+执行以上程序，输出结果如下：
+
+```
+Connection to database successfully
+Database mydb selected
+```
+
+------
+
+## 创建集合
+
+创建集合的代码片段如下：
+
+```
+<?php    // 连接到mongodb    $m = new MongoClient();    echo "Connection to database successfully";    // 选择一个数据库    $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->createCollection("mycol");
+   echo "Collection created succsessfully";
+?>
+```
+
+执行以上程序，输出结果如下：
+
+```
+Connection to database successfully
+Database mydb selected
+Collection created succsessfully
+```
+
+------
+
+## 插入文档
+
+在mongoDB中使用 insert() 方法插入文档：
+
+插入文档代码片段如下：
+
+```
+<?php    // 连接到mongodb    $m = new MongoClient();    echo "Connection to database successfully";    // 选择一个数据库    $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->mycol;
+   echo "Collection selected succsessfully";
+   $document = array( 
+      "title" => "MongoDB", 
+      "description" => "database", 
+      "likes" => 100,
+      "url" => "//www.w3cschool.cn/mongodb/",
+      "by", "w3cschool.cn"
+   );
+   $collection->insert($document);
+   echo "Document inserted successfully";
+?>
+```
+
+执行以上程序，输出结果如下：
+
+```
+Connection to database successfully
+Database mydb selected
+Collection selected succsessfully
+Document inserted successfully
+```
+
+------
+
+## 查找文档
+
+使用find() 方法来读取集合中的文档。
+
+读取使用文档的代码片段如下：
+
+```
+<?php    // 连接到mongodb    $m = new MongoClient();    echo "Connection to database successfully";    // 选择一个数据库    $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->mycol;
+   echo "Collection selected succsessfully";
+
+   $cursor = $collection->find();
+   // 迭代显示文档标题
+   foreach ($cursor as $document) {
+      echo $document["title"] . "\n";
+   }
+?>
+```
+
+执行以上程序，输出结果如下：
+
+```
+Connection to database successfully
+Database mydb selected
+Collection selected succsessfully
+{
+   "title": "MongoDB"
+}
+```
+
+------
+
+## 更新文档
+
+使用 update() 方法来更新文档。
+
+以下实例将更新文档中的标题为' MongoDB Tutorial'， 代码片段如下：
+
+```
+<pre>
+<?php    // 连接到mongodb    $m = new MongoClient();    echo "Connection to database successfully";    // 选择一个数据库    $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->mycol;
+   echo "Collection selected succsessfully";
+
+   // 更新文档
+   $collection->update(array("title"=>"MongoDB"), array('$set'=>array("title"=>"MongoDB Tutorial")));
+   echo "Document updated successfully";
+   // 显示更新后的文档
+   $cursor = $collection->find();
+   // 循环显示文档标题
+   echo "Updated document";
+   foreach ($cursor as $document) {
+      echo $document["title"] . "\n";
+   }
+?>
+```
+
+执行以上程序，输出结果如下：
+
+```
+Connection to database successfully
+Database mydb selected
+Collection selected succsessfully
+Document updated successfully
+Updated document
+{
+   "title": "MongoDB Tutorial"
+}
+```
+
+------
+
+## 删除文档
+
+使用 remove() 方法来删除文档。
+
+以下实例中我们将移除 'title' 为 'MongoDB Tutorial' 的数据记录。， 代码片段如下：
+
+```
+<?php    // 连接到mongodb    $m = new MongoClient();    echo "Connection to database successfully";    // 选择一个数据库    $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->mycol;
+   echo "Collection selected succsessfully";
+   
+   // 移除文档
+   $collection->remove(array("title"=>"MongoDB Tutorial"),false);
+   echo "Documents deleted successfully";
+   
+   // 显示可用文档数据
+   $cursor = $collection->find();
+   // iterate cursor to display title of documents
+   echo "Updated document";
+   foreach ($cursor as $document) {
+      echo $document["title"] . "\n";
+   }
+?>
+```
+
+执行以上程序，输出结果如下：
+
+```
+Connection to database successfully
+Database mydb selected
+Collection selected succsessfully
+Documents deleted successfully
+```
+
+除了以上实例外，在php中你还可以使用findOne(), save(), limit(), skip(), sort()等方法来操作Mongodb数据库。
+
+
+
+
+
+# MongDB PHP7
+
+## PHP7 MongDB 安装与使用
+
+本文教程只适合在 PHP7 的环境，如果你是 PHP5 环境，你可以参阅 [PHP MongDB 安装与使用](https://www.w3cschool.cn/mongodb/mongodb-php.html)。
+
+## PHP7 Mongdb 扩展安装
+
+我们使用 pecl 命令来安装：
+
+```
+$ /usr/local/php7/bin/pecl install mongodb
+```
+
+执行成功后，会输出以下结果：
+
+```
+……
+Build process completed successfully
+Installing '/usr/local/php7/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so'
+install ok: channel://pecl.php.net/mongodb-1.1.7
+configuration option "php_ini" is not set to php.ini location
+You should add "extension=mongodb.so" to php.ini
+```
+
+接下来我们打开 php.ini 文件，添加 **extension=mongodb.so** 配置。
+
+可以直接执行以下命令来添加。
+
+```
+$ echo "extension=mongodb.so" >> `/usr/local/php7/bin/php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+```
+
+> **注意：**以上执行的命令中 php7 的安装目录为 /usr/local/php7/，如果你安装在其他目录，需要相应修改 pecl 与 php 命令的路径。
+
+------
+
+## Mongodb 使用
+
+PHP7 连接 MongoDB 语法如下：
+
+```
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+```
+
+### 插入数据
+
+将 name 为"W3Cschool教程" 的数据插入到 test 数据库的 w3cschool 集合中。
+
+```
+<?php
+$bulk = new MongoDB\Driver\BulkWrite;
+$document = ['_id' => new MongoDB\BSON\ObjectID, 'name' => 'W3Cschool教程'];
+
+$_id= $bulk->insert($document);
+
+var_dump($_id);
+
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");  
+$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 1000);
+$result = $manager->executeBulkWrite('test.w3cschool', $bulk, $writeConcern);
+?>
+```
+
+### 读取数据
+
+这里我们将三个网址数据插入到 test 数据库的 sites 集合，并读取迭代出来：
+
+```
+<?php
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");  
+
+// 插入数据
+$bulk = new MongoDB\Driver\BulkWrite;
+$bulk->insert(['x' => 1, 'name'=>'W3Cschool教程', 'url' => 'http://www.w3cschool.cn']);
+$bulk->insert(['x' => 2, 'name'=>'Google', 'url' => 'http://www.google.com']);
+$bulk->insert(['x' => 3, 'name'=>'taobao', 'url' => 'http://www.taobao.com']);
+$manager->executeBulkWrite('test.sites', $bulk);
+
+$filter = ['x' => ['$gt' => 1]];
+$options = [
+    'projection' => ['_id' => 0],
+    'sort' => ['x' => -1],
+];
+
+// 查询数据
+$query = new MongoDB\Driver\Query($filter, $options);
+$cursor = $manager->executeQuery('test.sites', $query);
+
+foreach ($cursor as $document) {
+    print_r($document);
+}
+?>
+```
+
+输出结果为：
+
+```
+stdClass Object
+(
+    [x] => 3
+    [name] => taobao
+    [url] => http://www.taobao.com
+)
+stdClass Object
+(
+    [x] => 2
+    [name] => Google
+    [url] => http://www.google.com
+)
+```
+
+### 更新数据
+
+接下来我们将更新 test 数据库 sites 集合中 x 为 2 的数据：
+
+```
+<?php
+$bulk = new MongoDB\Driver\BulkWrite;
+$bulk->update(
+    ['x' => 2],
+    ['$set' => ['name' => 'w3cschool在线工具', 'url' => '123.w3cschool.cn/webtools']],
+    ['multi' => false, 'upsert' => false]
+);
+
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");  
+$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 1000);
+$result = $manager->executeBulkWrite('test.sites', $bulk, $writeConcern);
+?>
+```
+
+接下来我们使用 "db.sites.find()" 命令查看数据的变化，x 为 2 的数据已经变成了w3cschool在线工具：
+
+
+
+### ![img](https://atts.w3cschool.cn/attachments/image/20171009/1507537457835742.png) 
+
+### 删除数据
+
+以下实例删除了 x 为 1 和 x 为 2的数据，注意 limit 参数的区别：
+
+```
+<?php
+$bulk = new MongoDB\Driver\BulkWrite;
+$bulk->delete(['x' => 1], ['limit' => 1]);   // limit 为 1 时，删除第一条匹配数据
+$bulk->delete(['x' => 2], ['limit' => 0]);   // limit 为 0 时，删除所有匹配数据
+
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");  
+$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 1000);
+$result = $manager->executeBulkWrite('test.sites', $bulk, $writeConcern);
+?>
+```
+
+更多使用方法请参考：<http://php.net/manual/en/book.mongodb.php>。
