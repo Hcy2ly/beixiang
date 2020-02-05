@@ -1,12 +1,20 @@
 /*
  * @Author: ly
  * @Date: 2020-02-05 11:51:14
- * @LastEditTime : 2020-02-05 17:49:01
+ * @LastEditTime : 2020-02-05 23:17:43
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang\LY_Restart\4_Go\package_main\demo1.go
  */
+
 package main
+
+// import "fmt" //需要该包时引入
+// import (
+// 	"fmt"
+
+// 	math "../package_myMath"
+// )
 
 /*
 // 第一种main()
@@ -105,14 +113,13 @@ const (
 	b = len(a)
 	c = unsafe.Sizeof(a)
 )
-
 func main() {
 	println(a, b, c) // abc 3 16
 }
 */
 
 /*
-//常量还可以用作枚举：
+//iota常量还可以用作枚举：
 const (
 	a = iota
 	b
@@ -124,6 +131,7 @@ func main() {
 */
 
 /*
+// iota 常量的一个有趣例子
 func main() {
 	const (
 		a = iota //0
@@ -340,14 +348,14 @@ func main() {
 */
 
 //指针变量 * 和地址值 & 的区别：指针变量保存的是一个地址值，会分配独立的内存来存储一个整型数字。当变量前面有 * 标识时，才等同于 & 的用法，否则会直接输出一个整型数字。
-func main() {
-	var a int = 4
-	var ptr *int
-	ptr = &a               //把a的地址赋值给pre *pre可以拿到a的地址值
-	println("a的值为", a)     // 4
-	println("*ptr为", *ptr) // 4
-	println("ptr为", ptr)   // 0xc00002df40
-}
+// func main() {
+// 	var a int = 4
+// 	var ptr *int
+// 	ptr = &a               //把a的地址赋值给pre *pre可以拿到a的地址值
+// 	println("a的值为", a)     // 4
+// 	println("*ptr为", *ptr) // 4
+// 	println("ptr为", ptr)   // 0xc00002df40
+// }
 
 /*
 Go 语言的基础组成有以下几个部分：
