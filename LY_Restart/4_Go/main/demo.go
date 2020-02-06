@@ -1,7 +1,7 @@
 /*
  * @Author: ly
  * @Date: 2020-02-05 11:51:14
- * @LastEditTime : 2020-02-05 23:17:43
+ * @LastEditTime : 2020-02-06 22:40:42
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \beixiang\LY_Restart\4_Go\package_main\demo1.go
@@ -13,7 +13,7 @@ package main
 // import (
 // 	"fmt"
 
-// 	math "../package_myMath"
+// 	math "../math"
 // )
 
 /*

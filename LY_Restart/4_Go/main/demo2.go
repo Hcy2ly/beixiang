@@ -1,4 +1,12 @@
-// package main
+/*
+ * @Author: your name
+ * @Date: 2020-02-05 11:48:29
+ * @LastEditTime : 2020-02-06 22:49:54
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \beixiang\LY_Restart\4_Go\package_main\demo2.go
+ */
+package main
 
 // import (
 // 	"fmt"
@@ -22,8 +30,8 @@
 // 	return result
 // }
 
-// Go 函数可以返回多个值，例如：
-
+/*
+// Go 函数可以返回多个值，例如
 package main
 
 import "fmt"
@@ -36,3 +44,4 @@ func main() {
 	a, b := swap("Google", "Runoob")
 	fmt.Println(a, b)
 }
+*/
